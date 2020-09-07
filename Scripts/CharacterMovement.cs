@@ -15,6 +15,8 @@ namespace DoubTech.TPSCharacterController
         [Header("Movement")]
         [SerializeField]
         private float characterSpeed = 1.8f;
+        [SerializeField] 
+        private float rotationSpeed = 2;
 
         [Header("Jump")]
         [SerializeField]
@@ -39,10 +41,10 @@ namespace DoubTech.TPSCharacterController
         private readonly int AnimHorizontal = Animator.StringToHash("Horizontal");
         private readonly int AnimVertical = Animator.StringToHash("Vertical");
         private readonly int AnimSpeed = Animator.StringToHash("Speed");
+        private readonly int AnimTurn = Animator.StringToHash("Turn");
 
         private readonly int StateWalkngJump = Animator.StringToHash("Walking Jump Start");
         private readonly int StateRunningJump = Animator.StringToHash("Running Jump Start");
-        private readonly int StateStandingJump = Animator.StringToHash("Standing Jump");
 
         private Animator animator;
         private AnimatorEventTracker animatorEventTracker;
@@ -57,6 +59,9 @@ namespace DoubTech.TPSCharacterController
         private bool isJumping;
         private bool isGrounded;
         private bool isNearGround;
+        
+        private float newRotation;
+        private float turnValue;
 
         private void Start() {
             controller = GetComponent<CharacterController>();
@@ -155,6 +160,17 @@ namespace DoubTech.TPSCharacterController
 
             controller.Move(stepForwardAmount + stepDownAmount);
             rootMotion = Vector3.zero;
+
+            float delta = Input.GetAxis("Mouse X");
+            Vector3 oldRotation = transform.eulerAngles;
+            transform.rotation = Quaternion.Euler(oldRotation + rotationSpeed * delta * Vector3.up);
+            
+            // TODO: This does not work well. Replace.
+            var turnDelta = (transform.eulerAngles.y - oldRotation.y) * rotationSpeed;
+            if (turnDelta > 0) turnValue = Mathf.Lerp(turnValue, 1.0f, Time.deltaTime);
+            else if (turnDelta < 0) turnValue = Mathf.Lerp(turnValue, -1.0f, Time.deltaTime);
+            else turnValue = Mathf.Lerp(turnValue, 0, Time.deltaTime);
+            animator.SetFloat(AnimTurn, turnValue);
 
             Jump();
         }
