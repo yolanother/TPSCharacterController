@@ -97,11 +97,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 717da0dfbf286fc4c9fc57c0f26fc15a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerInput: {fileID: 873243171}
   holdToRun: 0
   holdToCrouch: 0
   characterSpeed: 1.8
   rotationSpeed: 360
+  inputLerpSpeed: 0
   stepDown: 0.5
   jumpHeight: 3
   gravity: 25
@@ -164,7 +164,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9058399593523869884}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.51, y: 0.28, z: -2}
+  m_LocalPosition: {x: 0, y: 0, z: -2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 9058399593770328131}

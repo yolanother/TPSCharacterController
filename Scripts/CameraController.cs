@@ -24,6 +24,7 @@ namespace DoubTech.TPSCharacterController
 
         private PlayerInput playerInput;
         private Vector3 rotation;
+        private Vector3 trackedPosition;
 
         private void Awake()
         {
@@ -53,7 +54,9 @@ namespace DoubTech.TPSCharacterController
             cameraPivot.localEulerAngles = rotation;
             if (lookTarget)
             {
-                cameraPivot.transform.localPosition = Vector3.up * lookTarget.position.y;
+                trackedPosition = cameraPivot.position;
+                trackedPosition.y = lookTarget.position.y;
+                cameraPivot.position = trackedPosition;
             }
         }
     }
