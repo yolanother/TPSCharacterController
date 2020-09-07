@@ -14,8 +14,6 @@ namespace DoubTech.TPSCharacterController.Configuration
         [SerializeField]
         public KeyCode crouch;
         [SerializeField]
-        public KeyCode attack;
-        [SerializeField]
-        public KeyCode block;
+        public KeyCode equip;
     }
 }

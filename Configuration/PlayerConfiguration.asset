@@ -15,7 +15,4 @@ MonoBehaviour:
   jump: 32
   run: 304
   crouch: 306
-  attack: 0
-  block: 0
-  holdToRun: 0
-  holdToCrouch: 0
+  equip: 113

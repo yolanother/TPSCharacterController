@@ -38,6 +38,14 @@ namespace DoubTech.TPSCharacterController
         [SerializeField]
         private float groundCastDistance = 0.25f;
 
+        [Header("Weapons")] 
+        [SerializeField] 
+        private float equipTransition = .1f;
+        [SerializeField] 
+        private float unequipTransition = .1f;
+        [SerializeField] 
+        private float combatLayerTransitionSpeed = 10;
+
 
         private readonly int AnimRun = Animator.StringToHash("Run");
         private readonly int AnimCrouch = Animator.StringToHash("Crouch");
@@ -48,9 +56,14 @@ namespace DoubTech.TPSCharacterController
         private readonly int AnimVertical = Animator.StringToHash("Vertical");
         private readonly int AnimSpeed = Animator.StringToHash("Speed");
         private readonly int AnimTurn = Animator.StringToHash("Turn");
+        private readonly int AnimEquip = Animator.StringToHash("Equip");
+        private readonly int AnimUnequip = Animator.StringToHash("Unequip");
 
         private readonly int StateWalkngJump = Animator.StringToHash("Walking Jump Start");
         private readonly int StateRunningJump = Animator.StringToHash("Running Jump Start");
+
+        private const int AnimLayerDefault = 0;
+        private const int AnimLayerCombat = 1;
 
         private Animator animator;
         private AnimatorEventTracker animatorEventTracker;
@@ -72,6 +85,9 @@ namespace DoubTech.TPSCharacterController
         private float previousHorizontal;
         private float previousVertical;
 
+        private int activeLayer = 0;
+        private float activeLayerWeight;
+
         private void Start()
         {
             playerInput = GetComponent<PlayerInput>();
@@ -86,8 +102,14 @@ namespace DoubTech.TPSCharacterController
             {
                 if(evt == ButtonEventTypes.Down) Jump();
             });
+            
             playerInput.OnCrouch.AddListener(evt => HandleStateChange(evt, !holdToCrouch, ref isCrouching, AnimCrouch));
             playerInput.OnRun.AddListener(evt => HandleStateChange(evt, !holdToRun, ref isRunning, AnimRun));
+            
+            playerInput.OnEquip.AddListener(evt =>
+            {
+                if (evt == ButtonEventTypes.Down) OnEquip();
+            });
         }
 
         private void OnDrawGizmosSelected() {
@@ -107,6 +129,22 @@ namespace DoubTech.TPSCharacterController
                 rotation.x,
                 Mathf.Lerp(rotation.y, rotationY, Time.deltaTime),
                 rotation.z);
+        }
+
+        private void OnEquip()
+        {
+            if (activeLayer == AnimLayerCombat)
+            {
+                activeLayer = AnimLayerDefault;
+                animator.CrossFade(AnimUnequip, equipTransition);
+            }
+            else
+            {
+                activeLayer = AnimLayerCombat;
+                animator.CrossFade(AnimEquip, unequipTransition);
+            }
+
+            activeLayerWeight = animator.GetLayerWeight(AnimLayerCombat);
         }
 
         private float HandleInputLerp(float previous, float newValue)
@@ -148,9 +186,9 @@ namespace DoubTech.TPSCharacterController
                 animator.SetBool(AnimIsJumping, true);
 
                 if (isRunning) {
-                    animator.CrossFade(StateRunningJump, .1f, 0);
+                    animator.CrossFade(StateRunningJump, .1f, activeLayer);
                 } else {
-                    animator.CrossFade(StateWalkngJump, .1f, 0);
+                    animator.CrossFade(StateWalkngJump, .1f, activeLayer);
                 }
             }
         }
@@ -211,6 +249,15 @@ namespace DoubTech.TPSCharacterController
             else if (turnDelta < 0) turnValue = Mathf.Lerp(turnValue, -1.0f, Time.deltaTime);
             else turnValue = Mathf.Lerp(turnValue, 0, Time.deltaTime);
             animator.SetFloat(AnimTurn, turnValue);
+
+            UpdateLayerWeight();
+        }
+
+        private void UpdateLayerWeight()
+        {
+            activeLayerWeight = Mathf.Lerp(activeLayerWeight,
+                activeLayer == AnimLayerCombat ? 1 : 0, Time.deltaTime * combatLayerTransitionSpeed);
+            animator.SetLayerWeight(AnimLayerCombat, activeLayerWeight);
         }
 
         private void UpdateInAir() {

@@ -33,6 +33,26 @@ namespace DoubTech.TPSCharacterController.Inputs.InputMethods
             SendEvent(OnJump, config.jump);
             SendEvent(OnCrouch, config.crouch);
             SendEvent(OnRun, config.run);
+            SendEvent(OnEquip, config.equip);
+
+            SendMouseEvent(OnAttack, 0);
+            SendMouseEvent(OnBlock, 1);
+        }
+
+        private void SendMouseEvent(ButtonEvent buttonEvent, int button)
+        {
+            if (Input.GetMouseButtonDown(button))
+            {
+                buttonEvent.Invoke(ButtonEventTypes.Down);
+            }
+            if (Input.GetMouseButton(button))
+            {
+                buttonEvent.Invoke(ButtonEventTypes.Held);
+            }
+            if (Input.GetMouseButtonUp(button))
+            {
+                buttonEvent.Invoke(ButtonEventTypes.Up);
+            }
         }
 
         private void SendEvent(ButtonEvent buttonEvent, KeyCode key)

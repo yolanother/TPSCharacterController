@@ -108,6 +108,9 @@ MonoBehaviour:
   airControl: 0.5
   jumpDampTime: 1.5
   groundCastDistance: 0.25
+  equipTransition: 0.1
+  unequipTransition: 0.1
+  combatLayerTransitionSpeed: 10
 --- !u!114 &873243172
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -14,6 +14,7 @@ namespace DoubTech.TPSCharacterController.Inputs
         [SerializeField] public readonly ButtonEvent OnRun = new ButtonEvent();
         [SerializeField] public readonly ButtonEvent OnAttack = new ButtonEvent();
         [SerializeField] public readonly ButtonEvent OnBlock = new ButtonEvent();
+        [SerializeField] public readonly ButtonEvent OnEquip = new ButtonEvent();
         
         public abstract float Horizontal { get;  }
         public abstract float Vertical { get;  }
@@ -27,6 +28,8 @@ namespace DoubTech.TPSCharacterController.Inputs
         public bool Attack { get; private set; }
         
         public bool Block { get; private set; }
+        
+        public bool Equip { get; private set; }
 
         public float MovementMagnitude => Mathf.Sqrt(Mathf.Pow(Horizontal, 2) + Mathf.Pow(Vertical, 2));
 
@@ -35,8 +38,9 @@ namespace DoubTech.TPSCharacterController.Inputs
             OnCrouch.AddListener(e => Crouch = e == ButtonEventTypes.Held);
             OnJump.AddListener(e => Jump = e == ButtonEventTypes.Held);
             OnRun.AddListener(e => Run = e == ButtonEventTypes.Held);
-            OnAttack.AddListener(e => Run = e == ButtonEventTypes.Held);
-            OnBlock.AddListener(e => Run = e == ButtonEventTypes.Held);
+            OnAttack.AddListener(e => Attack = e == ButtonEventTypes.Held);
+            OnBlock.AddListener(e => Block = e == ButtonEventTypes.Held);
+            OnEquip.AddListener(e => Equip = e == ButtonEventTypes.Held);
         }
     }
 

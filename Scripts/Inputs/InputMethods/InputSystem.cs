@@ -24,12 +24,16 @@ namespace DoubTech.TPSCharacterController.Inputs.InputMethods
 
         protected override void Awake()
         {
+            base.Awake();
+            
             inputActions = new InputActions();
+            
             InitializeButton(inputActions.Player.Jump, OnJump);
             InitializeButton(inputActions.Player.Crouch, OnCrouch);
             InitializeButton(inputActions.Player.Run, OnRun);
             InitializeButton(inputActions.Player.Attack, OnAttack);
             InitializeButton(inputActions.Player.Block, OnBlock);
+            InitializeButton(inputActions.Player.Equip, OnEquip);
         }
 
         private void InitializeButton(InputAction action, ButtonEvent onJump)

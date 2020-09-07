@@ -1,5 +1,3 @@
-#if ENABLE_INPUT_SYSTEM
-
 // GENERATED AUTOMATICALLY FROM 'Assets/DoubTech/TPSCharacterController/Configuration/InputActions.inputactions'
 
 using System;
@@ -74,6 +72,14 @@ namespace DoubTech.TPSCharacterController.Inputs
                     ""name"": ""Block"",
                     ""type"": ""Button"",
                     ""id"": ""25c5746b-dc78-41fe-a953-5a1193133100"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Equip"",
+                    ""type"": ""Button"",
+                    ""id"": ""42a6a14a-4128-4491-a29f-e37e6f18f66b"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
@@ -321,6 +327,28 @@ namespace DoubTech.TPSCharacterController.Inputs
                     ""action"": ""Block"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5d23ba68-be7f-44e5-9d36-24b36db0913e"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Equip"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e9de1768-092c-4b57-b390-46c2d32b0781"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Equip"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -336,6 +364,7 @@ namespace DoubTech.TPSCharacterController.Inputs
             m_Player_Crouch = m_Player.FindAction("Crouch", throwIfNotFound: true);
             m_Player_Attack = m_Player.FindAction("Attack", throwIfNotFound: true);
             m_Player_Block = m_Player.FindAction("Block", throwIfNotFound: true);
+            m_Player_Equip = m_Player.FindAction("Equip", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -392,6 +421,7 @@ namespace DoubTech.TPSCharacterController.Inputs
         private readonly InputAction m_Player_Crouch;
         private readonly InputAction m_Player_Attack;
         private readonly InputAction m_Player_Block;
+        private readonly InputAction m_Player_Equip;
         public struct PlayerActions
         {
             private @InputActions m_Wrapper;
@@ -403,6 +433,7 @@ namespace DoubTech.TPSCharacterController.Inputs
             public InputAction @Crouch => m_Wrapper.m_Player_Crouch;
             public InputAction @Attack => m_Wrapper.m_Player_Attack;
             public InputAction @Block => m_Wrapper.m_Player_Block;
+            public InputAction @Equip => m_Wrapper.m_Player_Equip;
             public InputActionMap Get() { return m_Wrapper.m_Player; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -433,6 +464,9 @@ namespace DoubTech.TPSCharacterController.Inputs
                     @Block.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnBlock;
                     @Block.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnBlock;
                     @Block.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnBlock;
+                    @Equip.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnEquip;
+                    @Equip.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnEquip;
+                    @Equip.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnEquip;
                 }
                 m_Wrapper.m_PlayerActionsCallbackInterface = instance;
                 if (instance != null)
@@ -458,6 +492,9 @@ namespace DoubTech.TPSCharacterController.Inputs
                     @Block.started += instance.OnBlock;
                     @Block.performed += instance.OnBlock;
                     @Block.canceled += instance.OnBlock;
+                    @Equip.started += instance.OnEquip;
+                    @Equip.performed += instance.OnEquip;
+                    @Equip.canceled += instance.OnEquip;
                 }
             }
         }
@@ -471,7 +508,7 @@ namespace DoubTech.TPSCharacterController.Inputs
             void OnCrouch(InputAction.CallbackContext context);
             void OnAttack(InputAction.CallbackContext context);
             void OnBlock(InputAction.CallbackContext context);
+            void OnEquip(InputAction.CallbackContext context);
         }
     }
 }
-#endif
