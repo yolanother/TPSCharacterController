@@ -86,8 +86,8 @@ namespace DoubTech.TPSCharacterController
             {
                 if(evt == ButtonEventTypes.Down) Jump();
             });
-            playerInput.OnCrouch.AddListener(evt => HandleStateChange(evt, holdToCrouch, ref isCrouching, AnimCrouch));
-            playerInput.OnRun.AddListener(evt => HandleStateChange(evt, holdToRun, ref isRunning, AnimRun));
+            playerInput.OnCrouch.AddListener(evt => HandleStateChange(evt, !holdToCrouch, ref isCrouching, AnimCrouch));
+            playerInput.OnRun.AddListener(evt => HandleStateChange(evt, !holdToRun, ref isRunning, AnimRun));
         }
 
         private void OnDrawGizmosSelected() {
@@ -109,17 +109,23 @@ namespace DoubTech.TPSCharacterController
                 rotation.z);
         }
 
+        private float HandleInputLerp(float previous, float newValue)
+        {
+            float result = newValue;
+            if (inputLerpSpeed > .001f)
+            {
+                newValue = Mathf.Sign(newValue) * Mathf.Ceil(Mathf.Abs(newValue));
+                result = Mathf.Lerp(previous, newValue, Time.deltaTime * inputLerpSpeed);
+            }
+
+            return result;
+        }
+
         private void UpdateDirection()
         {
-            var horizontal = Mathf.Lerp(previousHorizontal, playerInput.Horizontal, Time.deltaTime * inputLerpSpeed);
-            var vertical = Mathf.Lerp(previousVertical, playerInput.Vertical, Time.deltaTime * inputLerpSpeed);
+            var horizontal = HandleInputLerp(previousHorizontal, playerInput.Horizontal);
+            var vertical = HandleInputLerp(previousVertical, playerInput.Vertical);
 
-            if (inputLerpSpeed < .001f)
-            {
-                horizontal = playerInput.Horizontal;
-                vertical = playerInput.Vertical;
-            }
-            
             animator.SetFloat(AnimHorizontal, horizontal);
             animator.SetFloat(AnimVertical, vertical);
             
