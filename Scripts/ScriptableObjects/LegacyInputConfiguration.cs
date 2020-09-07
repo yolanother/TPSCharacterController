@@ -17,9 +17,5 @@ namespace DoubTech.TPSCharacterController.Configuration
         public KeyCode attack;
         [SerializeField]
         public KeyCode block;
-        [SerializeField]
-        public bool holdToRun;
-        [SerializeField]
-        public bool holdToCrouch;
     }
 }

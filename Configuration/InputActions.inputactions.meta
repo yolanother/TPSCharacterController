@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: a9e2aeef58b0ccb4cab5c87765b1b487
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: 8404be70184654265930450def6a9037, type: 3}
+  generateWrapperCode: 1
+  wrapperCodePath: Assets/DoubTech/TPSCharacterController/Scripts/Inputs/InputActions.cs
+  wrapperClassName: InputActions
+  wrapperCodeNamespace: DoubTech.TPSCharacterController.Inputs
