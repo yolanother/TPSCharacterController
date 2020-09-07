@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace DoubTech.TPSCharacterController.Configuration
 {
     [CreateAssetMenu(menuName = "TPS Character Controler/Input Configuration")]
-    public class InputConfiguration : ScriptableObject
+    public class LegacyInputConfiguration : ScriptableObject
     {
         [SerializeField]
         public KeyCode jump;

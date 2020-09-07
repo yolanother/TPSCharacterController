@@ -3,20 +3,24 @@ using System.Collections;
 using System.Collections.Generic;
 using DoubTech.TPSCharacterController.Configuration;
 using System;
+using DoubTech.TPSCharacterController.Inputs;
 
 namespace DoubTech.TPSCharacterController
 {
     [RequireComponent(typeof(CharacterController))]
-    public class CharacterMovement : MonoBehaviour {
-        [Header("Input Configuration")]
-        [SerializeField]
-        private InputConfiguration config;
+    public class CharacterMovement : MonoBehaviour
+    {
+        private PlayerInput playerInput;
 
-        [Header("Movement")]
+        [Header("Movement")] 
+        [SerializeField]
+        private bool holdToRun;
+        [SerializeField] 
+        private bool holdToCrouch;
         [SerializeField]
         private float characterSpeed = 1.8f;
         [SerializeField] 
-        private float rotationSpeed = 2;
+        private float rotationSpeed = 360;
 
         [Header("Jump")]
         [SerializeField]
@@ -30,7 +34,7 @@ namespace DoubTech.TPSCharacterController
         [SerializeField]
         private float jumpDampTime = 1.5f;
         [SerializeField]
-        private float groundCastDistance = 0.1f;
+        private float groundCastDistance = 0.25f;
 
 
         private readonly int AnimRun = Animator.StringToHash("Run");
@@ -50,7 +54,6 @@ namespace DoubTech.TPSCharacterController
         private AnimatorEventTracker animatorEventTracker;
         private CharacterController controller;
         
-        private Vector2 moveInput;
         private Vector3 rootMotion;
         private Vector3 velocity;
         private Quaternion newRotation;
@@ -64,26 +67,33 @@ namespace DoubTech.TPSCharacterController
         private float turnValue;
         private float rotationY;
 
-        private void Start() {
+        private void Start()
+        {
+            playerInput = GetComponent<PlayerInput>();
             controller = GetComponent<CharacterController>();
             animator = GetComponentInChildren<Animator>();
             if (!animator.TryGetComponent(out animatorEventTracker)) {
                 animatorEventTracker = animator.gameObject.AddComponent<AnimatorEventTracker>();
             }
             animatorEventTracker.OnAnimatorMoveEvent += () => OnAnimatorMove();
+            
+            playerInput.OnJump.AddListener(evt =>
+            {
+                if(evt == ButtonEventTypes.Down) Jump();
+            });
+            playerInput.OnCrouch.AddListener(evt => HandleStateChange(evt, holdToCrouch, ref isCrouching, AnimCrouch));
+            playerInput.OnRun.AddListener(evt => HandleStateChange(evt, holdToRun, ref isRunning, AnimRun));
         }
 
         private void OnDrawGizmosSelected() {
             Gizmos.DrawLine(transform.position, transform.up * -1 * groundCastDistance);
         }
 
-        private void Update() {
-            isNearGround = Physics.Linecast(transform.position, transform.up * -1 * groundCastDistance);
+        private void Update()
+        {
+            isNearGround = Physics.Linecast(transform.position,  -1 * groundCastDistance * transform.up);
 
             UpdateDirection();
-
-            HandleStateChange(config.run, config.holdToRun, ref isRunning, AnimRun);
-            HandleStateChange(config.crouch, config.holdToCrouch, ref isCrouching, AnimCrouch);
 
             UpdateSpeed();
 
@@ -92,27 +102,22 @@ namespace DoubTech.TPSCharacterController
                 rotation.x,
                 Mathf.Lerp(rotation.y, rotationY, Time.deltaTime),
                 rotation.z);
-
-            Jump();
         }
 
         private void UpdateDirection() {
-            moveInput.x = Input.GetAxis("Horizontal");
-            moveInput.y = Input.GetAxis("Vertical");
-
-            animator.SetFloat(AnimHorizontal, moveInput.x);
-            animator.SetFloat(AnimVertical, moveInput.y);
+            animator.SetFloat(AnimHorizontal, playerInput.Horizontal);
+            animator.SetFloat(AnimVertical, playerInput.Vertical);
         }
 
         private void UpdateSpeed() {
-            float speed = moveInput.magnitude;
+            float speed = playerInput.MovementMagnitude;
             if (isCrouching) speed /= 2.0f;
             if (isRunning) speed *= 2f;
             animator.SetFloat(AnimSpeed, speed);
         }
 
         private void Jump() {
-            if(!isJumping && !isCrouching && Input.GetKeyDown(config.jump)) {
+            if(!isJumping && !isCrouching) {
                 isJumping = true;
                 velocity = animator.velocity * jumpDampTime * characterSpeed;
                 velocity.y = Mathf.Sqrt(2 * gravity * jumpHeight);
@@ -144,22 +149,25 @@ namespace DoubTech.TPSCharacterController
             }
         }
 
-        private void HandleStateChange(KeyCode key, bool hold, ref bool active, int animHash) {
-            if (Input.GetKeyDown(key)) {
-                if (active) {
-                    active = false;
-                    animator.SetBool(animHash, false);
-                } else {
-                    animator.SetBool(animHash, true);
-                    active = true;
-                }
-            }
+        private void HandleStateChange(ButtonEventTypes evt, bool hold, ref bool active, int animHash) {
+            switch (evt)
+            {
+                case ButtonEventTypes.Down:
+                    if (active) {
+                        active = false;
+                        animator.SetBool(animHash, false);
+                    } else {
+                        animator.SetBool(animHash, true);
+                        active = true;
+                    }
+                    break;
+                case ButtonEventTypes.Up:
+                    if (!hold) {
+                        animator.SetBool(animHash, false);
+                        active = false;
+                    }
 
-            if (Input.GetKeyUp(config.run)) {
-                if (!hold) {
-                    animator.SetBool(animHash, false);
-                    active = false;
-                }
+                    break;
             }
         }
 
@@ -173,7 +181,7 @@ namespace DoubTech.TPSCharacterController
 
         private void LateUpdate()
         {
-            var turnDelta = Input.GetAxis("Mouse X") * rotationSpeed;
+            var turnDelta = playerInput.Turn * rotationSpeed;
             rotationY = transform.eulerAngles.y + turnDelta;
             if (turnDelta > 0) turnValue = Mathf.Lerp(turnValue, 1.0f, Time.deltaTime);
             else if (turnDelta < 0) turnValue = Mathf.Lerp(turnValue, -1.0f, Time.deltaTime);
@@ -202,7 +210,7 @@ namespace DoubTech.TPSCharacterController
         }
 
         private Vector3 CalculateAirControl() {
-            return (transform.forward * moveInput.y + transform.right * moveInput.x) * airControl / 100;
+            return (transform.forward * playerInput.Vertical + transform.right * playerInput.Horizontal) * airControl / 100;
         }
     }
 }
