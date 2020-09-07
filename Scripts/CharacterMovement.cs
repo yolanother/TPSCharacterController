@@ -21,6 +21,8 @@ namespace DoubTech.TPSCharacterController
         private float characterSpeed = 1.8f;
         [SerializeField] 
         private float rotationSpeed = 360;
+        [SerializeField]
+        private float inputLerpSpeed = 0;
 
         [Header("Jump")]
         [SerializeField]
@@ -66,6 +68,9 @@ namespace DoubTech.TPSCharacterController
         
         private float turnValue;
         private float rotationY;
+        
+        private float previousHorizontal;
+        private float previousVertical;
 
         private void Start()
         {
@@ -104,9 +109,22 @@ namespace DoubTech.TPSCharacterController
                 rotation.z);
         }
 
-        private void UpdateDirection() {
-            animator.SetFloat(AnimHorizontal, playerInput.Horizontal);
-            animator.SetFloat(AnimVertical, playerInput.Vertical);
+        private void UpdateDirection()
+        {
+            var horizontal = Mathf.Lerp(previousHorizontal, playerInput.Horizontal, Time.deltaTime * inputLerpSpeed);
+            var vertical = Mathf.Lerp(previousVertical, playerInput.Vertical, Time.deltaTime * inputLerpSpeed);
+
+            if (inputLerpSpeed < .001f)
+            {
+                horizontal = playerInput.Horizontal;
+                vertical = playerInput.Vertical;
+            }
+            
+            animator.SetFloat(AnimHorizontal, horizontal);
+            animator.SetFloat(AnimVertical, vertical);
+            
+            previousHorizontal = horizontal;
+            previousVertical = vertical;
         }
 
         private void UpdateSpeed() {

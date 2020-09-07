@@ -101,6 +101,7 @@ MonoBehaviour:
   holdToCrouch: 0
   characterSpeed: 3
   rotationSpeed: 60
+  inputLerpSpeed: 2
   stepDown: 0.5
   jumpHeight: 3
   gravity: 25

@@ -390,7 +390,7 @@ PrefabInstance:
     - target: {fileID: 9058399593145920404, guid: 81f553db266440540a9b7c4e37d24e29,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 81f553db266440540a9b7c4e37d24e29, type: 3}
@@ -401,6 +401,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 9193913992919517168, guid: 898c601bd44c61740b215c50272b3ee6,
+        type: 3}
+      propertyPath: inputLerpSpeed
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 9193913992919517169, guid: 898c601bd44c61740b215c50272b3ee6,
         type: 3}
       propertyPath: m_Name
@@ -409,7 +414,7 @@ PrefabInstance:
     - target: {fileID: 9193913992919517169, guid: 898c601bd44c61740b215c50272b3ee6,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9193913992919517174, guid: 898c601bd44c61740b215c50272b3ee6,
         type: 3}

@@ -215,7 +215,7 @@ namespace DoubTech.TPSCharacterController.Inputs
                 {
                     ""name"": """",
                     ""id"": ""81f363a1-55bf-406d-855b-42cdc8470db9"",
-                    ""path"": ""<XInputController>/buttonSouth"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -237,7 +237,7 @@ namespace DoubTech.TPSCharacterController.Inputs
                 {
                     ""name"": """",
                     ""id"": ""4c2b48db-907e-4b58-92dc-c81c15a47103"",
-                    ""path"": ""<XInputController>/buttonWest"",
+                    ""path"": ""<Gamepad>/buttonWest"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -259,7 +259,7 @@ namespace DoubTech.TPSCharacterController.Inputs
                 {
                     ""name"": """",
                     ""id"": ""cbe308a6-d7a0-4e86-92fc-073e6bb1e303"",
-                    ""path"": ""<XInputController>/buttonEast"",
+                    ""path"": ""<Gamepad>/buttonEast"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -303,7 +303,7 @@ namespace DoubTech.TPSCharacterController.Inputs
                 {
                     ""name"": """",
                     ""id"": ""4d70b3fe-c341-4c58-8506-53b317020727"",
-                    ""path"": ""<XInputController>/rightShoulder"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
