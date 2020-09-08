@@ -34,23 +34,27 @@ namespace DoubTech.TPSCharacterController.Inputs.InputMethods
             InitializeButton(inputActions.Player.Equip, Equip);
             InitializeButton(inputActions.Player.Use, Use);
 
-            inputActions.Player.CombatDirection.performed += ctx =>
+            InitializeValue(inputActions.Player.Movement, Horizontal, Vertical);
+            InitializeValue(inputActions.Player.Look, Turn, Look);
+            InitializeValue(inputActions.Player.CombatDirection, CombatDirection);
+            InitializeValue(inputActions.Player.AxisCombatDirection, CombatDirection);
+        }
+
+        private void InitializeValue(InputAction action, ValueHandler<float> x, ValueHandler<float> y)
+        {
+            action.performed += ctx =>
             {
-                var direction = ctx.ReadValue<Vector2>();
-                if (direction.magnitude > .001f)
-                {
-                    combatDirection = RoundUpOrDown(direction);
-                    CombatDirectionChanged.Invoke(combatDirection);
-                }
+                Vector2 value = ctx.ReadValue<Vector2>();
+                x.Value = value.x;
+                y.Value = value.y;
             };
-            inputActions.Player.AxisCombatDirection.performed += ctx =>
+        }
+
+        private void InitializeValue<T>(InputAction action, ValueHandler<T> value) where T : struct
+        {
+            action.performed += ctx =>
             {
-                var direction = ctx.ReadValue<Vector2>();
-                if (direction.magnitude > .001f)
-                {
-                    combatDirection = RoundUpOrDown(direction);
-                    CombatDirectionChanged.Invoke(combatDirection);
-                }
+                value.Value = ctx.ReadValue<T>();
             };
         }
 
@@ -60,13 +64,6 @@ namespace DoubTech.TPSCharacterController.Inputs.InputMethods
             action.performed += ctx => button.Invoke(ButtonEventTypes.Held);
             action.canceled += ctx => button.Invoke(ButtonEventTypes.Up);
         }
-
-        public override float Horizontal => inputActions.Player.Movement.ReadValue<Vector2>().x;
-        public override float Vertical => inputActions.Player.Movement.ReadValue<Vector2>().y;
-        public override float Turn => inputActions.Player.Look.ReadValue<Vector2>().x;
-        public override float Look => inputActions.Player.Look.ReadValue<Vector2>().y;
-
-        public override Vector2 CombatDirection => combatDirection;
 
         private Vector2 RoundUpOrDown(Vector2 vector)
         {

@@ -7,9 +7,13 @@ using UnityEngine.UI;
 
 namespace DoubTech.TPSCharacterController.Inputs
 {
-    public abstract class PlayerInput : MonoBehaviour
+    public class PlayerInput : MonoBehaviour
     {
         [Header("Movement")]
+        [SerializeField] public readonly FloatHandler Horizontal = new FloatHandler();
+        [SerializeField] public readonly FloatHandler Vertical = new FloatHandler();
+        [SerializeField] public readonly FloatHandler Turn = new FloatHandler();
+        [SerializeField] public readonly FloatHandler Look = new FloatHandler();
         [SerializeField] public readonly ButtonHandler Run = new ButtonHandler();
         [SerializeField] public readonly ButtonHandler Jump = new ButtonHandler();
         [SerializeField] public readonly ButtonHandler Crouch = new ButtonHandler();
@@ -18,20 +22,13 @@ namespace DoubTech.TPSCharacterController.Inputs
         [SerializeField] public readonly ButtonHandler AttackStrong = new ButtonHandler();
         [SerializeField] public readonly ButtonHandler AttackWeak = new ButtonHandler();
         [SerializeField] public readonly ButtonHandler Block = new ButtonHandler();
-        [SerializeField] public readonly CombatDirectionChangedHandler CombatDirectionChanged = new CombatDirectionChangedHandler();
+        [SerializeField] public readonly Vector2Handler CombatDirection = new Vector2Handler();
         
         [Header("Interaction")]
         [SerializeField] public readonly ButtonHandler Equip = new ButtonHandler();
         [SerializeField] public readonly ButtonHandler Use = new ButtonHandler();
-        
-        public abstract float Horizontal { get;  }
-        public abstract float Vertical { get;  }
-        public abstract float Turn { get; }
-        public abstract float Look { get; }
-        
-        public abstract Vector2 CombatDirection { get; }
 
-        public float MovementMagnitude => Mathf.Sqrt(Mathf.Pow(Horizontal, 2) + Mathf.Pow(Vertical, 2));
+        public float MovementMagnitude => Mathf.Sqrt(Mathf.Pow(Horizontal.Value, 2) + Mathf.Pow(Vertical.Value, 2));
     }
 
     public enum ButtonEventTypes
@@ -40,6 +37,52 @@ namespace DoubTech.TPSCharacterController.Inputs
         Held,
         Up
     }
+
+    [Serializable]
+    public class FloatHandler : ValueHandler<float>
+    {
+        [SerializeField]
+        private OnFloatChanged onValueChanged = new OnFloatChanged();
+
+        public override UnityEvent<float> OnValueChanged => onValueChanged;
+    }
+    
+    [Serializable]
+    public class Vector2Handler : ValueHandler<Vector2>
+    {
+        [SerializeField]
+        private OnVector2Changed onValueChanged = new OnVector2Changed();
+
+        public override UnityEvent<Vector2> OnValueChanged => onValueChanged;
+    }
+
+    [Serializable]
+    public abstract class ValueHandler<T>
+    {
+        public abstract UnityEvent<T> OnValueChanged { get;  }
+        
+        private T value;
+
+        public T Value
+        {
+            get => value;
+            set
+            {
+                if (null == value && null != this.value || null != value && !value.Equals(this.value))
+                {
+                    this.value = value;
+                    OnValueChanged?.Invoke(value);
+                }
+            }
+        }
+        
+    }
+
+    [Serializable]
+    public class OnFloatChanged : UnityEvent<float> { }
+
+    [Serializable]
+    public class OnVector2Changed : UnityEvent<Vector2> { }
 
     [Serializable]
     public class ButtonHandler

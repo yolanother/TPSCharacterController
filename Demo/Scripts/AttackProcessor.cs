@@ -36,7 +36,7 @@ public class AttackProcessor : MonoBehaviour
         playerInput.AttackStrong.OnPressed.AddListener(AttackStrong);
         playerInput.AttackWeak.OnPressed.AddListener(AttackWeak);
         playerInput.Block.OnPressed.AddListener(Block);
-        playerInput.CombatDirectionChanged.AddListener(CombatDirectionChanged);
+        playerInput.CombatDirection.OnValueChanged.AddListener(CombatDirectionChanged);
     }
 
     private void OnDisable()
@@ -44,7 +44,7 @@ public class AttackProcessor : MonoBehaviour
         playerInput.AttackStrong.OnPressed.RemoveListener(AttackStrong);
         playerInput.AttackWeak.OnPressed.RemoveListener(AttackWeak);
         playerInput.Block.OnPressed.RemoveListener(Block);
-        playerInput.CombatDirectionChanged.RemoveListener(CombatDirectionChanged);
+        playerInput.CombatDirection.OnValueChanged.RemoveListener(CombatDirectionChanged);
     }
 
     private void CombatDirectionChanged(Vector2 direction)

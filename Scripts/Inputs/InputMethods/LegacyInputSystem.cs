@@ -8,23 +8,12 @@ namespace DoubTech.TPSCharacterController.Inputs.InputMethods
         [SerializeField]
         private LegacyInputConfiguration config = null;
 
-        private float horizontal;
-        private float vertical;
-        private float turn;
-        private float look;
-        
-        public override float Horizontal => horizontal;
-        public override float Vertical => vertical;
-        public override float Turn => turn;
-        public override float Look => look;
-        public override Vector2 CombatDirection => Vector2.zero;
-
         private void Update()
         {
-            horizontal = Input.GetAxis("Horizontal");
-            vertical = Input.GetAxis("Vertical");
-            turn = Input.GetAxis("Mouse X");
-            look = Input.GetAxis("Mouse Y");
+            Horizontal.Value = Input.GetAxis("Horizontal");
+            Vertical.Value = Input.GetAxis("Vertical");
+            Turn.Value = Input.GetAxis("Mouse X");
+            Look.Value = Input.GetAxis("Mouse Y");
 
             SendEvent(Jump, config.jump);
             SendEvent(Crouch, config.crouch);

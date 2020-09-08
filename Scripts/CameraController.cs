@@ -49,7 +49,7 @@ namespace DoubTech.TPSCharacterController
 
         public void LateUpdate()
         {
-            rotation.x += playerInput.Look * rotationSpeed * (invertMouse ? 1 : -1);
+            rotation.x += playerInput.Look.Value * rotationSpeed * (invertMouse ? 1 : -1);
             rotation.x = Mathf.Clamp(rotation.x, -30, 70);
             cameraPivot.localEulerAngles = rotation;
             if (lookTarget)

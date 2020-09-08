@@ -10,6 +10,9 @@ namespace DoubTech.TPSCharacterController
     [RequireComponent(typeof(CharacterController))]
     public class CharacterMovement : MonoBehaviour
     {
+        [Header("Input")]
+        public PlayerInput playerInput;
+        
         [Header("Movement")] 
         [SerializeField]
         private bool holdToRun = true;
@@ -62,7 +65,6 @@ namespace DoubTech.TPSCharacterController
         private const int AnimLayerCombat = 1;
 
         // Child Components
-        private PlayerInput playerInput;
         private Animator animator;
         private AnimatorEventTracker animatorEventTracker;
         private CharacterController controller;
@@ -88,7 +90,7 @@ namespace DoubTech.TPSCharacterController
 
         private void Awake()
         {
-            playerInput = GetComponent<PlayerInput>();
+            if(!playerInput) playerInput = GetComponent<PlayerInput>();
             controller = GetComponent<CharacterController>();
             animator = GetComponentInChildren<Animator>();
             if (!animator.TryGetComponent(out animatorEventTracker))
@@ -165,8 +167,8 @@ namespace DoubTech.TPSCharacterController
 
         private void UpdateDirection()
         {
-            var horizontal = HandleInputLerp(previousHorizontal, playerInput.Horizontal);
-            var vertical = HandleInputLerp(previousVertical, playerInput.Vertical);
+            var horizontal = HandleInputLerp(previousHorizontal, playerInput.Horizontal.Value);
+            var vertical = HandleInputLerp(previousVertical, playerInput.Vertical.Value);
 
             animator.SetFloat(AnimHorizontal, horizontal);
             animator.SetFloat(AnimVertical, vertical);
@@ -247,7 +249,7 @@ namespace DoubTech.TPSCharacterController
 
         private void LateUpdate()
         {
-            var turnDelta = playerInput.Turn * rotationSpeed;
+            var turnDelta = playerInput.Turn.Value * rotationSpeed;
             rotationY = transform.eulerAngles.y + turnDelta;
             if (turnDelta > 0) turnValue = Mathf.Lerp(turnValue, 1.0f, Time.deltaTime);
             else if (turnDelta < 0) turnValue = Mathf.Lerp(turnValue, -1.0f, Time.deltaTime);
@@ -285,7 +287,7 @@ namespace DoubTech.TPSCharacterController
         }
 
         private Vector3 CalculateAirControl() {
-            return (transform.forward * playerInput.Vertical + transform.right * playerInput.Horizontal) * airControl / 100;
+            return (transform.forward * playerInput.Vertical.Value + transform.right * playerInput.Horizontal.Value) * airControl / 100;
         }
     }
 }
