@@ -61,9 +61,33 @@ namespace DoubTech.TPSCharacterController.Inputs
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""Attack"",
+                    ""name"": ""Combat Direction"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""6e37309a-ee8b-42cb-a42d-b7cea6709d4d"",
+                    ""expectedControlType"": ""Dpad"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Axis Combat Direction"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""431805bc-8b89-4c21-8b11-9756cee92cd8"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""AttackStrong"",
                     ""type"": ""Button"",
                     ""id"": ""3d02750e-bac0-4607-9b99-dfb902fcc6e5"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""AttackWeak"",
+                    ""type"": ""Button"",
+                    ""id"": ""1f827265-4aed-4178-a4d6-55ffc9fa174a"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
@@ -80,6 +104,14 @@ namespace DoubTech.TPSCharacterController.Inputs
                     ""name"": ""Equip"",
                     ""type"": ""Button"",
                     ""id"": ""42a6a14a-4128-4491-a29f-e37e6f18f66b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Use"",
+                    ""type"": ""Button"",
+                    ""id"": ""0dcb3da0-8bb9-4e20-985c-2b8787439683"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
@@ -287,11 +319,11 @@ namespace DoubTech.TPSCharacterController.Inputs
                 {
                     ""name"": """",
                     ""id"": ""8b53fef5-0ce8-4c12-bc34-d1af4e9580c7"",
-                    ""path"": ""<Mouse>/leftButton"",
+                    ""path"": ""<Mouse>/rightButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Attack"",
+                    ""action"": ""AttackStrong"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -302,14 +334,14 @@ namespace DoubTech.TPSCharacterController.Inputs
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Attack"",
+                    ""action"": ""AttackStrong"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""4d70b3fe-c341-4c58-8506-53b317020727"",
-                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""id"": ""ee02a9c7-adc8-4f23-9491-81f393125b99"",
+                    ""path"": ""<Mouse>/middleButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -319,8 +351,8 @@ namespace DoubTech.TPSCharacterController.Inputs
                 },
                 {
                     ""name"": """",
-                    ""id"": ""ee02a9c7-adc8-4f23-9491-81f393125b99"",
-                    ""path"": ""<Mouse>/rightButton"",
+                    ""id"": ""4d70b3fe-c341-4c58-8506-53b317020727"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -349,6 +381,171 @@ namespace DoubTech.TPSCharacterController.Inputs
                     ""action"": ""Equip"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f99fff04-df32-41ca-b288-be867f949dc0"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""AttackWeak"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fa1304e6-ee6e-48be-9df2-c34f5251e088"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""AttackWeak"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c91b0f5f-6141-4957-977e-0a47a09042c5"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Use"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b0c01a31-1a26-415e-8fc2-5d00213f50f4"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Use"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""WASD"",
+                    ""id"": ""ad8d7ce6-7b25-47bd-9dc6-54b205130346"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Combat Direction"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""3f17e802-e60e-4e48-97f0-3267777dc9e5"",
+                    ""path"": ""<Keyboard>/z"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Combat Direction"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""c038c568-9881-4858-92ae-07a865ee0128"",
+                    ""path"": ""<Keyboard>/x"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Combat Direction"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""3ba76d4e-8258-4eed-b37d-9860f31862d7"",
+                    ""path"": ""<Keyboard>/c"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Combat Direction"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""8de1afed-75fe-4af1-87f1-1d8791b33358"",
+                    ""path"": ""<Keyboard>/v"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Combat Direction"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""DPAD"",
+                    ""id"": ""bd878b86-a554-49fc-ade0-d741ed600eed"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Combat Direction"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""df61353b-cf55-48be-b62d-4a5f4afac135"",
+                    ""path"": ""<Gamepad>/dpad/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Combat Direction"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""cee1f894-91fb-4ede-8173-aa7934fdaac7"",
+                    ""path"": ""<Gamepad>/dpad/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Combat Direction"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""4d12f1c0-4684-4d21-b8b4-a9a1cab86287"",
+                    ""path"": ""<Gamepad>/dpad/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Combat Direction"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""dbae2dbd-6962-4454-96af-65e4d4f54d46"",
+                    ""path"": ""<Gamepad>/dpad/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Combat Direction"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c972fd6a-e86d-480f-acfd-0fba87ba34fc"",
+                    ""path"": ""<Mouse>/delta"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Axis Combat Direction"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -362,9 +559,13 @@ namespace DoubTech.TPSCharacterController.Inputs
             m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
             m_Player_Run = m_Player.FindAction("Run", throwIfNotFound: true);
             m_Player_Crouch = m_Player.FindAction("Crouch", throwIfNotFound: true);
-            m_Player_Attack = m_Player.FindAction("Attack", throwIfNotFound: true);
+            m_Player_CombatDirection = m_Player.FindAction("Combat Direction", throwIfNotFound: true);
+            m_Player_AxisCombatDirection = m_Player.FindAction("Axis Combat Direction", throwIfNotFound: true);
+            m_Player_AttackStrong = m_Player.FindAction("AttackStrong", throwIfNotFound: true);
+            m_Player_AttackWeak = m_Player.FindAction("AttackWeak", throwIfNotFound: true);
             m_Player_Block = m_Player.FindAction("Block", throwIfNotFound: true);
             m_Player_Equip = m_Player.FindAction("Equip", throwIfNotFound: true);
+            m_Player_Use = m_Player.FindAction("Use", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -419,9 +620,13 @@ namespace DoubTech.TPSCharacterController.Inputs
         private readonly InputAction m_Player_Jump;
         private readonly InputAction m_Player_Run;
         private readonly InputAction m_Player_Crouch;
-        private readonly InputAction m_Player_Attack;
+        private readonly InputAction m_Player_CombatDirection;
+        private readonly InputAction m_Player_AxisCombatDirection;
+        private readonly InputAction m_Player_AttackStrong;
+        private readonly InputAction m_Player_AttackWeak;
         private readonly InputAction m_Player_Block;
         private readonly InputAction m_Player_Equip;
+        private readonly InputAction m_Player_Use;
         public struct PlayerActions
         {
             private @InputActions m_Wrapper;
@@ -431,9 +636,13 @@ namespace DoubTech.TPSCharacterController.Inputs
             public InputAction @Jump => m_Wrapper.m_Player_Jump;
             public InputAction @Run => m_Wrapper.m_Player_Run;
             public InputAction @Crouch => m_Wrapper.m_Player_Crouch;
-            public InputAction @Attack => m_Wrapper.m_Player_Attack;
+            public InputAction @CombatDirection => m_Wrapper.m_Player_CombatDirection;
+            public InputAction @AxisCombatDirection => m_Wrapper.m_Player_AxisCombatDirection;
+            public InputAction @AttackStrong => m_Wrapper.m_Player_AttackStrong;
+            public InputAction @AttackWeak => m_Wrapper.m_Player_AttackWeak;
             public InputAction @Block => m_Wrapper.m_Player_Block;
             public InputAction @Equip => m_Wrapper.m_Player_Equip;
+            public InputAction @Use => m_Wrapper.m_Player_Use;
             public InputActionMap Get() { return m_Wrapper.m_Player; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -458,15 +667,27 @@ namespace DoubTech.TPSCharacterController.Inputs
                     @Crouch.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCrouch;
                     @Crouch.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCrouch;
                     @Crouch.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCrouch;
-                    @Attack.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack;
-                    @Attack.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack;
-                    @Attack.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack;
+                    @CombatDirection.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCombatDirection;
+                    @CombatDirection.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCombatDirection;
+                    @CombatDirection.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCombatDirection;
+                    @AxisCombatDirection.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAxisCombatDirection;
+                    @AxisCombatDirection.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAxisCombatDirection;
+                    @AxisCombatDirection.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAxisCombatDirection;
+                    @AttackStrong.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttackStrong;
+                    @AttackStrong.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttackStrong;
+                    @AttackStrong.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttackStrong;
+                    @AttackWeak.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttackWeak;
+                    @AttackWeak.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttackWeak;
+                    @AttackWeak.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttackWeak;
                     @Block.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnBlock;
                     @Block.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnBlock;
                     @Block.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnBlock;
                     @Equip.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnEquip;
                     @Equip.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnEquip;
                     @Equip.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnEquip;
+                    @Use.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUse;
+                    @Use.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUse;
+                    @Use.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUse;
                 }
                 m_Wrapper.m_PlayerActionsCallbackInterface = instance;
                 if (instance != null)
@@ -486,15 +707,27 @@ namespace DoubTech.TPSCharacterController.Inputs
                     @Crouch.started += instance.OnCrouch;
                     @Crouch.performed += instance.OnCrouch;
                     @Crouch.canceled += instance.OnCrouch;
-                    @Attack.started += instance.OnAttack;
-                    @Attack.performed += instance.OnAttack;
-                    @Attack.canceled += instance.OnAttack;
+                    @CombatDirection.started += instance.OnCombatDirection;
+                    @CombatDirection.performed += instance.OnCombatDirection;
+                    @CombatDirection.canceled += instance.OnCombatDirection;
+                    @AxisCombatDirection.started += instance.OnAxisCombatDirection;
+                    @AxisCombatDirection.performed += instance.OnAxisCombatDirection;
+                    @AxisCombatDirection.canceled += instance.OnAxisCombatDirection;
+                    @AttackStrong.started += instance.OnAttackStrong;
+                    @AttackStrong.performed += instance.OnAttackStrong;
+                    @AttackStrong.canceled += instance.OnAttackStrong;
+                    @AttackWeak.started += instance.OnAttackWeak;
+                    @AttackWeak.performed += instance.OnAttackWeak;
+                    @AttackWeak.canceled += instance.OnAttackWeak;
                     @Block.started += instance.OnBlock;
                     @Block.performed += instance.OnBlock;
                     @Block.canceled += instance.OnBlock;
                     @Equip.started += instance.OnEquip;
                     @Equip.performed += instance.OnEquip;
                     @Equip.canceled += instance.OnEquip;
+                    @Use.started += instance.OnUse;
+                    @Use.performed += instance.OnUse;
+                    @Use.canceled += instance.OnUse;
                 }
             }
         }
@@ -506,9 +739,13 @@ namespace DoubTech.TPSCharacterController.Inputs
             void OnJump(InputAction.CallbackContext context);
             void OnRun(InputAction.CallbackContext context);
             void OnCrouch(InputAction.CallbackContext context);
-            void OnAttack(InputAction.CallbackContext context);
+            void OnCombatDirection(InputAction.CallbackContext context);
+            void OnAxisCombatDirection(InputAction.CallbackContext context);
+            void OnAttackStrong(InputAction.CallbackContext context);
+            void OnAttackWeak(InputAction.CallbackContext context);
             void OnBlock(InputAction.CallbackContext context);
             void OnEquip(InputAction.CallbackContext context);
+            void OnUse(InputAction.CallbackContext context);
         }
     }
 }

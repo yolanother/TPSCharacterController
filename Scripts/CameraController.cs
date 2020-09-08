@@ -9,12 +9,12 @@ namespace DoubTech.TPSCharacterController
     public class CameraController : MonoBehaviour
     {
         [SerializeField]
-        private bool invertMouse;
+        private bool invertMouse = false;
         [SerializeField]
         private float rotationSpeed = 2;
 
         [SerializeField]
-        private Transform cameraPivot;
+        private Transform cameraPivot = null;
 
         [SerializeField]
         private bool targetHead = true;

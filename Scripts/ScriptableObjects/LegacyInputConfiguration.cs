@@ -8,12 +8,14 @@ namespace DoubTech.TPSCharacterController.Configuration
     public class LegacyInputConfiguration : ScriptableObject
     {
         [SerializeField]
-        public KeyCode jump;
+        public KeyCode jump = KeyCode.Space;
         [SerializeField]
-        public KeyCode run;
+        public KeyCode run = KeyCode.LeftShift;
         [SerializeField]
-        public KeyCode crouch;
+        public KeyCode crouch = KeyCode.LeftControl;
         [SerializeField]
-        public KeyCode equip;
+        public KeyCode equip = KeyCode.Q;
+        [SerializeField]
+        public KeyCode use = KeyCode.E;
     }
 }

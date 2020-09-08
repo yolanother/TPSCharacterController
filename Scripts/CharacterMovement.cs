@@ -10,13 +10,11 @@ namespace DoubTech.TPSCharacterController
     [RequireComponent(typeof(CharacterController))]
     public class CharacterMovement : MonoBehaviour
     {
-        private PlayerInput playerInput;
-
         [Header("Movement")] 
         [SerializeField]
-        private bool holdToRun;
+        private bool holdToRun = true;
         [SerializeField] 
-        private bool holdToCrouch;
+        private bool holdToCrouch = false;
         [SerializeField]
         private float characterSpeed = 1.8f;
         [SerializeField] 
@@ -45,11 +43,9 @@ namespace DoubTech.TPSCharacterController
         private float unequipTransition = .1f;
         [SerializeField] 
         private float combatLayerTransitionSpeed = 10;
-
-
+        
         private readonly int AnimRun = Animator.StringToHash("Run");
         private readonly int AnimCrouch = Animator.StringToHash("Crouch");
-        private readonly int AnimJump = Animator.StringToHash("Jump");
         private readonly int AnimJumpSpeed = Animator.StringToHash("JumpSpeed");
         private readonly int AnimIsJumping = Animator.StringToHash("IsJumping");
         private readonly int AnimHorizontal = Animator.StringToHash("Horizontal");
@@ -65,6 +61,8 @@ namespace DoubTech.TPSCharacterController
         private const int AnimLayerDefault = 0;
         private const int AnimLayerCombat = 1;
 
+        // Child Components
+        private PlayerInput playerInput;
         private Animator animator;
         private AnimatorEventTracker animatorEventTracker;
         private CharacterController controller;
@@ -88,28 +86,34 @@ namespace DoubTech.TPSCharacterController
         private int activeLayer = 0;
         private float activeLayerWeight;
 
-        private void Start()
+        private void Awake()
         {
             playerInput = GetComponent<PlayerInput>();
             controller = GetComponent<CharacterController>();
             animator = GetComponentInChildren<Animator>();
-            if (!animator.TryGetComponent(out animatorEventTracker)) {
+            if (!animator.TryGetComponent(out animatorEventTracker))
+            {
                 animatorEventTracker = animator.gameObject.AddComponent<AnimatorEventTracker>();
             }
-            animatorEventTracker.OnAnimatorMoveEvent += () => OnAnimatorMove();
             
-            playerInput.OnJump.AddListener(evt =>
-            {
-                if(evt == ButtonEventTypes.Down) Jump();
-            });
-            
-            playerInput.OnCrouch.AddListener(evt => HandleStateChange(evt, !holdToCrouch, ref isCrouching, AnimCrouch));
-            playerInput.OnRun.AddListener(evt => HandleStateChange(evt, !holdToRun, ref isRunning, AnimRun));
-            
-            playerInput.OnEquip.AddListener(evt =>
-            {
-                if (evt == ButtonEventTypes.Down) OnEquip();
-            });
+            playerInput.Crouch.OnButtonEvent.AddListener(evt => HandleStateChange(evt, !holdToCrouch, ref isCrouching, AnimCrouch));
+            playerInput.Run.OnButtonEvent.AddListener(evt => HandleStateChange(evt, !holdToRun, ref isRunning, AnimRun));
+        }
+
+        private void OnEnable()
+        {
+            animatorEventTracker.OnAnimatorMoveEvent += OnAnimatorMove;
+
+            playerInput.Jump.OnPressed.AddListener(Jump);
+            playerInput.Equip.OnPressed.AddListener(OnEquip);
+        }
+
+        private void OnDisable()
+        {
+            animatorEventTracker.OnAnimatorMoveEvent -= OnAnimatorMove;
+
+            playerInput.Jump.OnPressed.RemoveListener(Jump);
+            playerInput.Equip.OnPressed.RemoveListener(OnEquip);
         }
 
         private void OnDrawGizmosSelected() {

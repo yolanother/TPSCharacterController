@@ -1,17 +1,12 @@
-using System;
 using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
-using DoubTech.TPSCharacterController;
 using DoubTech.TPSCharacterController.Configuration;
-using UnityEngine.Events;
 
 namespace DoubTech.TPSCharacterController.Inputs.InputMethods
 {
     public class LegacyInputSystem : PlayerInput
     {
         [SerializeField]
-        private LegacyInputConfiguration config;
+        private LegacyInputConfiguration config = null;
 
         private float horizontal;
         private float vertical;
@@ -22,6 +17,7 @@ namespace DoubTech.TPSCharacterController.Inputs.InputMethods
         public override float Vertical => vertical;
         public override float Turn => turn;
         public override float Look => look;
+        public override Vector2 CombatDirection => Vector2.zero;
 
         private void Update()
         {
@@ -30,16 +26,17 @@ namespace DoubTech.TPSCharacterController.Inputs.InputMethods
             turn = Input.GetAxis("Mouse X");
             look = Input.GetAxis("Mouse Y");
 
-            SendEvent(OnJump, config.jump);
-            SendEvent(OnCrouch, config.crouch);
-            SendEvent(OnRun, config.run);
-            SendEvent(OnEquip, config.equip);
+            SendEvent(Jump, config.jump);
+            SendEvent(Crouch, config.crouch);
+            SendEvent(Run, config.run);
+            SendEvent(Equip, config.equip);
 
-            SendMouseEvent(OnAttack, 0);
-            SendMouseEvent(OnBlock, 1);
+            SendMouseEvent(AttackWeak, 0);
+            SendMouseEvent(AttackStrong, 1);
+            SendMouseEvent(Block, 2);
         }
 
-        private void SendMouseEvent(ButtonEvent buttonEvent, int button)
+        private void SendMouseEvent(ButtonHandler buttonEvent, int button)
         {
             if (Input.GetMouseButtonDown(button))
             {
@@ -55,7 +52,7 @@ namespace DoubTech.TPSCharacterController.Inputs.InputMethods
             }
         }
 
-        private void SendEvent(ButtonEvent buttonEvent, KeyCode key)
+        private void SendEvent(ButtonHandler buttonEvent, KeyCode key)
         {
             if (Input.GetKeyDown(key))
             {

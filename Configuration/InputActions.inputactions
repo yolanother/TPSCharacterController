@@ -46,9 +46,33 @@
                     "interactions": ""
                 },
                 {
-                    "name": "Attack",
+                    "name": "Combat Direction",
+                    "type": "PassThrough",
+                    "id": "6e37309a-ee8b-42cb-a42d-b7cea6709d4d",
+                    "expectedControlType": "Dpad",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Axis Combat Direction",
+                    "type": "PassThrough",
+                    "id": "431805bc-8b89-4c21-8b11-9756cee92cd8",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "AttackStrong",
                     "type": "Button",
                     "id": "3d02750e-bac0-4607-9b99-dfb902fcc6e5",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "AttackWeak",
+                    "type": "Button",
+                    "id": "1f827265-4aed-4178-a4d6-55ffc9fa174a",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
@@ -65,6 +89,14 @@
                     "name": "Equip",
                     "type": "Button",
                     "id": "42a6a14a-4128-4491-a29f-e37e6f18f66b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Use",
+                    "type": "Button",
+                    "id": "0dcb3da0-8bb9-4e20-985c-2b8787439683",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
@@ -272,11 +304,11 @@
                 {
                     "name": "",
                     "id": "8b53fef5-0ce8-4c12-bc34-d1af4e9580c7",
-                    "path": "<Mouse>/leftButton",
+                    "path": "<Mouse>/rightButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Attack",
+                    "action": "AttackStrong",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -287,14 +319,14 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Attack",
+                    "action": "AttackStrong",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
-                    "id": "4d70b3fe-c341-4c58-8506-53b317020727",
-                    "path": "<Gamepad>/rightShoulder",
+                    "id": "ee02a9c7-adc8-4f23-9491-81f393125b99",
+                    "path": "<Mouse>/middleButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -304,8 +336,8 @@
                 },
                 {
                     "name": "",
-                    "id": "ee02a9c7-adc8-4f23-9491-81f393125b99",
-                    "path": "<Mouse>/rightButton",
+                    "id": "4d70b3fe-c341-4c58-8506-53b317020727",
+                    "path": "<Gamepad>/rightShoulder",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -332,6 +364,171 @@
                     "processors": "",
                     "groups": "",
                     "action": "Equip",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f99fff04-df32-41ca-b288-be867f949dc0",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "AttackWeak",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "fa1304e6-ee6e-48be-9df2-c34f5251e088",
+                    "path": "<Gamepad>/rightTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "AttackWeak",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c91b0f5f-6141-4957-977e-0a47a09042c5",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Use",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b0c01a31-1a26-415e-8fc2-5d00213f50f4",
+                    "path": "<Gamepad>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Use",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "WASD",
+                    "id": "ad8d7ce6-7b25-47bd-9dc6-54b205130346",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Combat Direction",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "up",
+                    "id": "3f17e802-e60e-4e48-97f0-3267777dc9e5",
+                    "path": "<Keyboard>/z",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Combat Direction",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "c038c568-9881-4858-92ae-07a865ee0128",
+                    "path": "<Keyboard>/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Combat Direction",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "left",
+                    "id": "3ba76d4e-8258-4eed-b37d-9860f31862d7",
+                    "path": "<Keyboard>/c",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Combat Direction",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "8de1afed-75fe-4af1-87f1-1d8791b33358",
+                    "path": "<Keyboard>/v",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Combat Direction",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "DPAD",
+                    "id": "bd878b86-a554-49fc-ade0-d741ed600eed",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Combat Direction",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "up",
+                    "id": "df61353b-cf55-48be-b62d-4a5f4afac135",
+                    "path": "<Gamepad>/dpad/up",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Combat Direction",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "cee1f894-91fb-4ede-8173-aa7934fdaac7",
+                    "path": "<Gamepad>/dpad/down",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Combat Direction",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "left",
+                    "id": "4d12f1c0-4684-4d21-b8b4-a9a1cab86287",
+                    "path": "<Gamepad>/dpad/left",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Combat Direction",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "dbae2dbd-6962-4454-96af-65e4d4f54d46",
+                    "path": "<Gamepad>/dpad/right",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Combat Direction",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "c972fd6a-e86d-480f-acfd-0fba87ba34fc",
+                    "path": "<Mouse>/delta",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Axis Combat Direction",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
