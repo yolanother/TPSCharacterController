@@ -49,8 +49,8 @@ public class AttackProcessor : MonoBehaviour
 
     private void CombatDirectionChanged(Vector2 direction)
     {
-        animator.SetFloat(AnimCombatDirectionHorizontal, direction.x);
-        animator.SetFloat(AnimCombatDirectionVertical, direction.y);
+        animator.SetInteger(AnimCombatDirectionHorizontal, (int) direction.y);
+        animator.SetInteger(AnimCombatDirectionVertical, (int) direction.x);
 
         if (direction.magnitude < .001f)
         {
