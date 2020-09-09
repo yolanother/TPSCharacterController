@@ -11,6 +11,7 @@ public class AttackProcessor : MonoBehaviour
     [SerializeField] private Texture2D directionReticle;
     [SerializeField] private Texture2D centerReticle;
     
+    [SerializeField]
     private PlayerInput playerInput;
     private Animator animator;
     private CharacterController controller;
@@ -23,7 +24,7 @@ public class AttackProcessor : MonoBehaviour
     
     private void Awake()
     {
-        playerInput = GetComponent<PlayerInput>();
+        if(!playerInput) playerInput = GetComponent<PlayerInput>();
         controller = GetComponent<CharacterController>();
         animator = GetComponentInChildren<Animator>();
     }
@@ -60,7 +61,6 @@ public class AttackProcessor : MonoBehaviour
         {
             reticle.texture = directionReticle;
             float angle = Mathf.Atan2(direction.y, direction.x) * 180 / Mathf.PI - 90;
-            Debug.Log("Angle: " + angle + ", " + direction);
             reticle.rectTransform.localEulerAngles = Vector3.forward * angle;
         }
     }

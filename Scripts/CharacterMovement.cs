@@ -11,7 +11,8 @@ namespace DoubTech.TPSCharacterController
     public class CharacterMovement : MonoBehaviour
     {
         [Header("Input")]
-        public PlayerInput playerInput;
+        [SerializeField]
+        private PlayerInput playerInput;
         
         [Header("Movement")] 
         [SerializeField]
@@ -97,17 +98,15 @@ namespace DoubTech.TPSCharacterController
             {
                 animatorEventTracker = animator.gameObject.AddComponent<AnimatorEventTracker>();
             }
-            
-            playerInput.Crouch.OnButtonEvent.AddListener(evt => HandleStateChange(evt, !holdToCrouch, ref isCrouching, AnimCrouch));
-            playerInput.Run.OnButtonEvent.AddListener(evt => HandleStateChange(evt, !holdToRun, ref isRunning, AnimRun));
         }
 
         private void OnEnable()
         {
-            animatorEventTracker.OnAnimatorMoveEvent += OnAnimatorMove;
-
+            playerInput.Crouch.OnButtonEvent.AddListener(evt => HandleStateChange(evt, !holdToCrouch, ref isCrouching, AnimCrouch));
+            playerInput.Run.OnButtonEvent.AddListener(evt => HandleStateChange(evt, !holdToRun, ref isRunning, AnimRun));
             playerInput.Jump.OnPressed.AddListener(Jump);
             playerInput.Equip.OnPressed.AddListener(OnEquip);
+            animatorEventTracker.OnAnimatorMoveEvent += OnAnimatorMove;
         }
 
         private void OnDisable()
@@ -185,6 +184,7 @@ namespace DoubTech.TPSCharacterController
         }
 
         private void Jump() {
+            Debug.Log("Jump!");
             if(!isJumping && !isCrouching) {
                 isJumping = true;
                 velocity = animator.velocity * jumpDampTime * characterSpeed;
@@ -272,8 +272,6 @@ namespace DoubTech.TPSCharacterController
 
             Vector3 displacement = velocity * Time.fixedDeltaTime;
             displacement += CalculateAirControl();
-
-            Debug.Log("Update in air: " + velocity + ", displacement=" + displacement);
 
             controller.Move(displacement);
             isJumping = !controller.isGrounded;

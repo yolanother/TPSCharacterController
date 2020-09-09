@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using DoubTech.TPSCharacterController.Inputs;
 using Mirror;
+using UnityEngine.Serialization;
 
 namespace DoubTech.TPSCharacterController.Inputs.InputMethods.Mirror
 {
@@ -12,50 +13,75 @@ namespace DoubTech.TPSCharacterController.Inputs.InputMethods.Mirror
     public class MirrorTPSController : NetworkBehaviour
     {
         [SerializeField] private Behaviour[] serverOnlyBehaviors = new Behaviour[0];
-        [SerializeField] private Behaviour[] clientOnlyBehaviors = new Behaviour[0];
+        [Tooltip("Behaviours that should only be enabled for local players (like camera controllers)")]
+        [FormerlySerializedAs("clientOnlyBehaviors")]
+        [SerializeField]
+        private Behaviour[] localPlayerBehaviours = new Behaviour[0];
+        [Tooltip("Game objects that should only be enabled for local players (like camera gameobjects)")]
+        [SerializeField]
+        private GameObject[] localPlayerGameObjects = new GameObject[0];
 
         private NetworkIdentity identity;
         private AuthoritativeInput authoritativeInput;
         private NetworkAnimator networkAnimator;
+        private CharacterMovement characterMovement;
 
         private void Awake()
         {
             authoritativeInput = GetComponent<AuthoritativeInput>();
             identity = GetComponent<NetworkIdentity>();
             networkAnimator = GetComponentInChildren<NetworkAnimator>(true);
-            networkAnimator.animator = GetComponentInChildren<Animator>();
+            characterMovement = GetComponent<CharacterMovement>();
         }
 
-        public override void OnStartServer()
+        private void OnValidate()
         {
-            base.OnStartServer();
-            if (!isLocalPlayer)
+            // This allows us to drop any model in to the model component and still be
+            // fully wired for animation controls. If we set animator after playing
+            // networkAnimator throws an error and anims are not synced.
+            networkAnimator = GetComponent<NetworkAnimator>();
+            if (!networkAnimator.animator)
             {
-                authoritativeInput.LocalInput.enabled = false;
-                var characterMovement = GetComponent<CharacterMovement>();
-                characterMovement.playerInput = authoritativeInput;
-                foreach (var behavior in clientOnlyBehaviors) behavior.enabled = false;
-
+                networkAnimator.animator = GetComponentInChildren<Animator>();
             }
-
-            networkAnimator.enabled = true;
         }
 
         public override void OnStartClient()
         {
             base.OnStartClient();
 
-            if (isServer) return;
+            name = "Player " + identity.netId;
+            Log("Client started"
+                       + "\n  isLocalPlayer: " + isLocalPlayer
+                       + "\n  isClient: " + isClient
+                       + "\n  isServer: " + isServer
+                       + "\n  isClientOnly: " + isClientOnly
+                       + "\n  isServerOnly: " + isServerOnly);
             
-            networkAnimator.enabled = true;
-            base.OnStartLocalPlayer();
-            var characterMovement = GetComponent<CharacterMovement>();
-            
-            // Disable components that will be controlled only on the server side.
-            characterMovement.enabled = false;
-            foreach (var collider in GetComponentsInChildren<Collider>()) collider.enabled = false;
-            foreach (var behavior in serverOnlyBehaviors) behavior.enabled = false;
+            DisableNonAuthoritativeComponents();
+            ConfigureInputPassthrough();
+        }
 
+        private void DisableNonAuthoritativeComponents()
+        {
+            authoritativeInput.LocalInput.enabled = isLocalPlayer;
+            
+            if (!isServer)
+            {
+                characterMovement.enabled = false;
+                foreach (var collider in GetComponentsInChildren<Collider>()) collider.enabled = false;
+                foreach (var behavior in serverOnlyBehaviors) behavior.enabled = false;
+            }
+
+            if (!isLocalPlayer)
+            {
+                foreach (var behavior in localPlayerBehaviours) behavior.enabled = false;
+                foreach (var go in localPlayerGameObjects) go.SetActive(false);
+            }
+        }
+
+        private void ConfigureInputPassthrough()
+        {
             // Movement
             authoritativeInput.LocalInput.Horizontal.OnValueChanged.AddListener(UpdateHorizontal);
             authoritativeInput.LocalInput.Vertical.OnValueChanged.AddListener(UpdateVertical);
@@ -74,8 +100,18 @@ namespace DoubTech.TPSCharacterController.Inputs.InputMethods.Mirror
             // Interaction
             authoritativeInput.LocalInput.Equip.OnButtonEvent.AddListener(UpdateEquip);
             authoritativeInput.LocalInput.Use.OnButtonEvent.AddListener(UpdateUse);
+            
+            // Debug...
+            authoritativeInput.LocalInput.Jump.OnButtonEvent.AddListener((e) => Debug.Log("Got Local Input Jump Event: " + e));
+            authoritativeInput.Jump.OnButtonEvent.AddListener((e) => Debug.Log("Got Relayed Jump Event: " + e));
         }
 
+        private void Log(string message)
+        {
+            Debug.Log("[" + identity.netId + "] " + message);
+        }
+
+        #region Server Commands
         [Command] private void UpdateHorizontal(float value) => authoritativeInput.Horizontal.Value = value;
         [Command] private void UpdateVertical(float value) => authoritativeInput.Vertical.Value = value;
         [Command] private void UpdateTurn(float value) => authoritativeInput.Turn.Value = value;
@@ -97,6 +133,7 @@ namespace DoubTech.TPSCharacterController.Inputs.InputMethods.Mirror
 
         [Command] private void UpdateEquip(ButtonEventTypes evt) => authoritativeInput.Equip.Invoke(evt);
 
-        [Command] private void UpdateUse(ButtonEventTypes evt) => authoritativeInput.Equip.Invoke(evt);
+        [Command] private void UpdateUse(ButtonEventTypes evt) => authoritativeInput.Use.Invoke(evt);
+        #endregion
     }
 }

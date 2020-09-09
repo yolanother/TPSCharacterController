@@ -22,13 +22,15 @@ namespace DoubTech.TPSCharacterController
         [SerializeField] 
         private Transform lookTarget;
 
+        [SerializeField]
         private PlayerInput playerInput;
+        
         private Vector3 rotation;
         private Vector3 trackedPosition;
 
         private void Awake()
         {
-            playerInput = GetComponent<PlayerInput>();
+            if(!playerInput) playerInput = GetComponent<PlayerInput>();
             if (targetHead)
             {
                 var animator = GetComponentInChildren<Animator>();
