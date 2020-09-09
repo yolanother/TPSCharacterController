@@ -7,10 +7,6 @@ using UnityEngine.UI;
 
 public class AttackProcessor : MonoBehaviour
 {
-    [SerializeField] private RawImage reticle;
-    [SerializeField] private Texture2D directionReticle;
-    [SerializeField] private Texture2D centerReticle;
-    
     [SerializeField]
     private PlayerInput playerInput;
     private Animator animator;
@@ -52,17 +48,6 @@ public class AttackProcessor : MonoBehaviour
     {
         animator.SetInteger(AnimCombatDirectionHorizontal, (int) direction.y);
         animator.SetInteger(AnimCombatDirectionVertical, (int) direction.x);
-
-        if (direction.magnitude < .001f)
-        {
-            reticle.texture = centerReticle;
-        }
-        else
-        {
-            reticle.texture = directionReticle;
-            float angle = Mathf.Atan2(direction.y, direction.x) * 180 / Mathf.PI - 90;
-            reticle.rectTransform.localEulerAngles = Vector3.forward * angle;
-        }
     }
 
     private void Block()

@@ -702,9 +702,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9f4844c3cb658145b1ea3fc4895b490, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  reticle: {fileID: 1332258519}
-  directionReticle: {fileID: 2800000, guid: 9ad351424a33d8641b829e0cc277bb83, type: 3}
-  centerReticle: {fileID: 2800000, guid: 4a14eb273370650439a05e0fe14ed3df, type: 3}
+  playerInput: {fileID: 0}
 --- !u!1 &816835735
 GameObject:
   m_ObjectHideFlags: 0
@@ -920,6 +918,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e93595903c3dfb468169d56785d55b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  startLocked: 1
 --- !u!4 &867568967
 Transform:
   m_ObjectHideFlags: 0
@@ -1577,6 +1576,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9f4844c3cb658145b1ea3fc4895b490, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerInput: {fileID: 0}
+--- !u!114 &172100263385657052
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 172100263385657050}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b562f158708fdc448a6c3b766dcd3d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerInput: {fileID: 0}
   reticle: {fileID: 1332258519}
   directionReticle: {fileID: 2800000, guid: 9ad351424a33d8641b829e0cc277bb83, type: 3}
   centerReticle: {fileID: 2800000, guid: 4a14eb273370650439a05e0fe14ed3df, type: 3}

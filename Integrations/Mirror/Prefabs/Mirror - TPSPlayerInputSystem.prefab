@@ -263,6 +263,7 @@ GameObject:
   - component: {fileID: 2399207783133807442}
   - component: {fileID: 2667579544479158266}
   - component: {fileID: -7788127817294149170}
+  - component: {fileID: 6902832650424228546}
   m_Layer: 0
   m_Name: Mirror - TPSPlayerInputSystem
   m_TagString: Untagged
@@ -363,9 +364,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9f4844c3cb658145b1ea3fc4895b490, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  reticle: {fileID: 4049278802643280554}
-  directionReticle: {fileID: 2800000, guid: 9ad351424a33d8641b829e0cc277bb83, type: 3}
-  centerReticle: {fileID: 2800000, guid: 4a14eb273370650439a05e0fe14ed3df, type: 3}
   playerInput: {fileID: -7788127817294149170}
 --- !u!114 &6489405226740923902
 MonoBehaviour:
@@ -451,6 +449,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   localInput: {fileID: 195251188821962189}
+--- !u!114 &6902832650424228546
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9034045493749133288}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b562f158708fdc448a6c3b766dcd3d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerInput: {fileID: 195251188821962189}
+  reticle: {fileID: 4049278802643280554}
+  directionReticle: {fileID: 2800000, guid: 9ad351424a33d8641b829e0cc277bb83, type: 3}
+  centerReticle: {fileID: 2800000, guid: 4a14eb273370650439a05e0fe14ed3df, type: 3}
 --- !u!1 &9034045494369379390
 GameObject:
   m_ObjectHideFlags: 0
