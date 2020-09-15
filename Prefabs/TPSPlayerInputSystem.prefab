@@ -271,7 +271,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerInput: {fileID: 0}
-  holdToRun: 0
+  holdToRun: 1
   holdToCrouch: 0
   characterSpeed: 3
   rotationSpeed: 60
@@ -328,7 +328,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9f4844c3cb658145b1ea3fc4895b490, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerInput: {fileID: 0}
+  playerInput: {fileID: 9193913992919517173}
 --- !u!114 &172100263385657052
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -518,7 +518,8 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: 24d242f4d99c37f4090caf9f6310b11f, type: 2}
+      objectReference: {fileID: 22100000, guid: 3e900af4c69988347ae9534f858411d6,
+        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 68813e3f18422044094750f43ff6381b, type: 3}
 --- !u!4 &9189264805701202931 stripped
