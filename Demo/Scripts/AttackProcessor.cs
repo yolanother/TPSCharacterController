@@ -44,10 +44,20 @@ public class AttackProcessor : MonoBehaviour
         playerInput.CombatDirection.OnValueChanged.RemoveListener(CombatDirectionChanged);
     }
 
+    private int Nearest(float value)
+    {
+        return (int) (Mathf.Sign(value) * Mathf.Ceil(Mathf.Abs(value)));
+    }
+
     private void CombatDirectionChanged(Vector2 direction)
     {
-        animator.SetInteger(AnimCombatDirectionHorizontal, (int) direction.y);
-        animator.SetInteger(AnimCombatDirectionVertical, (int) direction.x);
+        var normalized = direction.normalized;
+        if (direction.magnitude > .25f)
+        {
+            Debug.Log("Normalized: " + normalized);
+            animator.SetInteger(AnimCombatDirectionHorizontal, Nearest(normalized.y));
+            animator.SetInteger(AnimCombatDirectionVertical, Nearest(normalized.x));
+        }
     }
 
     private void Block()
