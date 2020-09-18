@@ -52,6 +52,7 @@ namespace DoubTech.TPSCharacterController
         private readonly int AnimCrouch = Animator.StringToHash("Crouch");
         private readonly int AnimJumpSpeed = Animator.StringToHash("JumpSpeed");
         private readonly int AnimIsJumping = Animator.StringToHash("IsJumping");
+        private readonly int AnimIsFalling = Animator.StringToHash("IsFalling");
         private readonly int AnimHorizontal = Animator.StringToHash("Horizontal");
         private readonly int AnimVertical = Animator.StringToHash("Vertical");
         private readonly int AnimSpeed = Animator.StringToHash("Speed");
@@ -61,6 +62,9 @@ namespace DoubTech.TPSCharacterController
 
         private readonly int StateWalkngJump = Animator.StringToHash("Walking Jump Start");
         private readonly int StateRunningJump = Animator.StringToHash("Running Jump Start");
+
+        private readonly int StateWalkngFall = Animator.StringToHash("Walking Falling Loop");
+        private readonly int StateRunningFall = Animator.StringToHash("Running Falling Loop");
 
         private const int AnimLayerDefault = 0;
         private const int AnimLayerCombat = 1;
@@ -88,6 +92,7 @@ namespace DoubTech.TPSCharacterController
 
         private int activeLayer = 0;
         private float activeLayerWeight;
+        private bool isFalling;
 
         private void Awake()
         {
@@ -123,7 +128,9 @@ namespace DoubTech.TPSCharacterController
 
         private void Update()
         {
-            isNearGround = Physics.Linecast(transform.position,  -1 * groundCastDistance * transform.up);
+            RaycastHit hit;
+            isNearGround = Physics.Linecast(transform.position, -1 * groundCastDistance * transform.up, out hit) && hit.collider.gameObject != gameObject;
+            if(isNearGround) Debug.Log("Near ground? " + isNearGround + " -> " + hit.collider.name);
 
             UpdateDirection();
 
@@ -204,7 +211,7 @@ namespace DoubTech.TPSCharacterController
         }
 
         private void FixedUpdate() {
-            if(isJumping) {
+            if(isJumping || !controller.isGrounded) {
                 UpdateInAir();
             } else {
                 UpdateOnGround();
@@ -274,12 +281,24 @@ namespace DoubTech.TPSCharacterController
             displacement += CalculateAirControl();
 
             controller.Move(displacement);
+            if (!isJumping)
+            {
+                if (isRunning) {
+                    animator.CrossFade(StateRunningFall, .1f, activeLayer);
+                } else {
+                    animator.CrossFade(StateWalkngFall, .1f, activeLayer);
+                }
+                animator.SetBool(AnimIsJumping, true);
+            }
+            animator.SetBool(AnimIsFalling, isFalling);
             isJumping = !controller.isGrounded;
+
             rootMotion = Vector3.zero;
             if (isNearGround && velocity.y < 0 || !isJumping) {
                 animator.SetBool(AnimIsJumping, false);
             }
-            if(!isJumping) {
+            
+            if(!isJumping && !isFalling) {
                 Debug.Log("Speed on impact: " + velocity.y);
             }
         }
