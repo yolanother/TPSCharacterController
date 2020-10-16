@@ -26,6 +26,9 @@ namespace DoubTech.TPSCharacterController
         [SerializeField]
         private float inputLerpSpeed = 0;
 
+        [Header("Fall")]
+        [SerializeField] private float fallTransition = .1f;
+
         [Header("Jump")]
         [SerializeField]
         private float stepDown = .5f;
@@ -50,7 +53,7 @@ namespace DoubTech.TPSCharacterController
         
         private readonly int AnimRun = Animator.StringToHash("Run");
         private readonly int AnimCrouch = Animator.StringToHash("Crouch");
-        private readonly int AnimJumpSpeed = Animator.StringToHash("JumpSpeed");
+        private readonly int AnimFallDistance = Animator.StringToHash("FallDistance");
         private readonly int AnimIsJumping = Animator.StringToHash("IsJumping");
         private readonly int AnimIsFalling = Animator.StringToHash("IsFalling");
         private readonly int AnimHorizontal = Animator.StringToHash("Horizontal");
@@ -60,6 +63,7 @@ namespace DoubTech.TPSCharacterController
         private readonly int AnimEquip = Animator.StringToHash("Equip");
         private readonly int AnimUnequip = Animator.StringToHash("Unequip");
 
+        private readonly int StateIdleJump = Animator.StringToHash("Idle Jump");
         private readonly int StateWalkngJump = Animator.StringToHash("Walking Jump Start");
         private readonly int StateRunningJump = Animator.StringToHash("Running Jump Start");
 
@@ -93,6 +97,10 @@ namespace DoubTech.TPSCharacterController
         private int activeLayer = 0;
         private float activeLayerWeight;
         private bool isFalling;
+        private Vector3 fallStart;
+        private bool isIdleJump;
+        
+        private bool IsInAir => isFalling || isJumping || isIdleJump;
 
         private void Awake()
         {
@@ -129,8 +137,7 @@ namespace DoubTech.TPSCharacterController
         private void Update()
         {
             RaycastHit hit;
-            isNearGround = Physics.Linecast(transform.position, -1 * groundCastDistance * transform.up, out hit) && hit.collider.gameObject != gameObject;
-            if(isNearGround) Debug.Log("Near ground? " + isNearGround + " -> " + hit.collider.name);
+            isNearGround = controller.isGrounded || Physics.Linecast(transform.position, transform.position - groundCastDistance * transform.up, out hit) && hit.collider.gameObject != gameObject;
 
             UpdateDirection();
 
@@ -141,6 +148,34 @@ namespace DoubTech.TPSCharacterController
                 rotation.x,
                 Mathf.Lerp(rotation.y, rotationY, Time.deltaTime),
                 rotation.z);
+
+            HandleFall();
+            HandleLand();
+        }
+
+        private void HandleLand()
+        {
+            if (isNearGround && IsInAir && velocity.y < 0)
+            {
+                isFalling = false;
+                isJumping = false;
+                isIdleJump = false;
+                animator.SetBool(AnimIsJumping, false);
+                animator.SetBool(AnimIsFalling, false);
+            }
+        }
+
+        private void HandleFall()
+        {
+            if (!isNearGround && !IsInAir)
+            {
+                fallStart = transform.position;
+                Debug.Log("Falling!");
+                isFalling = true;
+                isJumping = true;
+                animator.SetBool(AnimIsJumping, true);
+                animator.CrossFade(isRunning ? StateRunningFall : StateWalkngFall, fallTransition);
+            }
         }
 
         private void OnEquip()
@@ -192,16 +227,26 @@ namespace DoubTech.TPSCharacterController
 
         private void Jump() {
             Debug.Log("Jump!");
-            if(!isJumping && !isCrouching) {
+            if(!isCrouching && !IsInAir) {
                 isJumping = true;
                 velocity = animator.velocity * jumpDampTime * characterSpeed;
                 velocity.y = Mathf.Sqrt(2 * gravity * jumpHeight);
-                animator.SetBool(AnimIsJumping, true);
-
-                if (isRunning) {
-                    animator.CrossFade(StateRunningJump, .1f, activeLayer);
-                } else {
-                    animator.CrossFade(StateWalkngJump, .1f, activeLayer);
+                if (playerInput.MovementMagnitude < 0.1f)
+                {
+                    isIdleJump = true;
+                    animator.CrossFade(StateIdleJump, .1f, activeLayer);
+                }
+                else
+                {
+                    animator.SetBool(AnimIsJumping, true);
+                    if (isRunning)
+                    {
+                        animator.CrossFade(StateRunningJump, .1f, activeLayer);
+                    }
+                    else
+                    {
+                        animator.CrossFade(StateWalkngJump, .1f, activeLayer);
+                    }
                 }
             }
         }
@@ -211,7 +256,7 @@ namespace DoubTech.TPSCharacterController
         }
 
         private void FixedUpdate() {
-            if(isJumping || !controller.isGrounded) {
+            if(IsInAir || !controller.isGrounded) {
                 UpdateInAir();
             } else {
                 UpdateOnGround();
@@ -252,9 +297,11 @@ namespace DoubTech.TPSCharacterController
 
             controller.Move(stepForwardAmount + stepDownAmount);
             rootMotion = Vector3.zero;
+
+            UpdateRotation();
         }
 
-        private void LateUpdate()
+        private void UpdateRotation()
         {
             var turnDelta = playerInput.Turn.Value * rotationSpeed;
             rotationY = transform.eulerAngles.y + turnDelta;
@@ -262,7 +309,10 @@ namespace DoubTech.TPSCharacterController
             else if (turnDelta < 0) turnValue = Mathf.Lerp(turnValue, -1.0f, Time.deltaTime);
             else turnValue = Mathf.Lerp(turnValue, 0, Time.deltaTime);
             animator.SetFloat(AnimTurn, turnValue);
+        }
 
+        private void LateUpdate()
+        {
             UpdateLayerWeight();
         }
 
@@ -273,34 +323,26 @@ namespace DoubTech.TPSCharacterController
             animator.SetLayerWeight(AnimLayerCombat, activeLayerWeight);
         }
 
-        private void UpdateInAir() {
+        private void UpdateInAir()
+        {
+            var lastY = velocity.y;
             velocity.y -= gravity * Time.fixedDeltaTime;
-            animator.SetFloat(AnimJumpSpeed, Mathf.Abs(velocity.y));
+            if (velocity.y > 0)
+            {
+                fallStart = transform.position;
+            } else if (lastY > 0 && velocity.y < 0)
+            {
+                fallStart = transform.position;
+            }
+            animator.SetFloat(AnimFallDistance, fallStart.y - transform.position.y);
 
             Vector3 displacement = velocity * Time.fixedDeltaTime;
             displacement += CalculateAirControl();
+            Debug.Log("Velocity: " + displacement);
 
             controller.Move(displacement);
-            if (!isJumping)
-            {
-                if (isRunning) {
-                    animator.CrossFade(StateRunningFall, .1f, activeLayer);
-                } else {
-                    animator.CrossFade(StateWalkngFall, .1f, activeLayer);
-                }
-                animator.SetBool(AnimIsJumping, true);
-            }
-            animator.SetBool(AnimIsFalling, isFalling);
-            isJumping = !controller.isGrounded;
 
             rootMotion = Vector3.zero;
-            if (isNearGround && velocity.y < 0 || !isJumping) {
-                animator.SetBool(AnimIsJumping, false);
-            }
-            
-            if(!isJumping && !isFalling) {
-                Debug.Log("Speed on impact: " + velocity.y);
-            }
         }
 
         private Vector3 CalculateAirControl() {
