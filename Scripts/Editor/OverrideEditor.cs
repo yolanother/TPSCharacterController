@@ -10,10 +10,19 @@ namespace DoubTech.TPSCharacterController
 {
     public class OverrideEditor : EditorWindow
     {
+        private static GUIContent iconPaste;
+        private GUIContent IconPaste {
+            get {
+                if (null == iconPaste) iconPaste = EditorGUIUtility.IconContent("Clipboard", "Fill in missing with another override controller.");
+                return iconPaste;
+            }
+        }
+
         private AnimatorOverrideController currentController;
         private FoldoutHierarchy<KeyValuePair<AnimationClip, AnimationClip>> overrides;
         private Vector2 scroll;
         private GUIStyle boxStyle;
+        private string lastPath;
 
         public AnimatorOverrideController CurrentController
         {
@@ -36,10 +45,11 @@ namespace DoubTech.TPSCharacterController
             {
                 var clip = o.Key;
                 var path = clip.name.Split(sep, StringSplitOptions.RemoveEmptyEntries);
-                var c = new FoldoutHierarchy<KeyValuePair<AnimationClip, AnimationClip>>.Item(path[path.Length - 1], o);
+                var c = new FoldoutHierarchy<KeyValuePair<AnimationClip, AnimationClip>>.Item(path[path.Length - 1].Trim(), o);
                 c.onDraw = DrawOverride;
                 overrides.Add(c, path);
             }
+            Repaint();
         }
 
         [MenuItem("Tools/TPS Controller/Override Editor")]
@@ -65,8 +75,20 @@ namespace DoubTech.TPSCharacterController
             {
                 var all = new List<KeyValuePair<AnimationClip, AnimationClip>>(); 
                 currentController.GetOverrides(all);
-                
-                EditorGUILayout.LabelField("Override: " + currentController.name, EditorStyles.boldLabel);
+
+                GUILayout.BeginHorizontal();
+                if(GUILayout.Button("Override: " + currentController.name, EditorStyles.boldLabel)) {
+                    EditorGUIUtility.PingObject(currentController);
+                }
+                GUILayout.ExpandWidth(true);
+                if(GUILayout.Button(IconPaste, GUILayout.Width(24), GUILayout.Height(24))) {
+                    var source = UIUtil.AssetFileBrowser<AnimatorOverrideController>(
+                        "Target Override Controller",
+                        new string[] { "Override Controller", "overrideController" });
+                    CopyOverrides(source);
+                    
+                }
+                GUILayout.EndHorizontal();
                 EditorGUILayout.LabelField(all.Count + " animations.");
                 scroll = EditorGUILayout.BeginScrollView(scroll);
                 if (null == overrides) CurrentController = currentController;
@@ -95,6 +117,21 @@ namespace DoubTech.TPSCharacterController
 
             if (EditorUtility.IsDirty(currentController))
             {
+                UpdateOverrides();
+            }
+        }
+
+        private void CopyOverrides(AnimatorOverrideController source) {
+            if(source && currentController) {
+                var list = new List<KeyValuePair<AnimationClip, AnimationClip>>();
+                source.GetOverrides(list);
+                foreach (var clip in list) {
+                    var current = currentController[clip.Key.name];
+                    if (current == null || current.length == 1) {
+                        currentController[clip.Key.name] = clip.Value;
+                    }
+                }
+                EditorUtility.SetDirty(currentController);
                 UpdateOverrides();
             }
         }
