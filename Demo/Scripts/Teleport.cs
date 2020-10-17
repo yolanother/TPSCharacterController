@@ -14,6 +14,7 @@ namespace DoubTech.TPSCharacterController.Demo
         private void OnTriggerEnter(Collider other)
         {
             pendingTeleport = other.transform.GetComponent<CharacterController>();
+            pendingTeleport.gameObject.SetActive(false);
         }
 
         private void LateUpdate()
@@ -23,6 +24,7 @@ namespace DoubTech.TPSCharacterController.Demo
                 Debug.Log("Teleporting " + pendingTeleport.name + " to " + targetPosition.position);
                 pendingTeleport.transform.position = targetPosition.position;
                 pendingTeleport.transform.rotation = targetPosition.rotation;
+                pendingTeleport.gameObject.SetActive(true);
                 pendingTeleport = null;
             }
         }
