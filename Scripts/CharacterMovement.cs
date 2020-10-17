@@ -122,7 +122,7 @@ namespace DoubTech.TPSCharacterController
         private bool isCrouching;
         private bool isJumping;
         private bool isGrounded;
-        private bool isNearGround;
+        private bool isNearGround = true;
         
         private float turnValue;
         private float rotationY;
@@ -190,9 +190,11 @@ namespace DoubTech.TPSCharacterController
 
         private void Update()
         {
+            if (!animator) return;
+            
             RaycastHit hit;
-            isNearGround = controller.isGrounded || Physics.Linecast(transform.position, transform.position - groundCastDistance * transform.up, out hit) && hit.collider.gameObject != gameObject;
-
+            isNearGround = Physics.Linecast(transform.position + transform.up * groundCastDistance / 2.0f, transform.position - groundCastDistance * transform.up, out hit) && hit.collider.gameObject != gameObject;
+            
             UpdateDirection();
 
             UpdateSpeed();
@@ -336,7 +338,7 @@ namespace DoubTech.TPSCharacterController
         private void FixedUpdate() {
             if (!animator) return;
 
-            if (IsInAir || !controller.isGrounded) {
+            if (IsInAir || !isNearGround) {
                 UpdateInAir();
             } else {
                 UpdateOnGround();

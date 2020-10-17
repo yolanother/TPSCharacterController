@@ -276,6 +276,11 @@ MonoBehaviour:
   characterSpeed: 1.8
   rotationSpeed: 360
   inputLerpSpeed: 0
+  fallTransition: 0.1
+  fallDistanceUncontrolled: 3
+  fallDistanceHardLanding: 3
+  fallDistanceFall: 5
+  fallDistanceDead: 20
   stepDown: 0.5
   jumpHeight: 3
   gravity: 25
@@ -285,6 +290,7 @@ MonoBehaviour:
   equipTransition: 0.1
   unequipTransition: 0.1
   combatLayerTransitionSpeed: 10
+  unarmedLocomotion: {fileID: 22100000, guid: 3e900af4c69988347ae9534f858411d6, type: 2}
 --- !u!114 &873243172
 MonoBehaviour:
   m_ObjectHideFlags: 0
