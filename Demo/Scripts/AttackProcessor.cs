@@ -23,18 +23,25 @@ namespace DoubTech.TPSCharacterController.Demo
         {
             if (!playerInput) playerInput = GetComponent<PlayerInput>();
             controller = GetComponent<CharacterController>();
-            animator = GetComponentInChildren<Animator>();
         }
 
         private void OnEnable()
         {
-            // This is more of an example implementation.
-            // These may be replaced or just become public abstractions for
-            // projects to process how they want.
-            playerInput.AttackStrong.OnPressed.AddListener(AttackStrong);
-            playerInput.AttackWeak.OnPressed.AddListener(AttackWeak);
-            playerInput.Block.OnPressed.AddListener(Block);
-            playerInput.CombatDirection.OnValueChanged.AddListener(CombatDirectionChanged);
+            CharacterReady();
+        }
+
+        public void CharacterReady() {
+            if (!animator) animator = GetComponentInChildren<Animator>();
+            
+            if (animator) {
+                // This is more of an example implementation.
+                // These may be replaced or just become public abstractions for
+                // projects to process how they want.
+                playerInput.AttackStrong.OnPressed.AddListener(AttackStrong);
+                playerInput.AttackWeak.OnPressed.AddListener(AttackWeak);
+                playerInput.Block.OnPressed.AddListener(Block);
+                playerInput.CombatDirection.OnValueChanged.AddListener(CombatDirectionChanged);
+            }
         }
 
         private void OnDisable()

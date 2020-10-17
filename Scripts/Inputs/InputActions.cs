@@ -1,5 +1,5 @@
 // GENERATED AUTOMATICALLY FROM 'Assets/DoubTech/TPSCharacterController/Configuration/InputActions.inputactions'
-#if ENABLE_INPUT_SYSTEM
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -749,4 +749,3 @@ namespace DoubTech.TPSCharacterController.Inputs
         }
     }
 }
-#endif

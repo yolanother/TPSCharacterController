@@ -58,6 +58,10 @@ namespace DoubTech.TPSCharacterController
         private float unequipTransition = .1f;
         [SerializeField] 
         private float combatLayerTransitionSpeed = 10;
+
+        [Header("Animations")]
+        [SerializeField]
+        private AnimatorOverrideController unarmedLocomotion;
         
         private readonly int AnimRun = Animator.StringToHash("Run");
         private readonly int AnimCrouch = Animator.StringToHash("Crouch");
@@ -141,24 +145,35 @@ namespace DoubTech.TPSCharacterController
             if(!playerInput) playerInput = GetComponent<PlayerInput>();
             controller = GetComponent<CharacterController>();
             animator = GetComponentInChildren<Animator>();
-            if (!animator.TryGetComponent(out animatorEventTracker))
-            {
-                animatorEventTracker = animator.gameObject.AddComponent<AnimatorEventTracker>();
+        }
+
+        public void CharacterReady() {
+            // In case this is loaded by a dynamic loader like UMA
+            if(!animator) animator = GetComponentInChildren<Animator>();
+
+            if (animator) {
+                animator.runtimeAnimatorController = unarmedLocomotion;
+                if (!animator.TryGetComponent(out animatorEventTracker)) {
+                    animatorEventTracker = animator.gameObject.AddComponent<AnimatorEventTracker>();
+                }
+                activeSet = StatesWalking;
+                playerInput.Crouch.OnButtonEvent.AddListener(evt => HandleStateChange(evt, !holdToCrouch, ref isCrouching, AnimCrouch));
+                playerInput.Run.OnButtonEvent.AddListener(evt => {
+                    HandleStateChange(evt, !holdToRun, ref isRunning, AnimRun);
+                    activeSet = isRunning ? StatesRunning : StatesWalking;
+                });
+                playerInput.Jump.OnPressed.AddListener(Jump);
+                playerInput.Equip.OnPressed.AddListener(OnEquip);
+                animatorEventTracker.OnAnimatorMoveEvent += OnAnimatorMove;
             }
         }
 
-        private void OnEnable()
-        {
-            activeSet = StatesWalking;
-            playerInput.Crouch.OnButtonEvent.AddListener(evt => HandleStateChange(evt, !holdToCrouch, ref isCrouching, AnimCrouch));
-            playerInput.Run.OnButtonEvent.AddListener(evt =>
-            {
-                HandleStateChange(evt, !holdToRun, ref isRunning, AnimRun);
-                activeSet = isRunning ? StatesRunning : StatesWalking;
-            });
-            playerInput.Jump.OnPressed.AddListener(Jump);
-            playerInput.Equip.OnPressed.AddListener(OnEquip);
-            animatorEventTracker.OnAnimatorMoveEvent += OnAnimatorMove;
+        private void OnEnable() {
+            if (animator) {
+                CharacterReady();
+            } else {
+                Debug.Log("Waiting for a viable animator...\nCall CharacterReady when the animator is prepared.");
+            }
         }
 
         private void OnDisable()
@@ -319,7 +334,9 @@ namespace DoubTech.TPSCharacterController
         }
 
         private void FixedUpdate() {
-            if(IsInAir || !controller.isGrounded) {
+            if (!animator) return;
+
+            if (IsInAir || !controller.isGrounded) {
                 UpdateInAir();
             } else {
                 UpdateOnGround();
@@ -374,8 +391,9 @@ namespace DoubTech.TPSCharacterController
             animator.SetFloat(AnimTurn, turnValue);
         }
 
-        private void LateUpdate()
-        {
+        private void LateUpdate() {
+            if (!animator) return;
+
             UpdateLayerWeight();
         }
 
