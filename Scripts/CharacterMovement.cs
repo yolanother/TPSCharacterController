@@ -190,8 +190,12 @@ namespace DoubTech.TPSCharacterController
 
         private void Update()
         {
-            if (!animator) return;
-            
+            if (!animator) {
+                animator = GetComponentInChildren<Animator>();
+                if (animator) CharacterReady();
+                return;
+            }
+
             RaycastHit hit;
             isNearGround = controller.isGrounded || Physics.Linecast(transform.position + transform.up * groundCastDistance / 2.0f, transform.position - groundCastDistance * transform.up, out hit) && hit.collider.gameObject != gameObject;
             

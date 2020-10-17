@@ -44,6 +44,14 @@ namespace DoubTech.TPSCharacterController.Demo
             }
         }
 
+        private void Update() {
+            if (!animator) {
+                animator = GetComponentInChildren<Animator>();
+                if (animator) CharacterReady();
+                return;
+            }
+        }
+
         private void OnDisable()
         {
             playerInput.AttackStrong.OnPressed.RemoveListener(AttackStrong);
