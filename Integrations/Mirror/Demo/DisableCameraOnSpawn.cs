@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+#if MIRROR
 using Mirror;
+#endif
 using UnityEngine;
 
+#if MIRROR
 public class DisableCameraOnSpawn : NetworkBehaviour
 {
     [SerializeField] private Camera camera;
@@ -44,3 +47,9 @@ public class DisableCameraOnSpawn : NetworkBehaviour
         camera.gameObject.SetActive(false);
     }
 }
+#else
+public class DisableCameraOnSpawn : MonoBehaviour
+{
+    [SerializeField] private Camera camera;
+}
+#endif

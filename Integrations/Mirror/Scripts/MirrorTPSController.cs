@@ -3,11 +3,14 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using DoubTech.TPSCharacterController.Inputs;
+#if MIRROR
 using Mirror;
+#endif
 using UnityEngine.Serialization;
 
 namespace DoubTech.TPSCharacterController.Inputs.InputMethods.Mirror
 {
+#if MIRROR
     [RequireComponent(typeof(AuthoritativeInput))]
     [RequireComponent(typeof(CharacterMovement))]
     public class MirrorTPSController : NetworkBehaviour
@@ -111,7 +114,7 @@ namespace DoubTech.TPSCharacterController.Inputs.InputMethods.Mirror
             Debug.Log("[" + identity.netId + "] " + message);
         }
 
-        #region Server Commands
+    #region Server Commands
         [Command] private void UpdateHorizontal(float value) => authoritativeInput.Horizontal.Value = value;
         [Command] private void UpdateVertical(float value) => authoritativeInput.Vertical.Value = value;
         [Command] private void UpdateTurn(float value) => authoritativeInput.Turn.Value = value;
@@ -134,6 +137,25 @@ namespace DoubTech.TPSCharacterController.Inputs.InputMethods.Mirror
         [Command] private void UpdateEquip(ButtonEventTypes evt) => authoritativeInput.Equip.Invoke(evt);
 
         [Command] private void UpdateUse(ButtonEventTypes evt) => authoritativeInput.Use.Invoke(evt);
-        #endregion
+    #endregion
     }
+#else
+    [RequireComponent(typeof(AuthoritativeInput))]
+    [RequireComponent(typeof(CharacterMovement))]
+    public class MirrorTPSController : MonoBehaviour
+    {
+        [SerializeField] private Behaviour[] serverOnlyBehaviors = new Behaviour[0];
+        [Tooltip("Behaviours that should only be enabled for local players (like camera controllers)")]
+        [FormerlySerializedAs("clientOnlyBehaviors")]
+        [SerializeField]
+        private Behaviour[] localPlayerBehaviours = new Behaviour[0];
+        [Tooltip("Game objects that should only be enabled for local players (like camera gameobjects)")]
+        [SerializeField]
+        private GameObject[] localPlayerGameObjects = new GameObject[0];
+
+        private void Awake() {
+            throw new Exception("Mirror has not been added to project. Make sure MIRROR is in your project defines.");
+        }
+    }
+#endif
 }
