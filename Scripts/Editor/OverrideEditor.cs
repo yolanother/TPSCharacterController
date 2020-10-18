@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using DoubTech.TPSCharacterController.Animation;
 using DoubTech.TPSCharacterController.Utils;
 using UnityEditor;
 
@@ -23,6 +24,7 @@ namespace DoubTech.TPSCharacterController
         private Vector2 scroll;
         private GUIStyle boxStyle;
         private string lastPath;
+        private AnimationOverrideControllerSelector overrideController;
 
         public AnimatorOverrideController CurrentController
         {
@@ -32,6 +34,7 @@ namespace DoubTech.TPSCharacterController
                 currentController = value;
                 overrides = new FoldoutHierarchy<KeyValuePair<AnimationClip, AnimationClip>>(isFoldout: false);
                 UpdateOverrides();
+                overrideController.SelectedController = value;
             }
         }
 
@@ -49,6 +52,7 @@ namespace DoubTech.TPSCharacterController
                 c.onDraw = DrawOverride;
                 overrides.Add(c, path);
             }
+            overrideController.Refresh();
             Repaint();
         }
 
@@ -60,7 +64,12 @@ namespace DoubTech.TPSCharacterController
             window.titleContent = new GUIContent("Override Editor");
             window.Show();
         }
-        
+
+        private void OnEnable()
+        {
+            overrideController = new AnimationOverrideControllerSelector();
+        }
+
         private void OnSelectionChange()
         {
             if (Selection.activeObject is AnimatorOverrideController)
@@ -71,6 +80,9 @@ namespace DoubTech.TPSCharacterController
 
         private void OnGUI()
         {
+            overrideController.Draw();
+            currentController = overrideController.SelectedController;
+
             if (currentController)
             {
                 var all = new List<KeyValuePair<AnimationClip, AnimationClip>>(); 
@@ -144,12 +156,12 @@ namespace DoubTech.TPSCharacterController
 
         private void DrawClipField(KeyValuePair<AnimationClip,AnimationClip> overrideClip)
         {
+            
             var clip = (AnimationClip) EditorGUILayout.ObjectField(overrideClip.Value, typeof(AnimationClip), false);
             if (clip != overrideClip.Value)
             {
                 currentController[overrideClip.Key.name] = clip;
                 EditorUtility.SetDirty(currentController);
-                
             }
         }
 

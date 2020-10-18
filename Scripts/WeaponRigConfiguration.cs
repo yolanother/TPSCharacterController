@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace DoubTech.TPSCharacterController.Weapons
 {
-    [CreateAssetMenu(menuName = "TPS Character Controler/Weapon Rig Configuration")]
+    [CreateAssetMenu(menuName = "TPS Character Controller/Weapon Rig Configuration")]
     public class WeaponRigConfiguration : ScriptableObject
     {
         [Header("Weapon")]

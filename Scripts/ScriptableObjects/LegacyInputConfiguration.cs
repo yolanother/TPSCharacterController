@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace DoubTech.TPSCharacterController.Configuration
 {
-    [CreateAssetMenu(menuName = "TPS Character Controler/Input Configuration")]
+    [CreateAssetMenu(menuName = "TPS Character Controller/Input Configuration")]
     public class LegacyInputConfiguration : ScriptableObject
     {
         [SerializeField]

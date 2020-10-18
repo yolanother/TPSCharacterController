@@ -6,7 +6,7 @@ using UnityEditor;
 
 namespace DoubTech.TPSCharacterController.Utils
 {
-    public class PopupHierarchy<T>
+    public class FoldoutHierarchy<T>
     {
         public class Item
         {
@@ -42,29 +42,25 @@ namespace DoubTech.TPSCharacterController.Utils
             }
         }
 
-        private SortedDictionary<string, PopupHierarchy<T>>
-            children = new SortedDictionary<string, PopupHierarchy<T>>();
+        private SortedDictionary<string, FoldoutHierarchy<T>>
+            children = new SortedDictionary<string, FoldoutHierarchy<T>>();
 
         private SortedDictionary<string, Item> items = new SortedDictionary<string, Item>();
-        private string[] names = new string[0];
-        private object[] values = new object[0];
         private string name;
-        private bool isPopup;
+        private bool isFoldout;
         private bool isExpanded;
-        private int index;
 
-        public PopupHierarchy(string name = null, bool isPopup = true)
+        public FoldoutHierarchy(string name = null, bool isFoldout = true)
         {
             this.name = name;
-            this.isPopup = isPopup;
-            if (!isPopup) isExpanded = true;
+            this.isFoldout = isFoldout;
+            if (!isFoldout) isExpanded = true;
         }
 
         internal void Clear()
         {
             children.Clear();
             items.Clear();
-            names = new string[0];
         }
 
         public void Add(Item item, string[] path, int index = 0)
@@ -79,55 +75,45 @@ namespace DoubTech.TPSCharacterController.Utils
             {
                 if (!children.ContainsKey(path[index]))
                 {
-                    children[path[index]] = new PopupHierarchy<T>(path[index]);
+                    children[path[index]] = new FoldoutHierarchy<T>(path[index]);
                 }
 
                 children[path[index]].Add(item, path, index + 1);
-            }
-
-            RefreshNames();
-        }
-
-        private void RefreshNames()
-        {
-            names = new string[children.Count + items.Count + 1];
-            values = new string[children.Count + items.Count + 1];
-            names[0] = "";
-            int idx = 1;
-            foreach (var child in children)
-            {
-                values[idx] = child.Value;
-                names[idx++] = "> " + child.Key;
-            }
-            foreach (var i in items.Values)
-            {
-                values[idx] = i;
-                names[idx++] = i.name;
             }
         }
 
         public void Draw()
         {
-            if (isPopup)
+            if (isFoldout)
             {
-                index = EditorGUILayout.Popup(index, names);
+                isExpanded = EditorGUILayout.Foldout(isExpanded, name, true);
             }
             else if (null != name)
             {
                 EditorGUILayout.LabelField(name);
             }
 
-            if (index > 0)
+            if (isExpanded)
             {
-                if (values[index] is PopupHierarchy<T>)
+                EditorGUILayout.BeginHorizontal();
+                if (null != name)
                 {
-                    (values[index] as PopupHierarchy<T>).Draw();
+                    GUILayout.Space(16);
                 }
-                else
+
+                EditorGUILayout.BeginVertical();
+                foreach (FoldoutHierarchy<T> foldout in children.Values)
                 {
-                    var item = values[index] as Item;
-                    item.onDraw?.Invoke(item);
+                    foldout.Draw();
                 }
+
+                foreach (Item item in items.Values)
+                {
+                    item.onDraw(item);
+                }
+
+                EditorGUILayout.EndVertical();
+                EditorGUILayout.EndHorizontal();
             }
         }
     }
