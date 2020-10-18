@@ -78,6 +78,7 @@ namespace DoubTech.TPSCharacterController.Animation.Control
         private int activeLayer = 0;
         private float activeLayerWeight;
         private float fallTransition = .1f;
+        private AnimatorOverrideController activeController;
         
         private Vector3 lastPosition;
         private Vector3 lastRotation;
@@ -221,6 +222,7 @@ namespace DoubTech.TPSCharacterController.Animation.Control
 
         private void OnEnable()
         {
+            activeController = Instantiate(baseLocomotionController);
             CharacterReady();
         }
 
@@ -269,7 +271,7 @@ namespace DoubTech.TPSCharacterController.Animation.Control
 
             if (animator)
             {
-                animator.runtimeAnimatorController = baseLocomotionController;
+                animator.runtimeAnimatorController = activeController;
                 isReady = true;
             }
         }
@@ -344,14 +346,43 @@ namespace DoubTech.TPSCharacterController.Animation.Control
             {
                 activeLayer = AnimLayerDefault;
                 animator.CrossFade(AnimUnequip, equipTransition);
+                ClearOverrides();
             }
             else
             {
                 activeLayer = AnimLayerCombat;
                 animator.CrossFade(AnimEquip, unequipTransition);
+                ApplyOverrides();
             }
 
             activeLayerWeight = animator.GetLayerWeight(AnimLayerCombat);
+        }
+
+        private void ApplyOverrides()
+        {
+            List<KeyValuePair<AnimationClip, AnimationClip>> overrides = new List<KeyValuePair<AnimationClip, AnimationClip>>();
+            equippedWeaponAnimConfig.weaponClassController.GetOverrides(overrides);
+            
+            foreach (var slot in overrides)
+            {
+                if (slot.Value && slot.Value.length > 1)
+                {
+                    activeController[slot.Key.name] = slot.Value;
+                }
+            }
+            
+            var values = equippedWeaponAnimConfig.overrides.values;
+            for(int i = 0; i < values.Count; i++)
+            {
+                activeController[values[i].animationSlot] = values[i].animation;
+            }
+        }
+
+        private void ClearOverrides()
+        {
+            List<KeyValuePair<AnimationClip,AnimationClip>> overrides = new List<KeyValuePair<AnimationClip, AnimationClip>>();
+            baseLocomotionController.GetOverrides(overrides);
+            activeController.ApplyOverrides(overrides);
         }
     }
 }
