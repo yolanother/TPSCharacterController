@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using DoubTech.TPSCharacterController.Animation.Control;
 using DoubTech.TPSCharacterController.Inputs;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,45 +12,17 @@ namespace DoubTech.TPSCharacterController.Demo
     {
         [SerializeField] private PlayerInput playerInput;
         private Animator animator;
-        private CharacterController controller;
-
-        private readonly int AnimAttackStrong = Animator.StringToHash("AttackStrong");
-        private readonly int AnimAttackWeak = Animator.StringToHash("AttackWeak");
-        private readonly int AnimBlock = Animator.StringToHash("Block");
-        private readonly int AnimCombatDirectionVertical = Animator.StringToHash("CombatDirectionVertical");
-        private readonly int AnimCombatDirectionHorizontal = Animator.StringToHash("CombatDirectionHorizontal");
+        private AvatarAnimationController animController;
 
         private void Awake()
         {
             if (!playerInput) playerInput = GetComponent<PlayerInput>();
-            controller = GetComponent<CharacterController>();
-        }
-
-        private void OnEnable()
-        {
-            CharacterReady();
-        }
-
-        public void CharacterReady() {
-            if (!animator) animator = GetComponentInChildren<Animator>();
+            animController = GetComponent<AvatarAnimationController>();
             
-            if (animator) {
-                // This is more of an example implementation.
-                // These may be replaced or just become public abstractions for
-                // projects to process how they want.
-                playerInput.AttackStrong.OnPressed.AddListener(AttackStrong);
-                playerInput.AttackWeak.OnPressed.AddListener(AttackWeak);
-                playerInput.Block.OnPressed.AddListener(Block);
-                playerInput.CombatDirection.OnValueChanged.AddListener(CombatDirectionChanged);
-            }
-        }
-
-        private void Update() {
-            if (!animator) {
-                animator = GetComponentInChildren<Animator>();
-                if (animator) CharacterReady();
-                return;
-            }
+            playerInput.AttackStrong.OnPressed.AddListener(AttackStrong);
+            playerInput.AttackWeak.OnPressed.AddListener(AttackWeak);
+            playerInput.Block.OnPressed.AddListener(Block);
+            playerInput.CombatDirection.OnValueChanged.AddListener(CombatDirectionChanged);
         }
 
         private void OnDisable()
@@ -70,24 +43,24 @@ namespace DoubTech.TPSCharacterController.Demo
             var normalized = direction.normalized;
             if (direction.magnitude > .25f)
             {
-                animator.SetInteger(AnimCombatDirectionHorizontal, Nearest(normalized.y));
-                animator.SetInteger(AnimCombatDirectionVertical, Nearest(normalized.x));
+                animController.AttackHorizontal = Nearest(normalized.y);
+                animController.AttackVertical = Nearest(Nearest(normalized.x));
             }
         }
 
         private void Block()
         {
-            animator.SetTrigger(AnimBlock);
+            animController.Block();
         }
 
         private void AttackWeak()
         {
-            animator.SetTrigger(AnimAttackWeak);
+            animController.WeakAttack();
         }
 
         private void AttackStrong()
         {
-            animator.SetTrigger(AnimAttackStrong);
+            animController.StrongAttack();
         }
     }
 }

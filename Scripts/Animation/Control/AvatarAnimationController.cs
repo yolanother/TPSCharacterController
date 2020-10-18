@@ -38,6 +38,12 @@ namespace DoubTech.TPSCharacterController.Animation.Control
         
         private AnimStateSet StatesWalking = new AnimStateSet("Walking");
         private AnimStateSet StatesRunning = new AnimStateSet("Running");
+        
+        private readonly int AnimAttackStrong = Animator.StringToHash("AttackStrong");
+        private readonly int AnimAttackWeak = Animator.StringToHash("AttackWeak");
+        private readonly int AnimBlock = Animator.StringToHash("Block");
+        private readonly int AnimCombatDirectionVertical = Animator.StringToHash("CombatDirectionVertical");
+        private readonly int AnimCombatDirectionHorizontal = Animator.StringToHash("CombatDirectionHorizontal");
 
         private AnimStateSet activeSet;
 
@@ -189,6 +195,30 @@ namespace DoubTech.TPSCharacterController.Animation.Control
             }
         }
 
+        private int attackHorizontal;
+
+        public int AttackHorizontal
+        {
+            get => attackHorizontal;
+            set
+            {
+                attackHorizontal = value;
+                animator.SetInteger(AnimCombatDirectionHorizontal, value);
+            }
+        }
+        
+        private int attackVertical;
+
+        public int AttackVertical
+        {
+            get => attackVertical;
+            set
+            {
+                attackVertical = value;
+                animator.SetInteger(AnimCombatDirectionVertical, value);
+            }
+        }
+
         private void OnEnable()
         {
             CharacterReady();
@@ -246,17 +276,17 @@ namespace DoubTech.TPSCharacterController.Animation.Control
         
         public void StrongAttack()
         {
-            
+            animator.SetTrigger(AnimAttackStrong);
         }
 
         public void WeakAttack()
         {
-            
+            animator.SetTrigger(AnimAttackWeak);
         }
 
         public void Block()
         {
-            
+            animator.SetTrigger(AnimBlock);
         }
 
         public void Jump(bool shouldMove = false)
