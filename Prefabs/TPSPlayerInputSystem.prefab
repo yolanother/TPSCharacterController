@@ -231,6 +231,7 @@ Transform:
   - {fileID: 9071691053448300968}
   - {fileID: 9075936700868443265}
   - {fileID: 358226798}
+  - {fileID: 6196411566631607290}
   m_Father: {fileID: 9193913992919517174}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -249,6 +250,7 @@ GameObject:
   - component: {fileID: 9193913992919517173}
   - component: {fileID: 172100263385657051}
   - component: {fileID: 172100263385657052}
+  - component: {fileID: 1997673197}
   m_Layer: 0
   m_Name: TPSPlayerInputSystem
   m_TagString: Untagged
@@ -285,7 +287,7 @@ CharacterController:
   m_Enabled: 1
   serializedVersion: 2
   m_Height: 1.8
-  m_Radius: 0.5
+  m_Radius: 0.3
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.001
@@ -306,24 +308,20 @@ MonoBehaviour:
   playerInput: {fileID: 0}
   holdToRun: 1
   holdToCrouch: 0
-  characterSpeed: 3
+  characterSpeed: 1
   rotationSpeed: 60
   inputLerpSpeed: 10
-  fallTransition: 0.1
   fallDistanceUncontrolled: 3
   fallDistanceHardLanding: 3
   fallDistanceFall: 5
   fallDistanceDead: 20
+  canJump: 0
   stepDown: 0.5
   jumpHeight: 3
   gravity: 25
   airControl: 0.5
   jumpDampTime: 1.5
   groundCastDistance: 0.25
-  equipTransition: 0.1
-  unequipTransition: 0.1
-  combatLayerTransitionSpeed: 10
-  unarmedLocomotion: {fileID: 22100000, guid: 3e900af4c69988347ae9534f858411d6, type: 2}
 --- !u!114 &153894790499126849
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -384,6 +382,26 @@ MonoBehaviour:
   reticle: {fileID: 6940614687475880825}
   directionReticle: {fileID: 2800000, guid: 9ad351424a33d8641b829e0cc277bb83, type: 3}
   centerReticle: {fileID: 2800000, guid: 4a14eb273370650439a05e0fe14ed3df, type: 3}
+--- !u!114 &1997673197
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9193913992919517169}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1022d54de6a56ca42bac8a6e2b39892c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseLocomotionController: {fileID: 22100000, guid: 3e900af4c69988347ae9534f858411d6,
+    type: 2}
+  equippedWeaponAnimConfig: {fileID: 11400000, guid: 71dbb3cc33ed3014cbf509c43beb731d,
+    type: 2}
+  calculateSpeed: 1
+  equipTransition: 0.1
+  unequipTransition: 0.1
+  combatLayerTransitionSpeed: 10
 --- !u!1 &9193913993297597657
 GameObject:
   m_ObjectHideFlags: 0
@@ -410,7 +428,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9193913993297597657}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -2}
+  m_LocalPosition: {x: 0, y: 0, z: -2.33}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 9193913994074541094}
@@ -491,13 +509,88 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9193913994074541095}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.9, z: 0}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 9193913993297597662}
   m_Father: {fileID: 9193913992919517174}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &9075936699754853136
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 9193913992830781112}
+    m_Modifications:
+    - target: {fileID: 2885161576785209578, guid: 11b6342601a487e45a8ca8ed561a9b7a,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2885161576785209578, guid: 11b6342601a487e45a8ca8ed561a9b7a,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2885161576785209578, guid: 11b6342601a487e45a8ca8ed561a9b7a,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2885161576785209578, guid: 11b6342601a487e45a8ca8ed561a9b7a,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2885161576785209578, guid: 11b6342601a487e45a8ca8ed561a9b7a,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2885161576785209578, guid: 11b6342601a487e45a8ca8ed561a9b7a,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2885161576785209578, guid: 11b6342601a487e45a8ca8ed561a9b7a,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2885161576785209578, guid: 11b6342601a487e45a8ca8ed561a9b7a,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2885161576785209578, guid: 11b6342601a487e45a8ca8ed561a9b7a,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2885161576785209578, guid: 11b6342601a487e45a8ca8ed561a9b7a,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2885161576785209578, guid: 11b6342601a487e45a8ca8ed561a9b7a,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2885161576785399288, guid: 11b6342601a487e45a8ca8ed561a9b7a,
+        type: 3}
+      propertyPath: m_Name
+      value: UMARandomGeneratedCharacter
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 11b6342601a487e45a8ca8ed561a9b7a, type: 3}
+--- !u!4 &6196411566631607290 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2885161576785209578, guid: 11b6342601a487e45a8ca8ed561a9b7a,
+    type: 3}
+  m_PrefabInstance: {fileID: 9075936699754853136}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &9075936700868775039
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -508,6 +601,10 @@ PrefabInstance:
     - target: {fileID: 153068, guid: 5c80fc4442f8349969abea6c1a0f1faa, type: 3}
       propertyPath: m_Name
       value: UMADynamicCharacterAvatar
+      objectReference: {fileID: 0}
+    - target: {fileID: 153068, guid: 5c80fc4442f8349969abea6c1a0f1faa, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 487678, guid: 5c80fc4442f8349969abea6c1a0f1faa, type: 3}
       propertyPath: m_LocalPosition.x

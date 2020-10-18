@@ -2334,6 +2334,32 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -5495902117074765545, guid: abe5ab1d2f14aae4cae1f4128444882f, type: 3}
+--- !u!1 &1997673189 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9193913992919517169, guid: 898c601bd44c61740b215c50272b3ee6,
+    type: 3}
+  m_PrefabInstance: {fileID: 9075936700339611947}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1997673197
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1997673189}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1022d54de6a56ca42bac8a6e2b39892c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseLocomotionController: {fileID: 22100000, guid: 3e900af4c69988347ae9534f858411d6,
+    type: 2}
+  equippedWeaponAnimConfig: {fileID: 11400000, guid: 71dbb3cc33ed3014cbf509c43beb731d,
+    type: 2}
+  calculateSpeed: 1
+  equipTransition: 0.1
+  unequipTransition: 0.1
+  combatLayerTransitionSpeed: 10
 --- !u!4 &2042697850 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9193913992830781112, guid: 898c601bd44c61740b215c50272b3ee6,
