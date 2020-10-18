@@ -38,7 +38,9 @@ namespace DoubTech.TPSCharacterController
         [Tooltip("The distance the player will fall before they die on impact")]
         [SerializeField] private float fallDistanceDead = 20;
 
-        [Header("Jump")]
+        [Header("Jump")] 
+        [SerializeField]
+        private bool canJump = true;
         [SerializeField]
         private float stepDown = .5f;
         [SerializeField]
@@ -228,8 +230,8 @@ namespace DoubTech.TPSCharacterController
         }
 
         private void Jump() {
-            Debug.Log("Jump!");
-            if(!animController.IsCrouching && !IsInAir) {
+            if(canJump && !animController.IsCrouching && !IsInAir) {
+                Debug.Log("Jump!");
                 animController.IsJumping = true;
                 inAirVelocity = animController.Velocity * jumpDampTime * characterSpeed;
                 inAirVelocity.y = Mathf.Sqrt(2 * gravity * jumpHeight);
