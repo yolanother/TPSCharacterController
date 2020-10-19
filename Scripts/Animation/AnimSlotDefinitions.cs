@@ -113,9 +113,10 @@ namespace DoubTech.TPSCharacterController.Animation.Slots
             BLOCK_LT_MID, BLOCK_MID_MID, BLOCK_RT_MID,
             BLOCK_LT_DN, BLOCK_MID_DN, BLOCK_RT_DN
         };
-
         #endregion
-
+        
+        public static readonly AnimationSlotDefinition USE = new AnimationSlotDefinition()
+            {actionName = "Use", slotName = "Use"};
     }
     public class AnimationSlotDefinition
     {

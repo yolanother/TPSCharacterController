@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using DoubTech.TPSCharacterController.Animation.Slots;
 
 namespace DoubTech.TPSCharacterController.Animation.Control
 {
@@ -215,6 +216,13 @@ namespace DoubTech.TPSCharacterController.Animation.Control
         private AnimationEventReceiver eventReceiver;
         private bool isAttacking;
         private bool isBlocking;
+        private bool isUsing;
+
+        public bool IsAttacking => isAttacking;
+        public bool IsBlocking => isBlocking;
+        public bool IsUsing => isUsing;
+
+        public bool IsBusy => isAttacking || isBlocking || isUsing;
 
         public int AttackVertical
         {
@@ -315,6 +323,9 @@ namespace DoubTech.TPSCharacterController.Animation.Control
             } else if (slot.Contains(SlotBlock))
             {
                 isBlocking = false;
+            } else if (slot == AnimSlotDefinitions.USE.slotName)
+            {
+                isUsing = false;
             }
         }
 
@@ -326,7 +337,10 @@ namespace DoubTech.TPSCharacterController.Animation.Control
                 Debug.Log("Started attacking");
             } else if (slot.Contains(SlotBlock))
             {
-                isBlocking = false;
+                isBlocking = true;
+            } else if (slot == AnimSlotDefinitions.USE.slotName)
+            {
+                isUsing = true;
             }
         }
 
@@ -335,9 +349,30 @@ namespace DoubTech.TPSCharacterController.Animation.Control
             
         }
 
+        public void Use(AnimationClip clip)
+        {
+            if (!IsBusy)
+            {
+                activeController["Use"] = PrepareClip("Use", clip);
+            }
+        }
+
+        public void Use(AnimationConfig config)
+        {
+            if (!IsBusy)
+            {
+                activeController["Use"] = PrepareClip("Use", config.animation, config);
+            }
+        }
+
+        public void PlayAnimationConfig(AnimationConfig config)
+        {
+            activeController[config.animationSlot] = PrepareClip(config.animationSlot, config.animation, config);
+        }
+
         public void StrongAttack()
         {
-            if (equippedWeaponAnimConfig && !isAttacking && !isBlocking)
+            if (equippedWeaponAnimConfig && !IsBusy)
             {
                 animator.CrossFade(AnimAttackStrong, .1f);
             }
@@ -345,7 +380,7 @@ namespace DoubTech.TPSCharacterController.Animation.Control
 
         public void WeakAttack()
         {
-            if (equippedWeaponAnimConfig && !isAttacking && !isBlocking)
+            if (equippedWeaponAnimConfig && !IsBusy)
             {
                 animator.CrossFade(AnimAttackWeak, .1f);
             }
@@ -353,7 +388,7 @@ namespace DoubTech.TPSCharacterController.Animation.Control
 
         public void Block()
         {
-            if (equippedWeaponAnimConfig && !isAttacking && !isBlocking)
+            if (equippedWeaponAnimConfig && !IsBusy)
             {
                 animator.CrossFade(AnimBlock, .1f);
             }
