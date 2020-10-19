@@ -8,24 +8,23 @@ namespace DoubTech.TPSCharacterController.Animation.Control
 {
     public class AvatarAnimationController : MonoBehaviour
     {
-        [Header("Animations")]
-        [SerializeField] private AnimatorOverrideController baseLocomotionController;
+        [Header("Animations")] [SerializeField]
+        private AnimatorOverrideController baseLocomotionController;
+
         [SerializeField] private WeaponClassAnimConfig equippedWeaponAnimConfig;
 
-        [Header("Controller Config")]
-        [SerializeField] private bool calculateSpeed;
+        [Header("Controller Config")] [SerializeField]
+        private bool calculateSpeed;
 
-        [Header("Equip/Unequip")] 
-        [SerializeField] 
+        [Header("Equip/Unequip")] [SerializeField]
         private float equipTransition = .1f;
-        [SerializeField] 
-        private float unequipTransition = .1f;
-        [SerializeField] 
-        private float combatLayerTransitionSpeed = 10;
+
+        [SerializeField] private float unequipTransition = .1f;
+        [SerializeField] private float combatLayerTransitionSpeed = 10;
 
         private const string SlotAttack = "Attack";
         private const string SlotBlock = "Block";
-        
+
         private readonly int AnimRun = UnityEngine.Animator.StringToHash("Run");
         private readonly int AnimCrouch = UnityEngine.Animator.StringToHash("Crouch");
         private readonly int AnimFallDistance = UnityEngine.Animator.StringToHash("FallDistance");
@@ -39,10 +38,10 @@ namespace DoubTech.TPSCharacterController.Animation.Control
         private readonly int AnimUnequip = UnityEngine.Animator.StringToHash("Unequip");
 
         private readonly int StateIdleJump = UnityEngine.Animator.StringToHash("Idle Jump");
-        
+
         private AnimStateSet StatesWalking = new AnimStateSet("Walking");
         private AnimStateSet StatesRunning = new AnimStateSet("Running");
-        
+
         private readonly int AnimAttackStrong = Animator.StringToHash("Strong Attacks");
         private readonly int AnimAttackWeak = Animator.StringToHash("Weak Attacks");
         private readonly int AnimBlock = Animator.StringToHash("Blocks");
@@ -83,7 +82,7 @@ namespace DoubTech.TPSCharacterController.Animation.Control
         private float activeLayerWeight;
         private float fallTransition = .1f;
         private AnimatorOverrideController activeController;
-        
+
         private Vector3 lastPosition;
         private Vector3 lastRotation;
 
@@ -93,6 +92,7 @@ namespace DoubTech.TPSCharacterController.Animation.Control
         public Animator Animator => animator;
 
         private float speed;
+
         public float Speed
         {
             get => speed;
@@ -102,14 +102,16 @@ namespace DoubTech.TPSCharacterController.Animation.Control
                 animator.SetFloat(AnimSpeed, speed);
             }
         }
-        
+
         private Vector3 velocity;
+
         public Vector3 Velocity
         {
             get => velocity;
         }
 
         private float fallDistance;
+
         public float FallDistance
         {
             get => fallDistance;
@@ -118,9 +120,10 @@ namespace DoubTech.TPSCharacterController.Animation.Control
                 fallDistance = value;
                 animator.SetFloat(AnimFallDistance, value);
             }
-        } 
+        }
 
         private bool isRunning;
+
         public bool IsRunning
         {
             get => isRunning;
@@ -145,6 +148,7 @@ namespace DoubTech.TPSCharacterController.Animation.Control
         }
 
         private bool isJumping;
+
         public bool IsJumping
         {
             get => isJumping;
@@ -156,17 +160,19 @@ namespace DoubTech.TPSCharacterController.Animation.Control
         }
 
         private bool isFalling;
+
         public bool IsFalling
         {
             get => isFalling;
             set
             {
                 isFalling = value;
-                animator.SetBool(AnimIsFalling, value);                
+                animator.SetBool(AnimIsFalling, value);
             }
         }
 
         private float horizontal;
+
         public float Hoizontal
         {
             get => horizontal;
@@ -178,6 +184,7 @@ namespace DoubTech.TPSCharacterController.Animation.Control
         }
 
         private float vertical;
+
         public float Vertical
         {
             get => vertical;
@@ -211,7 +218,7 @@ namespace DoubTech.TPSCharacterController.Animation.Control
                 animator.SetInteger(AnimCombatDirectionHorizontal, value);
             }
         }
-        
+
         private int attackVertical;
         private AnimationEventReceiver eventReceiver;
         private bool isAttacking;
@@ -264,12 +271,13 @@ namespace DoubTech.TPSCharacterController.Animation.Control
             {
                 // TODO: Calculate horizontal and vertical from the velocity here for AI.
             }
-            
+
             lastPosition = transform.position;
             lastRotation = transform.eulerAngles;
         }
 
-        private void LateUpdate() {
+        private void LateUpdate()
+        {
             if (!animator) return;
 
             UpdateLayerWeight();
@@ -284,7 +292,7 @@ namespace DoubTech.TPSCharacterController.Animation.Control
 
         public void CharacterReady()
         {
-            if(!animator) animator = GetComponentInChildren<Animator>();
+            if (!animator) animator = GetComponentInChildren<Animator>();
 
             if (animator)
             {
@@ -294,12 +302,12 @@ namespace DoubTech.TPSCharacterController.Animation.Control
                 {
                     eventReceiver = animator.gameObject.AddComponent<AnimationEventReceiver>();
                 }
-                
+
                 eventReceiver.OnNamedAnimationEvent.AddListener(OnAnimationEvent);
                 eventReceiver.OnAnimationStart.AddListener(OnAnimationStartEvent);
                 eventReceiver.OnAnimationEnd.AddListener(OnAnimationStopEvent);
                 eventReceiver.OnTaggedAnimationEvent.AddListener(OnAnimationTagEvent);
-                
+
                 isReady = true;
             }
         }
@@ -317,13 +325,16 @@ namespace DoubTech.TPSCharacterController.Animation.Control
 
         private void OnAnimationStopEvent(string slot)
         {
-            if(slot.Contains(SlotAttack)) {
+            if (slot.Contains(SlotAttack))
+            {
                 isAttacking = false;
                 Debug.Log("Stopped attacking");
-            } else if (slot.Contains(SlotBlock))
+            }
+            else if (slot.Contains(SlotBlock))
             {
                 isBlocking = false;
-            } else if (slot == AnimSlotDefinitions.USE.slotName)
+            }
+            else if (slot == AnimSlotDefinitions.USE.slotName)
             {
                 isUsing = false;
             }
@@ -331,14 +342,16 @@ namespace DoubTech.TPSCharacterController.Animation.Control
 
         private void OnAnimationStartEvent(string slot)
         {
-            if(slot.Contains(SlotAttack)) 
+            if (slot.Contains(SlotAttack))
             {
                 isAttacking = true;
                 Debug.Log("Started attacking");
-            } else if (slot.Contains(SlotBlock))
+            }
+            else if (slot.Contains(SlotBlock))
             {
                 isBlocking = true;
-            } else if (slot == AnimSlotDefinitions.USE.slotName)
+            }
+            else if (slot == AnimSlotDefinitions.USE.slotName)
             {
                 isUsing = true;
             }
@@ -346,14 +359,15 @@ namespace DoubTech.TPSCharacterController.Animation.Control
 
         private void OnAnimationEvent(string eventName)
         {
-            
+
         }
 
         public void Use(AnimationClip clip)
         {
             if (!IsBusy)
             {
-                activeController["Use"] = PrepareClip("Use", clip);
+                activeController[AnimSlotDefinitions.USE.slotName] =
+                    PrepareClip(AnimSlotDefinitions.USE.slotName, clip);
             }
         }
 
@@ -361,7 +375,8 @@ namespace DoubTech.TPSCharacterController.Animation.Control
         {
             if (!IsBusy)
             {
-                activeController["Use"] = PrepareClip("Use", config.animation, config);
+                activeController[AnimSlotDefinitions.USE.slotName] =
+                    PrepareClip(AnimSlotDefinitions.USE.slotName, config.animation, config);
             }
         }
 
@@ -428,8 +443,9 @@ namespace DoubTech.TPSCharacterController.Animation.Control
         {
             animator.CrossFade(activeSet.LandFall, fallTransition, activeLayer);
         }
-        
-        public void LandAndDie() {
+
+        public void LandAndDie()
+        {
             animator.CrossFade(activeSet.LandFallDead, fallTransition, activeLayer);
         }
 
@@ -463,19 +479,20 @@ namespace DoubTech.TPSCharacterController.Animation.Control
 
         private void ApplyOverrides()
         {
-            List<KeyValuePair<AnimationClip, AnimationClip>> overrides = new List<KeyValuePair<AnimationClip, AnimationClip>>();
+            List<KeyValuePair<AnimationClip, AnimationClip>> overrides =
+                new List<KeyValuePair<AnimationClip, AnimationClip>>();
             equippedWeaponAnimConfig.weaponClassController.GetOverrides(overrides);
-            
+
             foreach (var slot in overrides)
             {
                 if (slot.Value && slot.Value.length > 1)
-                {   
+                {
                     activeController[slot.Key.name] = PrepareClip(slot.Key.name, slot.Value);
                 }
             }
-            
+
             var values = equippedWeaponAnimConfig.overrides.values;
-            for(int i = 0; i < values.Count; i++)
+            for (int i = 0; i < values.Count; i++)
             {
                 var slot = values[i];
                 activeController[slot.animationSlot] = PrepareClip(slot.animationSlot, slot.animation, slot);
@@ -495,13 +512,14 @@ namespace DoubTech.TPSCharacterController.Animation.Control
                     AnimationEventReceiver.AddTaggedEvent(preppedClip, slotName, tag);
                 }
             }
-            
+
             return preppedClip;
         }
 
         private void ClearOverrides()
         {
-            List<KeyValuePair<AnimationClip,AnimationClip>> overrides = new List<KeyValuePair<AnimationClip, AnimationClip>>();
+            List<KeyValuePair<AnimationClip, AnimationClip>> overrides =
+                new List<KeyValuePair<AnimationClip, AnimationClip>>();
             baseLocomotionController.GetOverrides(overrides);
             activeController.ApplyOverrides(overrides);
         }
