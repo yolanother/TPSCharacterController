@@ -21,6 +21,9 @@ namespace DoubTech.TPSCharacterController.Animation.Control
         private float unequipTransition = .1f;
         [SerializeField] 
         private float combatLayerTransitionSpeed = 10;
+
+        private const string SlotAttack = "Attack";
+        private const string SlotBlock = "Block";
         
         private readonly int AnimRun = UnityEngine.Animator.StringToHash("Run");
         private readonly int AnimCrouch = UnityEngine.Animator.StringToHash("Crouch");
@@ -39,9 +42,9 @@ namespace DoubTech.TPSCharacterController.Animation.Control
         private AnimStateSet StatesWalking = new AnimStateSet("Walking");
         private AnimStateSet StatesRunning = new AnimStateSet("Running");
         
-        private readonly int AnimAttackStrong = Animator.StringToHash("AttackStrong");
-        private readonly int AnimAttackWeak = Animator.StringToHash("AttackWeak");
-        private readonly int AnimBlock = Animator.StringToHash("Block");
+        private readonly int AnimAttackStrong = Animator.StringToHash("Strong Attacks");
+        private readonly int AnimAttackWeak = Animator.StringToHash("Weak Attacks");
+        private readonly int AnimBlock = Animator.StringToHash("Blocks");
         private readonly int AnimCombatDirectionVertical = Animator.StringToHash("CombatDirectionVertical");
         private readonly int AnimCombatDirectionHorizontal = Animator.StringToHash("CombatDirectionHorizontal");
 
@@ -209,6 +212,9 @@ namespace DoubTech.TPSCharacterController.Animation.Control
         }
         
         private int attackVertical;
+        private AnimationEventReceiver eventReceiver;
+        private bool isAttacking;
+        private bool isBlocking;
 
         public int AttackVertical
         {
@@ -228,15 +234,18 @@ namespace DoubTech.TPSCharacterController.Animation.Control
 
         private void OnDisable()
         {
+            eventReceiver.OnNamedAnimationEvent.RemoveListener(OnAnimationEvent);
+            eventReceiver.OnAnimationStart.RemoveListener(OnAnimationStartEvent);
+            eventReceiver.OnAnimationEnd.RemoveListener(OnAnimationStopEvent);
+            eventReceiver.OnTaggedAnimationEvent.RemoveListener(OnAnimationTagEvent);
             isReady = false;
         }
 
         private void Update()
         {
-            if (!animator)
+            if (!isReady)
             {
-                animator = GetComponentInChildren<Animator>();
-                if(animator) CharacterReady();
+                CharacterReady();
                 return;
             }
 
@@ -272,23 +281,82 @@ namespace DoubTech.TPSCharacterController.Animation.Control
             if (animator)
             {
                 animator.runtimeAnimatorController = activeController;
+                eventReceiver = animator.GetComponent<AnimationEventReceiver>();
+                if (!eventReceiver)
+                {
+                    eventReceiver = animator.gameObject.AddComponent<AnimationEventReceiver>();
+                }
+                
+                eventReceiver.OnNamedAnimationEvent.AddListener(OnAnimationEvent);
+                eventReceiver.OnAnimationStart.AddListener(OnAnimationStartEvent);
+                eventReceiver.OnAnimationEnd.AddListener(OnAnimationStopEvent);
+                eventReceiver.OnTaggedAnimationEvent.AddListener(OnAnimationTagEvent);
+                
                 isReady = true;
             }
         }
-        
+
+        private void OnAnimationTagEvent(AnimationTagType tagType, string slot, string tag)
+        {
+            switch (tagType)
+            {
+                case AnimationTagType.Recover:
+                    isAttacking = false;
+                    Debug.Log("Stopped attacking - in recovery");
+                    break;
+            }
+        }
+
+        private void OnAnimationStopEvent(string slot)
+        {
+            if(slot.Contains(SlotAttack)) {
+                isAttacking = false;
+                Debug.Log("Stopped attacking");
+            } else if (slot.Contains(SlotBlock))
+            {
+                isBlocking = false;
+            }
+        }
+
+        private void OnAnimationStartEvent(string slot)
+        {
+            if(slot.Contains(SlotAttack)) 
+            {
+                isAttacking = true;
+                Debug.Log("Started attacking");
+            } else if (slot.Contains(SlotBlock))
+            {
+                isBlocking = false;
+            }
+        }
+
+        private void OnAnimationEvent(string eventName)
+        {
+            
+        }
+
         public void StrongAttack()
         {
-            animator.SetTrigger(AnimAttackStrong);
+            if (equippedWeaponAnimConfig && !isAttacking && !isBlocking)
+            {
+                animator.CrossFade(AnimAttackStrong, .1f);
+            }
         }
 
         public void WeakAttack()
         {
-            animator.SetTrigger(AnimAttackWeak);
+            if (equippedWeaponAnimConfig && !isAttacking && !isBlocking)
+            {
+                animator.CrossFade(AnimAttackWeak, .1f);
+            }
         }
 
         public void Block()
         {
-            animator.SetTrigger(AnimBlock);
+            if (equippedWeaponAnimConfig && !isAttacking && !isBlocking)
+            {
+                animator.CrossFade(AnimBlock, .1f);
+            }
         }
 
         public void Jump(bool shouldMove = false)
@@ -366,16 +434,34 @@ namespace DoubTech.TPSCharacterController.Animation.Control
             foreach (var slot in overrides)
             {
                 if (slot.Value && slot.Value.length > 1)
-                {
-                    activeController[slot.Key.name] = slot.Value;
+                {   
+                    activeController[slot.Key.name] = PrepareClip(slot.Key.name, slot.Value);
                 }
             }
             
             var values = equippedWeaponAnimConfig.overrides.values;
             for(int i = 0; i < values.Count; i++)
             {
-                activeController[values[i].animationSlot] = values[i].animation;
+                var slot = values[i];
+                activeController[slot.animationSlot] = PrepareClip(slot.animationSlot, slot.animation, slot);
             }
+        }
+
+        private AnimationClip PrepareClip(string slotName, AnimationClip clip, AnimationConfig config = null)
+        {
+            var preppedClip = Instantiate(clip);
+            AnimationEventReceiver.AddStartAnimationEvent(preppedClip, slotName);
+            AnimationEventReceiver.AddStopAnimationEvent(preppedClip, slotName);
+
+            if (config)
+            {
+                foreach (var tag in config.animationTags)
+                {
+                    AnimationEventReceiver.AddTaggedEvent(preppedClip, slotName, tag);
+                }
+            }
+            
+            return preppedClip;
         }
 
         private void ClearOverrides()
