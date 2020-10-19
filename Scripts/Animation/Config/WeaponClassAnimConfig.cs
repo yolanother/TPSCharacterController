@@ -9,6 +9,7 @@ namespace DoubTech.TPSCharacterController.Animation
     public class WeaponClassAnimConfig : ScriptableObject
     {
         [SerializeField] public AnimatorOverrideController weaponClassController;
+        [HideInInspector]
         [SerializeField] public OverrideDictionary overrides = new OverrideDictionary();
     }
 

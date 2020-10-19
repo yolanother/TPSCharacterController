@@ -15,5 +15,9 @@ MonoBehaviour:
   weaponClassController: {fileID: 22100000, guid: 21bb06245b2189f4a84e0c8327ede664,
     type: 2}
   overrides:
-    keys: []
-    values: []
+    keys:
+    - Actions - Equip
+    - Actions - Unequip
+    values:
+    - {fileID: 11400000, guid: 6ef5f54cad5f3c64192de90971922669, type: 2}
+    - {fileID: 11400000, guid: 2b8c540c51ad88b4caa8b2ca0528757f, type: 2}

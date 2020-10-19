@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70ffac71e1cf6b54c82ccefe6c9801ae, type: 3}
+  m_Name: Unequip
+  m_EditorClassIdentifier: 
+  animationSlot: Actions - Unequip
+  animation: {fileID: 7400056, guid: 63caa43b07a53a44e998f2ca18685177, type: 3}
+  fullBody:
+    layerId: 2
+    layerWeight: 1
+  lowerBody:
+    layerId: 3
+    layerWeight: 1
+  upperBody:
+    layerId: 4
+    layerWeight: 1
+  animationTags:
+  - tagType: 6
+    tag: 
+    time: 0.74

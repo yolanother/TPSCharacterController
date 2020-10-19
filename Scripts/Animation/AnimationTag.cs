@@ -19,6 +19,8 @@ namespace DoubTech.TPSCharacterController.Animation
         AttackStart,
         AttackEnd,
         Recover,
-        Windup
+        Windup,
+        EquipGrab,
+        UnequipRelease
     }
 }

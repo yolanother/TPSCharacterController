@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using DoubTech.TPSCharacterController.Animation.Slots;
+using UnityEngine.Events;
 
 namespace DoubTech.TPSCharacterController.Animation.Control
 {
@@ -13,14 +14,21 @@ namespace DoubTech.TPSCharacterController.Animation.Control
 
         [SerializeField] private WeaponClassAnimConfig equippedWeaponAnimConfig;
 
-        [Header("Controller Config")] [SerializeField]
-        private bool calculateSpeed;
+        [Header("Controller Config")] 
+        [SerializeField] private bool calculateSpeed;
 
-        [Header("Equip/Unequip")] [SerializeField]
-        private float equipTransition = .1f;
+        [Header("Equip/Unequip")] 
+        [SerializeField] private float equipTransition = .1f;
 
         [SerializeField] private float unequipTransition = .1f;
         [SerializeField] private float combatLayerTransitionSpeed = 10;
+        
+        [Header("Animation Events")]
+        [SerializeField] private UnityEvent onEquipGrab = new UnityEvent();
+        [SerializeField] private UnityEvent onUnequipRelease = new UnityEvent();
+        
+        [SerializeField] private UnityEvent onStartUse = new UnityEvent();
+        [SerializeField] private UnityEvent onStopUse = new UnityEvent();
 
         private const string SlotAttack = "Attack";
         private const string SlotBlock = "Block";
@@ -320,6 +328,12 @@ namespace DoubTech.TPSCharacterController.Animation.Control
                     isAttacking = false;
                     Debug.Log("Stopped attacking - in recovery");
                     break;
+                case AnimationTagType.EquipGrab:
+                    onEquipGrab.Invoke();
+                    break;
+                case AnimationTagType.UnequipRelease:
+                    onUnequipRelease.Invoke();
+                    break;
             }
         }
 
@@ -337,6 +351,15 @@ namespace DoubTech.TPSCharacterController.Animation.Control
             else if (slot == AnimSlotDefinitions.USE.slotName)
             {
                 isUsing = false;
+                onStopUse.Invoke();
+            }
+            else if (slot == AnimSlotDefinitions.EQUIP.slotName)
+            {
+                ClearOverrides();
+            }
+            else if (slot == AnimSlotDefinitions.UNEQUIP.slotName)
+            {
+                ClearOverrides();
             }
         }
 
@@ -366,8 +389,10 @@ namespace DoubTech.TPSCharacterController.Animation.Control
         {
             if (!IsBusy)
             {
+                onStartUse.Invoke();
                 activeController[AnimSlotDefinitions.USE.slotName] =
                     PrepareClip(AnimSlotDefinitions.USE.slotName, clip);
+                animator.CrossFade(AnimSlotDefinitions.USE.animStateHash, .1f);
             }
         }
 
@@ -377,12 +402,8 @@ namespace DoubTech.TPSCharacterController.Animation.Control
             {
                 activeController[AnimSlotDefinitions.USE.slotName] =
                     PrepareClip(AnimSlotDefinitions.USE.slotName, config.animation, config);
+                animator.CrossFade(AnimSlotDefinitions.USE.animStateHash, .1f);
             }
-        }
-
-        public void PlayAnimationConfig(AnimationConfig config)
-        {
-            activeController[config.animationSlot] = PrepareClip(config.animationSlot, config.animation, config);
         }
 
         public void StrongAttack()
@@ -464,14 +485,13 @@ namespace DoubTech.TPSCharacterController.Animation.Control
             if (activeLayer == AnimLayerCombat)
             {
                 activeLayer = AnimLayerDefault;
-                animator.CrossFade(AnimUnequip, equipTransition);
-                ClearOverrides();
+                animator.CrossFade(AnimUnequip, equipTransition, 2);
             }
             else
             {
                 activeLayer = AnimLayerCombat;
-                animator.CrossFade(AnimEquip, unequipTransition);
                 ApplyOverrides();
+                animator.CrossFade(AnimEquip, unequipTransition, 2);
             }
 
             activeLayerWeight = animator.GetLayerWeight(AnimLayerCombat);
@@ -485,7 +505,7 @@ namespace DoubTech.TPSCharacterController.Animation.Control
 
             foreach (var slot in overrides)
             {
-                if (slot.Value && slot.Value.length > 1)
+                if (slot.Value)
                 {
                     activeController[slot.Key.name] = PrepareClip(slot.Key.name, slot.Value);
                 }

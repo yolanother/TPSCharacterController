@@ -31,8 +31,59 @@ namespace DoubTech.TPSCharacterController.Animation
                 scrollPosition = GUILayout.BeginScrollView(scrollPosition);
 
                 actionSetEditor.Draw();
+                
+                GUILayout.BeginVertical(GUILayout.Height(30));
+                DrawAnimationDropbox();
+                GUILayout.EndVertical();
+
+                foreach (var overridesKey in config.overrides.keys)
+                {
+                    GUILayout.BeginHorizontal();
+                    GUILayout.Label(overridesKey);
+                    GUILayout.ExpandWidth(true);
+                    if (UIUtil.ButtonIconBordered("TreeEditor.Trash"))
+                    {
+                        config.overrides.Remove(overridesKey);
+                        EditorUtility.SetDirty(config);
+                        Repaint();
+                    }
+                    GUILayout.EndHorizontal();
+                }
 
                 GUILayout.EndScrollView();
+            }
+        }
+        
+        void DrawAnimationDropbox()
+        {
+            Rect myRect = GUILayoutUtility.GetRect(0, 0, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
+            GUI.Box(myRect, "Active Overrides\n(Drop Animation Config here to add override)", UIUtil.BoxStyle);
+            if (myRect.Contains(Event.current.mousePosition))
+            {
+                if (Event.current.type == EventType.DragUpdated)
+                {
+                    DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
+                    Event.current.Use();
+                }
+                else if (Event.current.type == EventType.DragPerform)
+                {
+                    if (DragAndDrop.objectReferences.Length > 0)
+                    {
+                        object reference = DragAndDrop.objectReferences[0];
+                        if (reference is AnimationConfig)
+                        {
+                            AnimationConfig configRef = reference as AnimationConfig;
+                            config.overrides[configRef.animationSlot] = configRef;
+                            EditorUtility.SetDirty(config);
+                        }
+                    }
+
+                    Event.current.Use();
+                }
+                else if (Event.current.type == EventType.MouseDown)
+                {
+                    Event.current.Use();
+                }
             }
         }
     }
