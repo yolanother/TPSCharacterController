@@ -530,7 +530,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   clientAuthority: 0
-  animator: {fileID: 8938622000546768170}
+  animator: {fileID: 676990660}
 --- !u!114 &2667579544479158266
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -552,6 +552,7 @@ MonoBehaviour:
   localPlayerGameObjects:
   - {fileID: 7847552084385352170}
   - {fileID: 9034045494369379390}
+  prespawnObjects: []
 --- !u!114 &-7788127817294149170
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -577,7 +578,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b562f158708fdc448a6c3b766dcd3d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerInput: {fileID: 195251188821962189}
+  playerInput: {fileID: -7788127817294149170}
   reticle: {fileID: 4049278802643280554}
   directionReticle: {fileID: 2800000, guid: 9ad351424a33d8641b829e0cc277bb83, type: 3}
   centerReticle: {fileID: 2800000, guid: 4a14eb273370650439a05e0fe14ed3df, type: 3}
@@ -787,6 +788,12 @@ PrefabInstance:
 --- !u!4 &684628600 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 451418, guid: e768dca6024374b1bacf9428c519d887,
+    type: 3}
+  m_PrefabInstance: {fileID: 684226850}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &676990660 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 9598950, guid: e768dca6024374b1bacf9428c519d887,
     type: 3}
   m_PrefabInstance: {fileID: 684226850}
   m_PrefabAsset: {fileID: 0}

@@ -113,7 +113,7 @@ namespace DoubTech.TPSCharacterController
         private void OnDisable()
         {
             isReady = false;
-            animatorEventTracker.OnAnimatorMoveEvent -= OnAnimatorMove;
+            if(animatorEventTracker) animatorEventTracker.OnAnimatorMoveEvent -= OnAnimatorMove;
 
             playerInput.Jump.OnPressed.RemoveListener(Jump);
             playerInput.Equip.OnPressed.RemoveListener(OnEquip);

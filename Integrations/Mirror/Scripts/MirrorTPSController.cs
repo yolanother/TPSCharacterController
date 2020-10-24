@@ -24,12 +24,14 @@ namespace DoubTech.TPSCharacterController.Inputs.InputMethods.Mirror
         [SerializeField]
         private GameObject[] localPlayerGameObjects = new GameObject[0];
         [Tooltip("Tags of game objects that should be disabled after spawn")]
-        [SerializeField] private string[] prespawnObjects;
+        [SerializeField] private string[] prespawnObjectTags;
 
         private NetworkIdentity identity;
         private AuthoritativeInput authoritativeInput;
         private NetworkAnimator networkAnimator;
         private CharacterMovement characterMovement;
+
+        private List<GameObject> prespawnObjects = new List<GameObject>();
 
         private void Awake()
         {
@@ -37,6 +39,15 @@ namespace DoubTech.TPSCharacterController.Inputs.InputMethods.Mirror
             identity = GetComponent<NetworkIdentity>();
             networkAnimator = GetComponentInChildren<NetworkAnimator>(true);
             characterMovement = GetComponent<CharacterMovement>();
+            
+            
+            foreach (var tag in prespawnObjectTags)
+            {
+                foreach (var go in GameObject.FindGameObjectsWithTag(tag))
+                {
+                    prespawnObjects.Add(go);
+                }
+            }
         }
 
         private void OnValidate()
@@ -49,6 +60,17 @@ namespace DoubTech.TPSCharacterController.Inputs.InputMethods.Mirror
             {
                 networkAnimator.animator = GetComponentInChildren<Animator>();
             }
+        }
+
+        public override void OnStopClient()
+        {
+            base.OnStopClient();
+            EnablePrespawnComponents();
+        }
+
+        private void EnablePrespawnComponents()
+        {
+            foreach (var go in prespawnObjects) go.SetActive(true);
         }
 
         public override void OnStartClient()
@@ -70,13 +92,7 @@ namespace DoubTech.TPSCharacterController.Inputs.InputMethods.Mirror
 
         private void DisablePrespawnComponents()
         {
-            foreach (var tag in prespawnObjects)
-            {
-                foreach (var go in GameObject.FindGameObjectsWithTag(tag))
-                {
-                    go.SetActive(false);
-                }
-            }
+            foreach (var go in prespawnObjects) go.SetActive(false);
         }
 
         private void DisableNonAuthoritativeComponents()
