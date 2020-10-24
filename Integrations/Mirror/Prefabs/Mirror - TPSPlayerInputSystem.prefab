@@ -552,7 +552,7 @@ MonoBehaviour:
   localPlayerGameObjects:
   - {fileID: 7847552084385352170}
   - {fileID: 9034045494369379390}
-  prespawnObjects: []
+  prespawnObjectTags: []
 --- !u!114 &-7788127817294149170
 MonoBehaviour:
   m_ObjectHideFlags: 0

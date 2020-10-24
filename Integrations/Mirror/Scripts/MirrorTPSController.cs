@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using DoubTech.TPSCharacterController.Inputs;
 #if MIRROR
+using DoubTech.TPSCharacterController.Animation.Control;
 using Mirror;
 #endif
 using UnityEngine.Serialization;
@@ -39,8 +40,7 @@ namespace DoubTech.TPSCharacterController.Inputs.InputMethods.Mirror
             identity = GetComponent<NetworkIdentity>();
             networkAnimator = GetComponentInChildren<NetworkAnimator>(true);
             characterMovement = GetComponent<CharacterMovement>();
-            
-            
+
             foreach (var tag in prespawnObjectTags)
             {
                 foreach (var go in GameObject.FindGameObjectsWithTag(tag))
