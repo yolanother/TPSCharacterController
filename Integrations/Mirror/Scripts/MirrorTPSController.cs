@@ -23,6 +23,8 @@ namespace DoubTech.TPSCharacterController.Inputs.InputMethods.Mirror
         [Tooltip("Game objects that should only be enabled for local players (like camera gameobjects)")]
         [SerializeField]
         private GameObject[] localPlayerGameObjects = new GameObject[0];
+        [Tooltip("Tags of game objects that should be disabled after spawn")]
+        [SerializeField] private string[] prespawnObjects;
 
         private NetworkIdentity identity;
         private AuthoritativeInput authoritativeInput;
@@ -63,6 +65,18 @@ namespace DoubTech.TPSCharacterController.Inputs.InputMethods.Mirror
             
             DisableNonAuthoritativeComponents();
             ConfigureInputPassthrough();
+            DisablePrespawnComponents();
+        }
+
+        private void DisablePrespawnComponents()
+        {
+            foreach (var tag in prespawnObjects)
+            {
+                foreach (var go in GameObject.FindGameObjectsWithTag(tag))
+                {
+                    go.SetActive(false);
+                }
+            }
         }
 
         private void DisableNonAuthoritativeComponents()
