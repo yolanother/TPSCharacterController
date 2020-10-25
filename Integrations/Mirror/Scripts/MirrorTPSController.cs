@@ -1,10 +1,7 @@
 using System;
 using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
-using DoubTech.TPSCharacterController.Inputs;
 #if MIRROR
-using DoubTech.TPSCharacterController.Animation.Control;
 using Mirror;
 #endif
 using UnityEngine.Serialization;
@@ -29,7 +26,6 @@ namespace DoubTech.TPSCharacterController.Inputs.InputMethods.Mirror
 
         private NetworkIdentity identity;
         private AuthoritativeInput authoritativeInput;
-        private NetworkAnimator networkAnimator;
         private CharacterMovement characterMovement;
 
         private List<GameObject> prespawnObjects = new List<GameObject>();
@@ -38,8 +34,8 @@ namespace DoubTech.TPSCharacterController.Inputs.InputMethods.Mirror
         {
             authoritativeInput = GetComponent<AuthoritativeInput>();
             identity = GetComponent<NetworkIdentity>();
-            networkAnimator = GetComponentInChildren<NetworkAnimator>(true);
             characterMovement = GetComponent<CharacterMovement>();
+            
 
             foreach (var tag in prespawnObjectTags)
             {
@@ -50,16 +46,21 @@ namespace DoubTech.TPSCharacterController.Inputs.InputMethods.Mirror
             }
         }
 
-        private void OnValidate()
+        public void OnCharacterReady()
         {
-            // This allows us to drop any model in to the model component and still be
-            // fully wired for animation controls. If we set animator after playing
-            // networkAnimator throws an error and anims are not synced.
-            networkAnimator = GetComponent<NetworkAnimator>();
-            if (!networkAnimator.animator)
-            {
-                networkAnimator.animator = GetComponentInChildren<Animator>();
-            }
+            var networkAnimator = gameObject.GetComponent<TPSNetworkAnimator>();
+            networkAnimator.Animator = characterMovement.AvatarController.Animator;
+            Debug.Log("OnCharacterReady...");
+        }
+
+        private void OnEnable()
+        {
+            characterMovement.AddCharacterReadyEvent(OnCharacterReady);
+        }
+
+        private void OnDisable()
+        {
+            characterMovement.RemoveCharacterReadyEvent(OnCharacterReady);
         }
 
         public override void OnStopClient()

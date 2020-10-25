@@ -373,11 +373,11 @@ GameObject:
   - component: {fileID: 4716328149248803846}
   - component: {fileID: 6489405226740923902}
   - component: {fileID: -2203075770373590172}
-  - component: {fileID: 2399207783133807442}
   - component: {fileID: 2667579544479158266}
   - component: {fileID: -7788127817294149170}
   - component: {fileID: 6902832650424228546}
   - component: {fileID: 1693208023}
+  - component: {fileID: 8590539263088242452}
   m_Layer: 0
   m_Name: Mirror - TPSPlayerInputSystem
   m_TagString: Untagged
@@ -515,22 +515,6 @@ MonoBehaviour:
   localPositionSensitivity: 0.01
   localRotationSensitivity: 0.01
   localScaleSensitivity: 0.01
---- !u!114 &2399207783133807442
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9034045493749133288}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f6f3bf89aa97405989c802ba270f815, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
-  clientAuthority: 0
-  animator: {fileID: 676990660}
 --- !u!114 &2667579544479158266
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -614,6 +598,22 @@ MonoBehaviour:
   onStopUse:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &8590539263088242452
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9034045493749133288}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2dfba0833ded47679f6280bda7e2ad8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  clientAuthority: 0
+  animator: {fileID: 0}
 --- !u!1 &9034045494369379390
 GameObject:
   m_ObjectHideFlags: 0
@@ -788,12 +788,6 @@ PrefabInstance:
 --- !u!4 &684628600 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 451418, guid: e768dca6024374b1bacf9428c519d887,
-    type: 3}
-  m_PrefabInstance: {fileID: 684226850}
-  m_PrefabAsset: {fileID: 0}
---- !u!95 &676990660 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 9598950, guid: e768dca6024374b1bacf9428c519d887,
     type: 3}
   m_PrefabInstance: {fileID: 684226850}
   m_PrefabAsset: {fileID: 0}

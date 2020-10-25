@@ -10,7 +10,7 @@ namespace DoubTech.TPSCharacterController
 {
     [RequireComponent(typeof(CharacterController))]
     [RequireComponent(typeof(AvatarAnimationController))]
-    public class CharacterMovement : MonoBehaviour
+    public class CharacterMovement : BaseAvatarMovementController
     {
         [Header("Input")]
         [SerializeField]
@@ -57,9 +57,7 @@ namespace DoubTech.TPSCharacterController
 
 
         // Child Components
-        private AnimatorEventTracker animatorEventTracker;
         private CharacterController controller;
-        private AvatarAnimationController animController;
         
         private Vector3 rootMotion;
         private Quaternion newRotation;
@@ -77,44 +75,29 @@ namespace DoubTech.TPSCharacterController
         private bool isIdleJump;
         private float fallDistance;
         private bool isControlledFall;
-        private bool isReady;
         private Vector3 inAirVelocity;
 
-        private bool IsInAir => animController.IsFalling || animController.IsJumping || isIdleJump;
+        private bool IsInAir => AvatarController.IsFalling || AvatarController.IsJumping || isIdleJump;
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             if(!playerInput) playerInput = GetComponent<PlayerInput>();
             controller = GetComponent<CharacterController>();
-            animController = GetComponent<AvatarAnimationController>();
         }
 
-        public void CharacterReady()
+        protected override void OnCharacterReady()
         {
-            if (isReady || !animController.IsReady) return;
-            
-            isReady = true;
-            if (!animController.Animator.TryGetComponent(out animatorEventTracker)) {
-                animatorEventTracker = animController.Animator.gameObject.AddComponent<AnimatorEventTracker>();
-            }
-
-            animController.IsRunning = false;
-            playerInput.Crouch.OnButtonEvent.AddListener(evt => animController.IsCrouching = HandleStateChange(evt, !holdToCrouch, animController.IsCrouching));
-            playerInput.Run.OnButtonEvent.AddListener(evt => animController.IsRunning = HandleStateChange(evt, !holdToRun, animController.IsRunning));
+            AvatarController.IsRunning = false;
+            playerInput.Crouch.OnButtonEvent.AddListener(evt => AvatarController.IsCrouching = HandleStateChange(evt, !holdToCrouch, AvatarController.IsCrouching));
+            playerInput.Run.OnButtonEvent.AddListener(evt => AvatarController.IsRunning = HandleStateChange(evt, !holdToRun, AvatarController.IsRunning));
             playerInput.Jump.OnPressed.AddListener(Jump);
             playerInput.Equip.OnPressed.AddListener(OnEquip);
-            animatorEventTracker.OnAnimatorMoveEvent += OnAnimatorMove;
         }
 
-        private void OnEnable() {
-            CharacterReady();
-        }
-
-        private void OnDisable()
+        protected override void OnDisable()
         {
-            isReady = false;
-            if(animatorEventTracker) animatorEventTracker.OnAnimatorMoveEvent -= OnAnimatorMove;
-
+            base.OnDisable();
             playerInput.Jump.OnPressed.RemoveListener(Jump);
             playerInput.Equip.OnPressed.RemoveListener(OnEquip);
         }
@@ -123,11 +106,8 @@ namespace DoubTech.TPSCharacterController
             Gizmos.DrawLine(transform.position, transform.up * -1 * groundCastDistance);
         }
 
-        private void Update()
+        protected override void OnUpdate()
         {
-            if (!animController.IsReady) return;
-            if(!isReady) CharacterReady();
-
             RaycastHit hit;
             isNearGround = controller.isGrounded || Physics.Linecast(transform.position + transform.up * groundCastDistance / 2.0f, transform.position - groundCastDistance * transform.up, out hit) && hit.collider.gameObject != gameObject;
             
@@ -147,28 +127,28 @@ namespace DoubTech.TPSCharacterController
 
         private void HandleLand()
         {
-            if (isNearGround && IsInAir && animController.Velocity.y < 0)
+            if (isNearGround && IsInAir && AvatarController.Velocity.y < 0)
             {
-                animController.IsFalling = false;
-                animController.IsJumping = false;
+                AvatarController.IsFalling = false;
+                AvatarController.IsJumping = false;
                 isIdleJump = false;
                 isControlledFall = false;
-                animController.IsJumping = false;
-                animController.IsFalling = false;
+                AvatarController.IsJumping = false;
+                AvatarController.IsFalling = false;
 
                 if (fallDistance < fallDistanceHardLanding)
                 {
-                    animController.LandOnFeet(playerInput.MovementMagnitude > 0.01f);
+                    AvatarController.LandOnFeet(playerInput.MovementMagnitude > 0.01f);
                 } else if (fallDistance < fallDistanceFall)
                 {
-                    animController.LandHard();
+                    AvatarController.LandHard();
                 } else if (fallDistance < fallDistanceDead)
                 {
-                    animController.LandAndFall();
+                    AvatarController.LandAndFall();
                 }
                 else
                 {
-                    animController.LandAndDie();
+                    AvatarController.LandAndDie();
                 }
             }
         }
@@ -181,21 +161,21 @@ namespace DoubTech.TPSCharacterController
                 fallStart = transform.position;
                 Debug.Log("Falling!");
                 isControlledFall = true;
-                animController.IsFalling = true;
-                animController.IsJumping = true;
-                animController.StartControlledFall();
+                AvatarController.IsFalling = true;
+                AvatarController.IsJumping = true;
+                AvatarController.StartControlledFall();
             }
 
             if (isControlledFall && fallDistance > fallDistanceUncontrolled)
             {
                 isControlledFall = false;
-                animController.StartUncontrolledFall();
+                AvatarController.StartUncontrolledFall();
             }
         }
 
         private void OnEquip()
         {
-            animController.Equip();
+            AvatarController.Equip();
         }
 
         private float HandleInputLerp(float previous, float newValue)
@@ -215,8 +195,8 @@ namespace DoubTech.TPSCharacterController
             var horizontal = HandleInputLerp(previousHorizontal, playerInput.Horizontal.Value);
             var vertical = HandleInputLerp(previousVertical, playerInput.Vertical.Value);
 
-            animController.Hoizontal = horizontal;
-            animController.Vertical = vertical;
+            AvatarController.Hoizontal = horizontal;
+            AvatarController.Vertical = vertical;
             
             previousHorizontal = horizontal;
             previousVertical = vertical;
@@ -224,29 +204,32 @@ namespace DoubTech.TPSCharacterController
 
         private void UpdateSpeed() {
             float speed = playerInput.MovementMagnitude;
-            if (animController.IsCrouching) speed /= 2.0f;
-            if (animController.IsRunning) speed *= 2f;
-            animController.Speed = speed;
+            if (AvatarController.IsCrouching) speed /= 2.0f;
+            if (AvatarController.IsRunning) speed *= 2f;
+            AvatarController.Speed = speed;
         }
 
         private void Jump() {
-            if(canJump && !animController.IsCrouching && !IsInAir) {
+            if(canJump && !AvatarController.IsCrouching && !IsInAir) {
                 Debug.Log("Jump!");
-                animController.IsJumping = true;
-                inAirVelocity = animController.Velocity * jumpDampTime * characterSpeed;
+                AvatarController.IsJumping = true;
+                inAirVelocity = AvatarController.Velocity * jumpDampTime * characterSpeed;
                 inAirVelocity.y = Mathf.Sqrt(2 * gravity * jumpHeight);
                 isIdleJump = playerInput.MovementMagnitude < 0.01f;
-                animController.Jump(!isIdleJump);
+                AvatarController.Jump(!isIdleJump);
             }
         }
 
-        private void OnAnimatorMove() {
-            rootMotion += animController.Animator.deltaPosition;
+        protected override void OnAnimatorMove() {
+            rootMotion += AvatarController.Animator.deltaPosition;
         }
 
-        private void FixedUpdate() {
-            if (!isReady) return;
+        protected override void OnLateUpdate()
+        {
+            
+        }
 
+        protected override void OnFixedUpdate() {
             if (IsInAir || !isNearGround) {
                 UpdateInAir();
             } else {
@@ -292,7 +275,7 @@ namespace DoubTech.TPSCharacterController
             if (turnDelta > 0) turnValue = Mathf.Lerp(turnValue, 1.0f, Time.deltaTime);
             else if (turnDelta < 0) turnValue = Mathf.Lerp(turnValue, -1.0f, Time.deltaTime);
             else turnValue = Mathf.Lerp(turnValue, 0, Time.deltaTime);
-            animController.Turn = turnValue;
+            AvatarController.Turn = turnValue;
         }
 
         private void UpdateInAir()
@@ -308,7 +291,7 @@ namespace DoubTech.TPSCharacterController
             }
 
             fallDistance = fallStart.y - transform.position.y;
-            animController.FallDistance = fallDistance;
+            AvatarController.FallDistance = fallDistance;
 
             Vector3 displacement = inAirVelocity * Time.fixedDeltaTime;
             displacement += CalculateAirControl();
