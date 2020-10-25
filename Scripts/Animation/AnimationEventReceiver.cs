@@ -82,7 +82,7 @@ namespace DoubTech.TPSCharacterController.Animation
         public static void AddStopAnimationEvent(AnimationClip clip, string name)
         {
             AnimationEvent evt = new AnimationEvent();
-            evt.time = clip.length - 1;
+            evt.time = Mathf.Max(clip.length - 1, 0);
             evt.functionName = "OnStopAnimation";
             evt.stringParameter = name;
             clip.AddEvent(evt);

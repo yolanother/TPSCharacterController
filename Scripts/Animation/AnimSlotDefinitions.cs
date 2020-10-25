@@ -205,13 +205,13 @@ namespace DoubTech.TPSCharacterController.Animation.Slots
         #region Actions
 
         public static readonly AnimationSlotDefinition USE = new AnimationSlotDefinition()
-            {actionName = "Use", slotName = "Action - Use", animStateHash = Animator.StringToHash("Use")};
+            {actionName = "Use", slotName = "Actions - Use", animStateHash = Animator.StringToHash("Use")};
 
         public static readonly AnimationSlotDefinition EQUIP = new AnimationSlotDefinition()
-            {actionName = "Equip", slotName = "Action - Equip", animStateHash = Animator.StringToHash("Equip")};
+            {actionName = "Equip", slotName = "Actions - Equip", animStateHash = Animator.StringToHash("Equip")};
 
         public static readonly AnimationSlotDefinition UNEQUIP = new AnimationSlotDefinition()
-            {actionName = "Unequip", slotName = "Action - Unequip", animStateHash = Animator.StringToHash("Unequip")};
+            {actionName = "Unequip", slotName = "Actions - Unequip", animStateHash = Animator.StringToHash("Unequip")};
 
         #endregion
     }

@@ -14,6 +14,12 @@ namespace DoubTech.TPSCharacterController.Animation.Control
 
         [SerializeField] private WeaponClassAnimConfig equippedWeaponAnimConfig;
 
+        public WeaponClassAnimConfig WeaponAnimConfig
+        {
+            get => equippedWeaponAnimConfig;
+            set => equippedWeaponAnimConfig = value;
+        }
+
         [Header("Controller Config")] 
         [SerializeField] private bool calculateSpeed;
 
@@ -26,6 +32,13 @@ namespace DoubTech.TPSCharacterController.Animation.Control
         [Header("Animation Events")]
         [SerializeField] private UnityEvent onEquipGrab = new UnityEvent();
         [SerializeField] private UnityEvent onUnequipRelease = new UnityEvent();
+        [SerializeField] private UnityEvent onEquipEnd = new UnityEvent();
+        [SerializeField] private UnityEvent onUnequipEnd = new UnityEvent();
+
+        public UnityEvent OnEquipGrab => onEquipGrab;
+        public UnityEvent OnUnequipRelease => onUnequipRelease;
+        public UnityEvent OnEquipEnd => onEquipEnd;
+        public UnityEvent OnUnequipEnd => onUnequipEnd;
         
         [SerializeField] private UnityEvent onStartUse = new UnityEvent();
         [SerializeField] private UnityEvent onStopUse = new UnityEvent();
@@ -42,8 +55,6 @@ namespace DoubTech.TPSCharacterController.Animation.Control
         private readonly int AnimVertical = UnityEngine.Animator.StringToHash("Vertical");
         private readonly int AnimSpeed = UnityEngine.Animator.StringToHash("Speed");
         private readonly int AnimTurn = UnityEngine.Animator.StringToHash("Turn");
-        private readonly int AnimEquip = UnityEngine.Animator.StringToHash("Equip");
-        private readonly int AnimUnequip = UnityEngine.Animator.StringToHash("Unequip");
 
         private readonly int StateIdleJump = UnityEngine.Animator.StringToHash("Idle Jump");
 
@@ -339,6 +350,7 @@ namespace DoubTech.TPSCharacterController.Animation.Control
 
         private void OnAnimationStopEvent(string slot)
         {
+            Debug.Log("AARON: Stopped " + slot);
             if (slot.Contains(SlotAttack))
             {
                 isAttacking = false;
@@ -355,11 +367,12 @@ namespace DoubTech.TPSCharacterController.Animation.Control
             }
             else if (slot == AnimSlotDefinitions.EQUIP.slotName)
             {
-                ClearOverrides();
+                onEquipEnd.Invoke();
             }
             else if (slot == AnimSlotDefinitions.UNEQUIP.slotName)
             {
                 ClearOverrides();
+                onUnequipEnd.Invoke();
             }
         }
 
@@ -480,50 +493,88 @@ namespace DoubTech.TPSCharacterController.Animation.Control
             animator.CrossFade(activeSet.UncontrolledFall, fallTransition);
         }
 
-        public void Equip()
+        private void PlaySlot(AnimationSlotDefinition slot, int layer)
+        {
+            var clip = activeController[slot.slotName];
+            if (clip && clip.length > 0)
+            {
+                animator.CrossFade(slot.animStateHash, .1f, layer);
+            }
+            else
+            {
+                OnAnimationStartEvent(slot.slotName);
+                OnAnimationStopEvent(slot.slotName);
+            }
+        }
+
+        public bool Equip()
+        {
+            if(activeLayer != AnimLayerCombat)
+            {
+                activeLayer = AnimLayerCombat;
+                ApplyOverrides();
+
+                PlaySlot(AnimSlotDefinitions.EQUIP, 2);
+                activeLayerWeight = animator.GetLayerWeight(AnimLayerCombat);
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool Unequip()
         {
             if (activeLayer == AnimLayerCombat)
             {
                 activeLayer = AnimLayerDefault;
-                animator.CrossFade(AnimUnequip, equipTransition, 2);
-            }
-            else
-            {
-                activeLayer = AnimLayerCombat;
-                ApplyOverrides();
-                animator.CrossFade(AnimEquip, unequipTransition, 2);
+                PlaySlot(AnimSlotDefinitions.UNEQUIP, 2);
+                activeLayerWeight = animator.GetLayerWeight(AnimLayerCombat);
+                return true;
             }
 
-            activeLayerWeight = animator.GetLayerWeight(AnimLayerCombat);
+            return false;
         }
 
         private void ApplyOverrides()
         {
             List<KeyValuePair<AnimationClip, AnimationClip>> overrides =
                 new List<KeyValuePair<AnimationClip, AnimationClip>>();
-            equippedWeaponAnimConfig.weaponClassController.GetOverrides(overrides);
 
-            foreach (var slot in overrides)
+            if (equippedWeaponAnimConfig)
             {
-                if (slot.Value)
+                overrides =
+                    new List<KeyValuePair<AnimationClip, AnimationClip>>();
+                if(equippedWeaponAnimConfig) equippedWeaponAnimConfig.weaponClassController.GetOverrides(overrides);
+
+                foreach (var slot in overrides)
                 {
-                    activeController[slot.Key.name] = PrepareClip(slot.Key.name, slot.Value);
+                    if (slot.Value)
+                    {
+                        activeController[slot.Key.name] = PrepareClip(slot.Key.name, slot.Value);
+                    }
+                    else if(!slot.Key.isLooping)
+                    {
+                        activeController[slot.Key.name] = PrepareClip(slot.Key.name, slot.Key);
+                    }
                 }
-            }
-
-            var values = equippedWeaponAnimConfig.overrides.values;
-            for (int i = 0; i < values.Count; i++)
-            {
-                var slot = values[i];
-                activeController[slot.animationSlot] = PrepareClip(slot.animationSlot, slot.animation, slot);
+                var values = equippedWeaponAnimConfig.overrides.values;
+                for (int i = 0; i < values.Count; i++)
+                {
+                    var slot = values[i];
+                    activeController[slot.animationSlot] = PrepareClip(slot.animationSlot, slot.animation, slot);
+                }
             }
         }
 
         private AnimationClip PrepareClip(string slotName, AnimationClip clip, AnimationConfig config = null)
         {
+            Debug.Log("Prepping clip: " + slotName);
             var preppedClip = Instantiate(clip);
-            AnimationEventReceiver.AddStartAnimationEvent(preppedClip, slotName);
-            AnimationEventReceiver.AddStopAnimationEvent(preppedClip, slotName);
+            if (!preppedClip.isLooping)
+            {
+                AnimationEventReceiver.AddStartAnimationEvent(preppedClip, slotName);
+                AnimationEventReceiver.AddStopAnimationEvent(preppedClip, slotName);
+            }
 
             if (config)
             {

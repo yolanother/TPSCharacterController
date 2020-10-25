@@ -92,14 +92,12 @@ namespace DoubTech.TPSCharacterController
             playerInput.Crouch.OnButtonEvent.AddListener(evt => AvatarController.IsCrouching = HandleStateChange(evt, !holdToCrouch, AvatarController.IsCrouching));
             playerInput.Run.OnButtonEvent.AddListener(evt => AvatarController.IsRunning = HandleStateChange(evt, !holdToRun, AvatarController.IsRunning));
             playerInput.Jump.OnPressed.AddListener(Jump);
-            playerInput.Equip.OnPressed.AddListener(OnEquip);
         }
 
         protected override void OnDisable()
         {
             base.OnDisable();
             playerInput.Jump.OnPressed.RemoveListener(Jump);
-            playerInput.Equip.OnPressed.RemoveListener(OnEquip);
         }
 
         private void OnDrawGizmosSelected() {
@@ -171,11 +169,6 @@ namespace DoubTech.TPSCharacterController
                 isControlledFall = false;
                 AvatarController.StartUncontrolledFall();
             }
-        }
-
-        private void OnEquip()
-        {
-            AvatarController.Equip();
         }
 
         private float HandleInputLerp(float previous, float newValue)
