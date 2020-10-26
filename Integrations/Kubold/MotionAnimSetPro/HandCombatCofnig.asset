@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f67397f6fff865f45a72e5aa48b9e229, type: 3}
   m_Name: HandCombatCofnig
   m_EditorClassIdentifier: 
-  weaponClassController: {fileID: 0}
+  weaponClassController: {fileID: 22100000, guid: 3e900af4c69988347ae9534f858411d6,
+    type: 2}
   overrides:
     keys: []
     values: []
