@@ -14,7 +14,14 @@ namespace DoubTech.TPSCharacterController.Animation
     }
 
     [Serializable]
-    public class OverrideDictionary : SerializableDictionary<AnimationConfig>
+    public class OverrideDictionary : SerializableDictionary<AnimationConfigOverride>
     {
+    }
+
+    [Serializable]
+    public class AnimationConfigOverride
+    {
+        public string slot;
+        public AnimationConfig config;
     }
 }

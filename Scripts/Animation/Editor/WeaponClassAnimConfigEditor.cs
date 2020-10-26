@@ -16,6 +16,7 @@ namespace DoubTech.TPSCharacterController.Animation
         private void OnEnable()
         {
             config = target as WeaponClassAnimConfig;
+            actionSetEditor = new ActionSetEditor(config);
         }
 
         public override void OnInspectorGUI()
@@ -23,11 +24,6 @@ namespace DoubTech.TPSCharacterController.Animation
             base.OnInspectorGUI();
             if (null != config.weaponClassController)
             {
-                if (actionSetEditor == null || actionSetEditor.controller != config.weaponClassController)
-                {
-                    actionSetEditor = new ActionSetEditor(config.weaponClassController, config.overrides);
-                }
-
                 scrollPosition = GUILayout.BeginScrollView(scrollPosition);
 
                 actionSetEditor.Draw();
@@ -73,7 +69,8 @@ namespace DoubTech.TPSCharacterController.Animation
                         if (reference is AnimationConfig)
                         {
                             AnimationConfig configRef = reference as AnimationConfig;
-                            config.overrides[configRef.animationSlot] = configRef;
+                            config.overrides[configRef.animationSlot] = new AnimationConfigOverride()
+                                {slot = configRef.animationSlot, config = configRef};
                             EditorUtility.SetDirty(config);
                         }
                     }

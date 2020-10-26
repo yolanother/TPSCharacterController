@@ -70,6 +70,8 @@ namespace DoubTech.TPSCharacterController.Animation.Control
         private readonly int AnimCombatDirectionHorizontal = Animator.StringToHash("CombatDirectionHorizontal");
 
         private AnimStateSet activeSet;
+        
+        private static Dictionary<string, AnimationClip> processedClips = new Dictionary<string, AnimationClip>();
 
         private class AnimStateSet
         {
@@ -263,9 +265,31 @@ namespace DoubTech.TPSCharacterController.Animation.Control
             }
         }
 
-        private void OnEnable()
+        private void Awake()
         {
             activeController = Instantiate(baseLocomotionController);
+
+            var overrides =
+                new List<KeyValuePair<AnimationClip, AnimationClip>>();
+            activeController.GetOverrides(overrides);            
+            foreach (var pair in overrides)
+            {
+                if (pair.Value)
+                {
+                    if (!pair.Value.isLooping)
+                    {
+                        activeController[pair.Key.name] = PrepareClip(pair.Key.name, pair.Value);
+                    }
+                }
+                
+                AnimationEventReceiver.AddStartAnimationEvent(pair.Key, pair.Key.name);
+                AnimationEventReceiver.AddStopAnimationEvent(pair.Key, pair.Key.name);
+            }
+            activeController.ApplyOverrides(overrides);
+        }
+
+        private void OnEnable()
+        {
             CharacterReady();
         }
 
@@ -505,7 +529,7 @@ namespace DoubTech.TPSCharacterController.Animation.Control
         private void PlaySlot(AnimationSlotDefinition slot, int layer)
         {
             var clip = activeController[slot.slotName];
-            if (clip && clip.length > 0)
+            if (clip && clip.length > 0 && clip.name != slot.slotName)
             {
                 animator.CrossFade(slot.animStateHash, .1f, layer);
             }
@@ -561,23 +585,29 @@ namespace DoubTech.TPSCharacterController.Animation.Control
                     {
                         activeController[slot.Key.name] = PrepareClip(slot.Key.name, slot.Value);
                     }
-                    else if(!slot.Key.isLooping)
-                    {
-                        activeController[slot.Key.name] = PrepareClip(slot.Key.name, slot.Key);
-                    }
                 }
                 var values = equippedWeaponAnimConfig.overrides.values;
                 for (int i = 0; i < values.Count; i++)
                 {
                     var slot = values[i];
-                    activeController[slot.animationSlot] = PrepareClip(slot.animationSlot, slot.animation, slot);
+                    activeController[slot.slot] = PrepareClip(slot.slot, slot.config.animation, slot.config);
                 }
             }
         }
 
         private AnimationClip PrepareClip(string slotName, AnimationClip clip, AnimationConfig config = null)
         {
-            var preppedClip = Instantiate(clip);
+            string key = slotName + "::" + clip.name;
+            if (config) key += "::" + config.name;
+            AnimationClip preppedClip;
+            if (processedClips.TryGetValue(key, out preppedClip))
+            {
+                return preppedClip;
+            }
+            
+            preppedClip = Instantiate(clip);
+            processedClips[key] = preppedClip;
+            
             if (!preppedClip.isLooping)
             {
                 AnimationEventReceiver.AddStartAnimationEvent(preppedClip, slotName);

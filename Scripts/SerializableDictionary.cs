@@ -17,31 +17,48 @@ namespace DoubTech.TPSCharacterController
         // Stored data
         public List<string> keys = new List<string>();
         public List<T> values = new List<T>();
-        
-        private Dictionary<string, T> dictionary = new Dictionary<string, T>();
+
+        private Dictionary<string, T> dictionary;
+
+        private Dictionary<string, T> Dictionary
+        {
+            get
+            {
+                if (null == dictionary)
+                {
+                    dictionary = new Dictionary<string, T>();
+                    for (int i = 0; i < keys.Count; i++)
+                    {
+                        dictionary[keys[i]] = values[i];
+                    }
+                }
+
+                return dictionary;
+            }
+        }
 
         public bool TryGetValue(string key, out T result)
         {
-            return dictionary.TryGetValue(key, out result);
+            return Dictionary.TryGetValue(key, out result);
         }
         public bool ContainsKey(string name)
         {
-            return dictionary.ContainsKey(name);
+            return Dictionary.ContainsKey(name);
         }
 
         public T this[string key]
         {
-            get => dictionary[key];
+            get => Dictionary[key];
             set
             {
-                dictionary[key] = value;
+                Dictionary[key] = value;
                 Reindex();
             }
         }
 
         public void Remove(string key)
         {
-            dictionary.Remove(key);
+            Dictionary.Remove(key);
             Reindex();
         }
 
@@ -49,7 +66,7 @@ namespace DoubTech.TPSCharacterController
         {
             keys.Clear();
             values.Clear();
-            foreach (var pair in dictionary)
+            foreach (var pair in Dictionary)
             {
                 keys.Add(pair.Key);
                 values.Add(pair.Value);

@@ -8,9 +8,6 @@ namespace DoubTech.TPSCharacterController.Animation
 {
     public class ActionSetEditor
     {
-        public AnimatorOverrideController controller;
-        public OverrideDictionary overrides;
-        
         private string[] actionSetNames = new[] {"Strong Attacks", "Weak Attacks", "Blocks"};
         private ActionSlotDefinition[][] actionSlots = new ActionSlotDefinition[][]
         {
@@ -19,11 +16,11 @@ namespace DoubTech.TPSCharacterController.Animation
             AnimSlotDefinitions.BLOCK_SLOTS
         };
         private int actionSetIndex;
+        private WeaponClassAnimConfig config;
 
-        public ActionSetEditor(AnimatorOverrideController controller, OverrideDictionary overrides)
+        public ActionSetEditor(WeaponClassAnimConfig config)
         {
-            this.controller = controller;
-            this.overrides = overrides;
+            this.config = config;
         }
 
         private void DrawWeaponSlot(ActionSlotDefinition slot, int width, int height)
@@ -72,16 +69,17 @@ namespace DoubTech.TPSCharacterController.Animation
         {
             bool hasSlot = false;
             string animName = "No animation";
-            if (controller[slot.slotName] && controller[slot.slotName].length > 1)
+            if (config.weaponClassController[slot.slotName] && config.weaponClassController[slot.slotName].length > 1)
             {
                 hasSlot = true;
-                animName = controller[slot.slotName].name;
+                animName = config.weaponClassController[slot.slotName].name;
             }
 
-            if (overrides.ContainsKey(slot.slotName) && overrides[slot.slotName].animation)
+            if (config.overrides.ContainsKey(slot.slotName) && config.overrides[slot.slotName].config.animation)
             {
                 hasSlot = true;
-                animName = overrides[slot.slotName].animation.name;
+                var c = config.overrides[slot.slotName].config;
+                animName = c.name + " - " + c.animation.name;
             }
 
             Rect myRect = GUILayoutUtility.GetRect(0, 0, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
@@ -111,22 +109,24 @@ namespace DoubTech.TPSCharacterController.Animation
                         if (reference is AnimationClip)
                         {
                             var clip = reference as AnimationClip;
-                            if (overrides.ContainsKey(slot.slotName))
+                            if (config.overrides.ContainsKey(slot.slotName))
                             {
-                                overrides[slot.slotName].animation = clip;
+                                config.overrides.Remove(slot.slotName);
                                 Debug.Log("Assigned override " + clip.name + " to " + slot.slotName);
                             }
-                            else
-                            {
-                                controller[slot.slotName] = reference as AnimationClip;
-                                Debug.Log("Assigned " + clip.name + " to " + slot.slotName);
-                            }
+                            
+                            config.weaponClassController[slot.slotName] = reference as AnimationClip;
+                            Debug.Log("Assigned " + clip.name + " to " + slot.slotName);
 
-                            EditorUtility.SetDirty(controller);
+                            EditorUtility.SetDirty(config);
                         }
                         else if (reference is AnimationConfig)
                         {
-                            overrides[slot.slotName] = reference as AnimationConfig;
+                            var refConfig = reference as AnimationConfig;
+                            config.overrides[slot.slotName] = new AnimationConfigOverride()
+                                { slot = slot.slotName, config = refConfig};
+                            Debug.Log("Setting " + slot.slotName + " to " + refConfig.name);
+                            EditorUtility.SetDirty(config);
                         }
                     }
 
