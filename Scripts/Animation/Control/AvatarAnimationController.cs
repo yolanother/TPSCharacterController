@@ -43,6 +43,8 @@ namespace DoubTech.TPSCharacterController.Animation.Control
         [SerializeField] private UnityEvent onStartUse = new UnityEvent();
         [SerializeField] private UnityEvent onStopUse = new UnityEvent();
 
+        [SerializeField] private float maxCooldown = 2;
+
         private const string SlotAttack = "Attack";
         private const string SlotBlock = "Block";
 
@@ -243,6 +245,7 @@ namespace DoubTech.TPSCharacterController.Animation.Control
         private bool isAttacking;
         private bool isBlocking;
         private bool isUsing;
+        private float cooldownStart;
 
         public bool IsAttacking => isAttacking;
         public bool IsBlocking => isBlocking;
@@ -337,7 +340,7 @@ namespace DoubTech.TPSCharacterController.Animation.Control
             {
                 case AnimationTagType.Recover:
                     isAttacking = false;
-                    Debug.Log("Stopped attacking - in recovery");
+                    Debug.Log("Stopped attacking - in recovery with " + slot);
                     break;
                 case AnimationTagType.EquipGrab:
                     onEquipGrab.Invoke();
@@ -350,11 +353,10 @@ namespace DoubTech.TPSCharacterController.Animation.Control
 
         private void OnAnimationStopEvent(string slot)
         {
-            Debug.Log("AARON: Stopped " + slot);
             if (slot.Contains(SlotAttack))
             {
                 isAttacking = false;
-                Debug.Log("Stopped attacking");
+                Debug.Log("Stopped attacking with " + slot);
             }
             else if (slot.Contains(SlotBlock))
             {
@@ -380,12 +382,11 @@ namespace DoubTech.TPSCharacterController.Animation.Control
         {
             if (slot.Contains(SlotAttack))
             {
-                isAttacking = true;
-                Debug.Log("Started attacking");
+                Debug.Log("Started attacking with slot " + slot);
             }
             else if (slot.Contains(SlotBlock))
             {
-                isBlocking = true;
+                
             }
             else if (slot == AnimSlotDefinitions.USE.slotName)
             {
@@ -421,24 +422,32 @@ namespace DoubTech.TPSCharacterController.Animation.Control
 
         public void StrongAttack()
         {
-            if (equippedWeaponAnimConfig && !IsBusy)
+            if (!IsBusy || cooldownStart + maxCooldown > Time.realtimeSinceStartup)
             {
+                cooldownStart = Time.realtimeSinceStartup;
+                isAttacking = true;
+                Debug.Log("Triggering strong attack...");
                 animator.CrossFade(AnimAttackStrong, .1f);
             }
         }
 
         public void WeakAttack()
         {
-            if (equippedWeaponAnimConfig && !IsBusy)
+            if (!IsBusy || cooldownStart + maxCooldown > Time.realtimeSinceStartup)
             {
+                cooldownStart = Time.realtimeSinceStartup;
+                isAttacking = true;
+                Debug.Log("Triggering weak attack...");
                 animator.CrossFade(AnimAttackWeak, .1f);
             }
         }
 
         public void Block()
         {
-            if (equippedWeaponAnimConfig && !IsBusy)
+            if (!IsBusy || cooldownStart + maxCooldown > Time.realtimeSinceStartup)
             {
+                cooldownStart = Time.realtimeSinceStartup;
+                isBlocking = true;
                 animator.CrossFade(AnimBlock, .1f);
             }
         }
@@ -568,7 +577,6 @@ namespace DoubTech.TPSCharacterController.Animation.Control
 
         private AnimationClip PrepareClip(string slotName, AnimationClip clip, AnimationConfig config = null)
         {
-            Debug.Log("Prepping clip: " + slotName);
             var preppedClip = Instantiate(clip);
             if (!preppedClip.isLooping)
             {
