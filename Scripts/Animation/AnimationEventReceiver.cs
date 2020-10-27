@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using DoubTech.TPSCharacterController.Scripts.Animation;
 using TMPro;
 using UnityEngine.Events;
 
@@ -17,11 +18,14 @@ namespace DoubTech.TPSCharacterController.Animation
         private NamedAnimationEvent onAnimationEnd = new NamedAnimationEvent();
         [SerializeField]
         private TaggedAnimationEvent onTaggedAnimationEvent = new TaggedAnimationEvent();
+        [SerializeField]
+        private NamedAnimationEvent onPlaySound = new NamedAnimationEvent();
 
         public NamedAnimationEvent OnNamedAnimationEvent => onNamedAnimationEvent;
         public NamedAnimationEvent OnAnimationStart => onAnimationStart;
         public NamedAnimationEvent OnAnimationEnd => onAnimationEnd;
         public TaggedAnimationEvent OnTaggedAnimationEvent => onTaggedAnimationEvent;
+        public NamedAnimationEvent OnPlaySound => onPlaySound;
 
         public void SendEvent(string eventName)
         {
@@ -36,6 +40,11 @@ namespace DoubTech.TPSCharacterController.Animation
         public void OnStopAnimation(string name)
         {
             onAnimationEnd.Invoke(name);
+        }
+
+        public void OnPlaySoundEvent(string name)
+        {
+            onPlaySound.Invoke(name);
         }
 
         public void OnTaggedEvent(string value)
@@ -85,6 +94,15 @@ namespace DoubTech.TPSCharacterController.Animation
             evt.time = Mathf.Max(clip.length - 1, 0);
             evt.functionName = "OnStopAnimation";
             evt.stringParameter = name;
+            clip.AddEvent(evt);
+        }
+
+        public static void AddAudioEvent(AnimationClip clip, AnimationSoundTag soundTag)
+        {
+            AnimationEvent evt = new AnimationEvent();
+            evt.time = Mathf.Max(soundTag.time, 0);
+            evt.functionName = "OnPlaySoundEvent";
+            evt.stringParameter = soundTag.sound.name;
             clip.AddEvent(evt);
         }
     }

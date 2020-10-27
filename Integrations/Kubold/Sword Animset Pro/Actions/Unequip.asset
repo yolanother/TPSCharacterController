@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 70ffac71e1cf6b54c82ccefe6c9801ae, type: 3}
-  m_Name: Equip
+  m_Name: Unequip
   m_EditorClassIdentifier: 
-  animationSlot: Actions - Equip
-  animation: {fileID: 7400054, guid: 63caa43b07a53a44e998f2ca18685177, type: 3}
+  animationSlot: Actions - Unequip
+  animation: {fileID: 7400056, guid: 63caa43b07a53a44e998f2ca18685177, type: 3}
   fullBody:
     layerId: 2
     layerWeight: 1
@@ -24,6 +24,9 @@ MonoBehaviour:
     layerId: 4
     layerWeight: 1
   animationTags:
-  - tagType: 5
+  - tagType: 6
     tag: 
+    time: 0.74
+  soundTags:
+  - sound: {fileID: 8300000, guid: c4fa709ab337a426eae8b4b8059595ad, type: 3}
     time: 0.2

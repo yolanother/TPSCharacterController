@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using DoubTech.TPSCharacterController.Animation.Slots;
+using DoubTech.TPSCharacterController.Scripts.Animation;
 using Sirenix.OdinInspector;
 using UnityEngine.Events;
 
@@ -46,6 +47,8 @@ namespace DoubTech.TPSCharacterController.Animation.Control
 
         [SerializeField] private float maxCooldown = 2;
 
+        [SerializeField] private AudioSource audioSource;
+
         private const string SlotAttack = "Attack";
         private const string SlotBlock = "Block";
 
@@ -73,6 +76,7 @@ namespace DoubTech.TPSCharacterController.Animation.Control
         private AnimStateSet activeSet;
         
         private static Dictionary<string, AnimationClip> processedClips = new Dictionary<string, AnimationClip>();
+        private Dictionary<string, AnimationSoundTag> soundTags = new Dictionary<string, AnimationSoundTag>();
 
         private class AnimStateSet
         {
@@ -300,7 +304,17 @@ namespace DoubTech.TPSCharacterController.Animation.Control
             eventReceiver.OnAnimationStart.RemoveListener(OnAnimationStartEvent);
             eventReceiver.OnAnimationEnd.RemoveListener(OnAnimationStopEvent);
             eventReceiver.OnTaggedAnimationEvent.RemoveListener(OnAnimationTagEvent);
+            eventReceiver.OnPlaySound.RemoveListener(OnPlaySound);
             isReady = false;
+        }
+
+        private void OnPlaySound(string clipName)
+        {
+            if (audioSource && soundTags.ContainsKey(clipName))
+            {
+                var clip = soundTags[clipName];
+                audioSource.PlayOneShot(clip.sound);
+            }
         }
 
         private void Update()
@@ -354,6 +368,7 @@ namespace DoubTech.TPSCharacterController.Animation.Control
                 eventReceiver.OnAnimationStart.AddListener(OnAnimationStartEvent);
                 eventReceiver.OnAnimationEnd.AddListener(OnAnimationStopEvent);
                 eventReceiver.OnTaggedAnimationEvent.AddListener(OnAnimationTagEvent);
+                eventReceiver.OnPlaySound.AddListener(OnPlaySound);
 
                 isReady = true;
             }
@@ -648,6 +663,12 @@ namespace DoubTech.TPSCharacterController.Animation.Control
                 foreach (var tag in config.animationTags)
                 {
                     AnimationEventReceiver.AddTaggedEvent(preppedClip, slotName, tag);
+                }
+
+                foreach (var soundTag in config.soundTags)
+                {
+                    soundTags[soundTag.sound.name] = soundTag;
+                    AnimationEventReceiver.AddAudioEvent(preppedClip, soundTag);
                 }
             }
 
