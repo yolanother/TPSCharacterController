@@ -204,6 +204,12 @@ namespace DoubTech.TPSCharacterController.Animation.Slots
 
         #region Actions
 
+        public static readonly AnimationSlotDefinition MULTIPURPOSE = new AnimationSlotDefinition()
+            {actionName = "Multipurpose", slotName = "Actions - Multipurpose", animStateHash = Animator.StringToHash("Actions - Multipurpose")};
+
+        public static readonly AnimationSlotDefinition DEATH = new AnimationSlotDefinition()
+            {actionName = "Death", slotName = "Actions - Death", animStateHash = Animator.StringToHash("Death")};
+
         public static readonly AnimationSlotDefinition USE = new AnimationSlotDefinition()
             {actionName = "Use", slotName = "Actions - Use", animStateHash = Animator.StringToHash("Use")};
 

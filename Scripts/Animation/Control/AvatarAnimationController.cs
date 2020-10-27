@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using DoubTech.TPSCharacterController.Animation.Slots;
+using Sirenix.OdinInspector;
 using UnityEngine.Events;
 
 namespace DoubTech.TPSCharacterController.Animation.Control
@@ -538,6 +539,34 @@ namespace DoubTech.TPSCharacterController.Animation.Control
                 OnAnimationStartEvent(slot.slotName);
                 OnAnimationStopEvent(slot.slotName);
             }
+        }
+
+        /// <summary>
+        /// Play a custom animation clip
+        /// </summary>
+        /// <param name="clip"></param>
+        public void PlayAnimation(AnimationClip clip)
+        {
+            var slot = AnimSlotDefinitions.MULTIPURPOSE.slotName;
+            activeController[slot] = PrepareClip(slot, clip);
+            animator.CrossFade(AnimSlotDefinitions.MULTIPURPOSE.animStateHash, .1f, activeLayer);
+        }
+        
+
+        /// <summary>
+        /// Plays the default death animation or a animation clip provided. When the animation finishes it will not
+        /// go back to the locomotion states.
+        /// </summary>
+        /// <param name="clip"></param>
+        [Button]
+        public void Die(AnimationClip clip = null)
+        {
+            if (clip)
+            {
+                var slot = AnimSlotDefinitions.DEATH.slotName;
+                activeController[slot] = PrepareClip(slot, clip);
+            } 
+            PlaySlot(AnimSlotDefinitions.DEATH, activeLayer);
         }
 
         public bool Equip()

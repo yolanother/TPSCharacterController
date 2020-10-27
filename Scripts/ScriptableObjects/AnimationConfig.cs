@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using DoubTech.TPSCharacterController.Scripts.Animation;
 
 namespace DoubTech.TPSCharacterController.Animation
 {
@@ -17,5 +18,8 @@ namespace DoubTech.TPSCharacterController.Animation
 
         [Header("Animation Tags")]
         [SerializeField] public AnimationTag[] animationTags;
+
+        [Header("Sound Tags")] 
+        [SerializeField] public AnimationSoundTag[] soundTags;
     }
 }
