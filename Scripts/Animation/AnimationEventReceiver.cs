@@ -20,7 +20,14 @@ namespace DoubTech.TPSCharacterController.Animation
         private TaggedAnimationEvent onTaggedAnimationEvent = new TaggedAnimationEvent();
         [SerializeField]
         private NamedAnimationEvent onPlaySound = new NamedAnimationEvent();
+        [SerializeField]
+        private StateEnterEvent onEnterState = new StateEnterEvent();
+        [SerializeField]
+        private StateExitEvent onExitState = new StateExitEvent();
 
+        public StateEnterEvent OnEnterState => onEnterState;
+        public StateExitEvent OnExitState => onExitState;
+        
         public NamedAnimationEvent OnNamedAnimationEvent => onNamedAnimationEvent;
         public NamedAnimationEvent OnAnimationStart => onAnimationStart;
         public NamedAnimationEvent OnAnimationEnd => onAnimationEnd;
@@ -105,6 +112,16 @@ namespace DoubTech.TPSCharacterController.Animation
             evt.stringParameter = soundTag.sound.name;
             clip.AddEvent(evt);
         }
+
+        public void StateEnterEvent(string tag)
+        {
+            onEnterState.Invoke(tag);
+        }
+
+        public void StateExitEvent(string tag)
+        {
+            onExitState.Invoke(tag);
+        }
     }
 
     [SerializeField]
@@ -116,4 +133,8 @@ namespace DoubTech.TPSCharacterController.Animation
     public class TaggedAnimationEvent : UnityEvent<AnimationTagType, string, string>
     {
     }
+
+    public class StateEnterEvent : UnityEvent<string> { }
+
+    public class StateExitEvent : UnityEvent<string> { }
 }

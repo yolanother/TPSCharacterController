@@ -44,8 +44,10 @@ namespace DoubTech.TPSCharacterController.Animation.Control
         
         [SerializeField] private UnityEvent onStartUse = new UnityEvent();
         [SerializeField] private UnityEvent onStopUse = new UnityEvent();
+        [SerializeField] private UnityEvent onAvatarReady = new UnityEvent();
+        public UnityEvent OnAvatarReady => onAvatarReady;
 
-        [SerializeField] private float maxCooldown = 2;
+        private float maxCooldown = 2;
 
         [SerializeField] private AudioSource audioSource;
 
@@ -72,6 +74,10 @@ namespace DoubTech.TPSCharacterController.Animation.Control
         private readonly int AnimBlock = Animator.StringToHash("Blocks");
         private readonly int AnimCombatDirectionVertical = Animator.StringToHash("CombatDirectionVertical");
         private readonly int AnimCombatDirectionHorizontal = Animator.StringToHash("CombatDirectionHorizontal");
+
+        private readonly int StateWeakAttacks = Animator.StringToHash("Weak Attacks");
+        private readonly int StateStrongAttacks = Animator.StringToHash("Strong Attacks");
+        private readonly int StateBlocks = Animator.StringToHash("Blocks");
 
         private AnimStateSet activeSet;
         
@@ -305,6 +311,7 @@ namespace DoubTech.TPSCharacterController.Animation.Control
             eventReceiver.OnAnimationEnd.RemoveListener(OnAnimationStopEvent);
             eventReceiver.OnTaggedAnimationEvent.RemoveListener(OnAnimationTagEvent);
             eventReceiver.OnPlaySound.RemoveListener(OnPlaySound);
+            eventReceiver.OnExitState.RemoveListener(OnExitState);
             isReady = false;
         }
 
@@ -369,8 +376,23 @@ namespace DoubTech.TPSCharacterController.Animation.Control
                 eventReceiver.OnAnimationEnd.AddListener(OnAnimationStopEvent);
                 eventReceiver.OnTaggedAnimationEvent.AddListener(OnAnimationTagEvent);
                 eventReceiver.OnPlaySound.AddListener(OnPlaySound);
+                eventReceiver.OnExitState.AddListener(OnExitState);
 
                 isReady = true;
+                onAvatarReady.Invoke();
+            }
+        }
+
+        private void OnExitState(string tag)
+        {
+            if(tag == "attack")
+            {
+                isAttacking = false;
+            }
+
+            if (tag == "block")
+            {
+                isBlocking = false;
             }
         }
 
@@ -379,7 +401,6 @@ namespace DoubTech.TPSCharacterController.Animation.Control
             switch (tagType)
             {
                 case AnimationTagType.Recover:
-                    isAttacking = false;
                     Debug.Log("Stopped attacking - in recovery with " + slot);
                     break;
                 case AnimationTagType.EquipGrab:
@@ -395,7 +416,6 @@ namespace DoubTech.TPSCharacterController.Animation.Control
         {
             if (slot.Contains(SlotAttack))
             {
-                isAttacking = false;
                 Debug.Log("Stopped attacking with " + slot);
             }
             else if (slot.Contains(SlotBlock))
@@ -462,7 +482,7 @@ namespace DoubTech.TPSCharacterController.Animation.Control
 
         public void StrongAttack()
         {
-            if (!IsBusy || cooldownStart + maxCooldown > Time.realtimeSinceStartup)
+            if (!IsBusy)
             {
                 cooldownStart = Time.realtimeSinceStartup;
                 isAttacking = true;
@@ -473,7 +493,8 @@ namespace DoubTech.TPSCharacterController.Animation.Control
 
         public void WeakAttack()
         {
-            if (!IsBusy || cooldownStart + maxCooldown > Time.realtimeSinceStartup)
+            Debug.Log("Attack: isBusy? " + IsBusy);
+            if (!IsBusy)
             {
                 cooldownStart = Time.realtimeSinceStartup;
                 isAttacking = true;
@@ -484,7 +505,7 @@ namespace DoubTech.TPSCharacterController.Animation.Control
 
         public void Block()
         {
-            if (!IsBusy || cooldownStart + maxCooldown > Time.realtimeSinceStartup)
+            if (!IsBusy)
             {
                 cooldownStart = Time.realtimeSinceStartup;
                 isBlocking = true;
