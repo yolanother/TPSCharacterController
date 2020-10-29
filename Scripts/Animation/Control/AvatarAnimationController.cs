@@ -292,9 +292,6 @@ namespace DoubTech.TPSCharacterController.Animation.Control
                         activeController[pair.Key.name] = PrepareClip(pair.Key.name, pair.Value);
                     }
                 }
-                
-                AnimationEventReceiver.AddStartAnimationEvent(pair.Key, pair.Key.name);
-                AnimationEventReceiver.AddStopAnimationEvent(pair.Key, pair.Key.name);
             }
             activeController.ApplyOverrides(overrides);
         }
@@ -307,11 +304,9 @@ namespace DoubTech.TPSCharacterController.Animation.Control
         private void OnDisable()
         {
             eventReceiver.OnNamedAnimationEvent.RemoveListener(OnAnimationEvent);
-            eventReceiver.OnAnimationStart.RemoveListener(OnAnimationStartEvent);
-            eventReceiver.OnAnimationEnd.RemoveListener(OnAnimationStopEvent);
             eventReceiver.OnTaggedAnimationEvent.RemoveListener(OnAnimationTagEvent);
             eventReceiver.OnPlaySound.RemoveListener(OnPlaySound);
-            eventReceiver.OnExitState.RemoveListener(OnExitState);
+            eventReceiver.OnExitState.RemoveListener(OnAnimationStopEvent);
             isReady = false;
         }
 
@@ -372,27 +367,12 @@ namespace DoubTech.TPSCharacterController.Animation.Control
                 }
 
                 eventReceiver.OnNamedAnimationEvent.AddListener(OnAnimationEvent);
-                eventReceiver.OnAnimationStart.AddListener(OnAnimationStartEvent);
-                eventReceiver.OnAnimationEnd.AddListener(OnAnimationStopEvent);
                 eventReceiver.OnTaggedAnimationEvent.AddListener(OnAnimationTagEvent);
                 eventReceiver.OnPlaySound.AddListener(OnPlaySound);
-                eventReceiver.OnExitState.AddListener(OnExitState);
+                eventReceiver.OnExitState.AddListener(OnAnimationStopEvent);
 
                 isReady = true;
                 onAvatarReady.Invoke();
-            }
-        }
-
-        private void OnExitState(string tag)
-        {
-            if(tag == "attack")
-            {
-                isAttacking = false;
-            }
-
-            if (tag == "block")
-            {
-                isBlocking = false;
             }
         }
 
@@ -412,45 +392,33 @@ namespace DoubTech.TPSCharacterController.Animation.Control
             }
         }
 
-        private void OnAnimationStopEvent(string slot)
+        private void OnAnimationStartEvent(string tag)
         {
-            if (slot.Contains(SlotAttack))
+        }
+
+        private void OnAnimationStopEvent(string tag)
+        {
+            if (tag == "attack")
             {
-                Debug.Log("Stopped attacking with " + slot);
+                isAttacking = false;
             }
-            else if (slot.Contains(SlotBlock))
+            else if (tag == "block")
             {
                 isBlocking = false;
             }
-            else if (slot == AnimSlotDefinitions.USE.slotName)
+            else if (tag == AnimSlotDefinitions.USE.tag)
             {
                 isUsing = false;
                 onStopUse.Invoke();
             }
-            else if (slot == AnimSlotDefinitions.EQUIP.slotName)
+            else if (tag == AnimSlotDefinitions.EQUIP.tag)
             {
                 onEquipEnd.Invoke();
             }
-            else if (slot == AnimSlotDefinitions.UNEQUIP.slotName)
+            else if (tag == AnimSlotDefinitions.UNEQUIP.tag)
             {
                 ClearOverrides();
                 onUnequipEnd.Invoke();
-            }
-        }
-
-        private void OnAnimationStartEvent(string slot)
-        {
-            if (slot.Contains(SlotAttack))
-            {
-                Debug.Log("Started attacking with slot " + slot);
-            }
-            else if (slot.Contains(SlotBlock))
-            {
-                
-            }
-            else if (slot == AnimSlotDefinitions.USE.slotName)
-            {
-                isUsing = true;
             }
         }
 
@@ -463,6 +431,7 @@ namespace DoubTech.TPSCharacterController.Animation.Control
         {
             if (!IsBusy)
             {
+                isUsing = true;
                 onStartUse.Invoke();
                 activeController[AnimSlotDefinitions.USE.slotName] =
                     PrepareClip(AnimSlotDefinitions.USE.slotName, clip);
@@ -474,6 +443,7 @@ namespace DoubTech.TPSCharacterController.Animation.Control
         {
             if (!IsBusy)
             {
+                isUsing = true;
                 activeController[AnimSlotDefinitions.USE.slotName] =
                     PrepareClip(AnimSlotDefinitions.USE.slotName, config.animation, config);
                 animator.CrossFade(AnimSlotDefinitions.USE.animStateHash, .1f);
@@ -572,8 +542,8 @@ namespace DoubTech.TPSCharacterController.Animation.Control
             }
             else
             {
-                OnAnimationStartEvent(slot.slotName);
-                OnAnimationStopEvent(slot.slotName);
+                OnAnimationStartEvent(slot.tag);
+                OnAnimationStopEvent(slot.tag);
             }
         }
 
@@ -672,12 +642,6 @@ namespace DoubTech.TPSCharacterController.Animation.Control
             
             preppedClip = Instantiate(clip);
             processedClips[key] = preppedClip;
-            
-            if (!preppedClip.isLooping)
-            {
-                AnimationEventReceiver.AddStartAnimationEvent(preppedClip, slotName);
-                AnimationEventReceiver.AddStopAnimationEvent(preppedClip, slotName);
-            }
 
             if (config)
             {

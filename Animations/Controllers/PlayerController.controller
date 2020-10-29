@@ -476,6 +476,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 863d7e3ca0af7c246a878cc6b48fb35d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tag: unequip
 --- !u!1101 &-8232289167304007255
 AnimatorStateTransition:
   m_ObjectHideFlags: 3
@@ -921,6 +922,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 863d7e3ca0af7c246a878cc6b48fb35d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tag: 
 --- !u!1102 &-7649032511673423154
 AnimatorState:
   serializedVersion: 5
@@ -2273,6 +2275,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 863d7e3ca0af7c246a878cc6b48fb35d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tag: equip
 --- !u!1102 &-6195598617579069711
 AnimatorState:
   serializedVersion: 5
@@ -3235,6 +3238,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 863d7e3ca0af7c246a878cc6b48fb35d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tag: attack
 --- !u!1101 &-4972452442052283123
 AnimatorStateTransition:
   m_ObjectHideFlags: 3
@@ -3727,6 +3731,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 863d7e3ca0af7c246a878cc6b48fb35d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tag: block
 --- !u!1102 &-4335706381096001258
 AnimatorState:
   serializedVersion: 5
@@ -4235,6 +4240,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 863d7e3ca0af7c246a878cc6b48fb35d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tag: use
 --- !u!1101 &-3834147123353492842
 AnimatorStateTransition:
   m_ObjectHideFlags: 3
@@ -4671,6 +4677,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 863d7e3ca0af7c246a878cc6b48fb35d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tag: attack
 --- !u!1101 &-3100166277450777042
 AnimatorStateTransition:
   m_ObjectHideFlags: 3
@@ -5105,6 +5112,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 863d7e3ca0af7c246a878cc6b48fb35d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tag: attack
 --- !u!1101 &-2798546918926894088
 AnimatorStateTransition:
   m_ObjectHideFlags: 3
@@ -5153,6 +5161,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 863d7e3ca0af7c246a878cc6b48fb35d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tag: 
 --- !u!114 &-2693173025886732842
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5165,6 +5174,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 863d7e3ca0af7c246a878cc6b48fb35d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tag: attack
 --- !u!1101 &-2653361375545065058
 AnimatorStateTransition:
   m_ObjectHideFlags: 3
@@ -5903,6 +5913,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 863d7e3ca0af7c246a878cc6b48fb35d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tag: 
 --- !u!1102 &-1259442351241226111
 AnimatorState:
   serializedVersion: 5
@@ -5942,6 +5953,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 863d7e3ca0af7c246a878cc6b48fb35d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tag: equip
 --- !u!1107 &-1235133858532363942
 AnimatorStateMachine:
   serializedVersion: 5
@@ -6123,6 +6135,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 863d7e3ca0af7c246a878cc6b48fb35d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tag: 
 --- !u!114 &-921111102115588696
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -6135,6 +6148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 863d7e3ca0af7c246a878cc6b48fb35d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tag: use
 --- !u!1101 &-769023141702727270
 AnimatorStateTransition:
   m_ObjectHideFlags: 3
@@ -6276,6 +6290,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 863d7e3ca0af7c246a878cc6b48fb35d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tag: block
 --- !u!1101 &-632343056873603013
 AnimatorStateTransition:
   m_ObjectHideFlags: 3
@@ -6682,6 +6697,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 863d7e3ca0af7c246a878cc6b48fb35d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tag: unequip
 --- !u!1101 &-28988192671885383
 AnimatorStateTransition:
   m_ObjectHideFlags: 3
@@ -7625,6 +7641,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 863d7e3ca0af7c246a878cc6b48fb35d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tag: unequip
 --- !u!1102 &943298054023826178
 AnimatorState:
   serializedVersion: 5
@@ -7834,6 +7851,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 863d7e3ca0af7c246a878cc6b48fb35d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tag: use
 --- !u!1101 &1272915878362007029
 AnimatorStateTransition:
   m_ObjectHideFlags: 3
@@ -11172,6 +11190,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 863d7e3ca0af7c246a878cc6b48fb35d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tag: attack
 --- !u!1102 &6943261757547437023
 AnimatorState:
   serializedVersion: 5
@@ -11282,6 +11301,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 863d7e3ca0af7c246a878cc6b48fb35d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tag: equip
 --- !u!1101 &7121365626891667737
 AnimatorStateTransition:
   m_ObjectHideFlags: 3
@@ -12588,6 +12608,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 863d7e3ca0af7c246a878cc6b48fb35d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tag: block
 --- !u!1101 &8455382673336182422
 AnimatorStateTransition:
   m_ObjectHideFlags: 3
@@ -12810,6 +12831,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 863d7e3ca0af7c246a878cc6b48fb35d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tag: attack
 --- !u!1101 &8711948586260565536
 AnimatorStateTransition:
   m_ObjectHideFlags: 3
