@@ -29,4 +29,4 @@ MonoBehaviour:
     time: 0.2
   soundTags:
   - sound: {fileID: 8300000, guid: 461cc8313c0234690898319549eec321, type: 3}
-    time: 0.2
+    time: 0

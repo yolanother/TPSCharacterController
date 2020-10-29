@@ -23,3 +23,35 @@ MonoBehaviour:
       config: {fileID: 11400000, guid: 6ef5f54cad5f3c64192de90971922669, type: 2}
     - slot: Actions - Unequip
       config: {fileID: 11400000, guid: 2b8c540c51ad88b4caa8b2ca0528757f, type: 2}
+  primaryAttacks:
+  - {fileID: 7400044, guid: a9e228972999b0d46a21e30edf97d812, type: 3}
+  - {fileID: 7400056, guid: a9e228972999b0d46a21e30edf97d812, type: 3}
+  - {fileID: 7400060, guid: a9e228972999b0d46a21e30edf97d812, type: 3}
+  - {fileID: 7400042, guid: a9e228972999b0d46a21e30edf97d812, type: 3}
+  - {fileID: 7400052, guid: a9e228972999b0d46a21e30edf97d812, type: 3}
+  - {fileID: 7400040, guid: a9e228972999b0d46a21e30edf97d812, type: 3}
+  - {fileID: 7400054, guid: a9e228972999b0d46a21e30edf97d812, type: 3}
+  - {fileID: 7400062, guid: a9e228972999b0d46a21e30edf97d812, type: 3}
+  - {fileID: 7400058, guid: a9e228972999b0d46a21e30edf97d812, type: 3}
+  - {fileID: 7400064, guid: a9e228972999b0d46a21e30edf97d812, type: 3}
+  - {fileID: 7400066, guid: a9e228972999b0d46a21e30edf97d812, type: 3}
+  - {fileID: 7400046, guid: a9e228972999b0d46a21e30edf97d812, type: 3}
+  - {fileID: 7400050, guid: a9e228972999b0d46a21e30edf97d812, type: 3}
+  - {fileID: 7400048, guid: a9e228972999b0d46a21e30edf97d812, type: 3}
+  - {fileID: 7400038, guid: a9e228972999b0d46a21e30edf97d812, type: 3}
+  secondaryAttacks:
+  - {fileID: 7400044, guid: a9e228972999b0d46a21e30edf97d812, type: 3}
+  - {fileID: 7400056, guid: a9e228972999b0d46a21e30edf97d812, type: 3}
+  - {fileID: 7400060, guid: a9e228972999b0d46a21e30edf97d812, type: 3}
+  - {fileID: 7400042, guid: a9e228972999b0d46a21e30edf97d812, type: 3}
+  - {fileID: 7400052, guid: a9e228972999b0d46a21e30edf97d812, type: 3}
+  - {fileID: 7400040, guid: a9e228972999b0d46a21e30edf97d812, type: 3}
+  - {fileID: 7400054, guid: a9e228972999b0d46a21e30edf97d812, type: 3}
+  - {fileID: 7400062, guid: a9e228972999b0d46a21e30edf97d812, type: 3}
+  - {fileID: 7400058, guid: a9e228972999b0d46a21e30edf97d812, type: 3}
+  - {fileID: 7400064, guid: a9e228972999b0d46a21e30edf97d812, type: 3}
+  - {fileID: 7400066, guid: a9e228972999b0d46a21e30edf97d812, type: 3}
+  - {fileID: 7400046, guid: a9e228972999b0d46a21e30edf97d812, type: 3}
+  - {fileID: 7400050, guid: a9e228972999b0d46a21e30edf97d812, type: 3}
+  - {fileID: 7400048, guid: a9e228972999b0d46a21e30edf97d812, type: 3}
+  - {fileID: 7400038, guid: a9e228972999b0d46a21e30edf97d812, type: 3}

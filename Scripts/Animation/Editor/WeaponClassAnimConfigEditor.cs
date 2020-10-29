@@ -6,7 +6,7 @@ using UnityEditor;
 
 namespace DoubTech.TPSCharacterController.Animation
 {
-    [CustomEditor(typeof(WeaponClassAnimConfig))]
+    //[CustomEditor(typeof(WeaponClassAnimConfig))]
     public class WeaponClassAnimConfigEditor : Editor
     {
         private ActionSetEditor actionSetEditor;

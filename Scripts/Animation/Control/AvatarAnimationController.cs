@@ -264,7 +264,7 @@ namespace DoubTech.TPSCharacterController.Animation.Control
         public bool IsBlocking => isBlocking;
         public bool IsUsing => isUsing;
 
-        public bool IsBusy => isAttacking || isBlocking || isUsing;
+        public bool IsBusy => isAttacking || isBlocking || isUsing || IsDead;
 
         public int AttackVertical
         {
@@ -457,7 +457,8 @@ namespace DoubTech.TPSCharacterController.Animation.Control
                 cooldownStart = Time.realtimeSinceStartup;
                 isAttacking = true;
                 Debug.Log("Triggering strong attack...");
-                animator.CrossFade(AnimAttackStrong, .1f);
+                activeController["_Action"] = equippedWeaponAnimConfig.GetSecondaryAttack(AttackHorizontal, AttackVertical);
+                animator.CrossFade("Action", .1f);
             }
         }
 
@@ -466,21 +467,22 @@ namespace DoubTech.TPSCharacterController.Animation.Control
             Debug.Log("Attack: isBusy? " + IsBusy);
             if (!IsBusy)
             {
-                cooldownStart = Time.realtimeSinceStartup;
-                isAttacking = true;
-                Debug.Log("Triggering weak attack...");
-                animator.CrossFade(AnimAttackWeak, .1f);
+            cooldownStart = Time.realtimeSinceStartup;
+            isAttacking = true;
+            Debug.Log("Triggering strong attack...");
+            activeController["_Action"] = equippedWeaponAnimConfig.GetPrimaryAttack(AttackHorizontal, AttackVertical);
+            animator.CrossFade("Action", .1f);
             }
         }
 
         public void Block()
         {
-            if (!IsBusy)
+            /*if (!IsBusy)
             {
                 cooldownStart = Time.realtimeSinceStartup;
                 isBlocking = true;
                 animator.CrossFade(AnimBlock, .1f);
-            }
+            }*/
         }
 
         public void Jump(bool shouldMove = false)
@@ -567,6 +569,7 @@ namespace DoubTech.TPSCharacterController.Animation.Control
         [Button]
         public void Die(AnimationClip clip = null)
         {
+            IsDead = true;
             if (clip)
             {
                 var slot = AnimSlotDefinitions.DEATH.slotName;
@@ -574,6 +577,8 @@ namespace DoubTech.TPSCharacterController.Animation.Control
             } 
             PlaySlot(AnimSlotDefinitions.DEATH, activeLayer);
         }
+
+        public bool IsDead { get; set; }
 
         public bool Equip()
         {
