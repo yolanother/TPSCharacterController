@@ -303,10 +303,14 @@ namespace DoubTech.TPSCharacterController.Animation.Control
 
         private void OnDisable()
         {
-            eventReceiver.OnNamedAnimationEvent.RemoveListener(OnAnimationEvent);
-            eventReceiver.OnTaggedAnimationEvent.RemoveListener(OnAnimationTagEvent);
-            eventReceiver.OnPlaySound.RemoveListener(OnPlaySound);
-            eventReceiver.OnExitState.RemoveListener(OnAnimationStopEvent);
+            if (eventReceiver)
+            {
+                eventReceiver.OnNamedAnimationEvent.RemoveListener(OnAnimationEvent);
+                eventReceiver.OnTaggedAnimationEvent.RemoveListener(OnAnimationTagEvent);
+                eventReceiver.OnPlaySound.RemoveListener(OnPlaySound);
+                eventReceiver.OnExitState.RemoveListener(OnAnimationStopEvent);
+            }
+
             isReady = false;
         }
 
