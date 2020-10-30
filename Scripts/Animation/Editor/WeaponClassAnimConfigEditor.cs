@@ -6,7 +6,7 @@ using UnityEditor;
 
 namespace DoubTech.TPSCharacterController.Animation
 {
-    //[CustomEditor(typeof(WeaponClassAnimConfig))]
+    [CustomEditor(typeof(WeaponClassAnimConfig))]
     public class WeaponClassAnimConfigEditor : Editor
     {
         private ActionSetEditor actionSetEditor;
@@ -66,11 +66,11 @@ namespace DoubTech.TPSCharacterController.Animation
                     if (DragAndDrop.objectReferences.Length > 0)
                     {
                         object reference = DragAndDrop.objectReferences[0];
-                        if (reference is AnimationConfig)
+                        if (reference is AnimationConfigPreset)
                         {
-                            AnimationConfig configRef = reference as AnimationConfig;
-                            config.overrides[configRef.animationSlot] = new AnimationConfigOverride()
-                                {slot = configRef.animationSlot, config = configRef};
+                            AnimationConfigPreset configPresetRef = reference as AnimationConfigPreset;
+                            config.overrides[configPresetRef.config.animationSlot] = new AnimationConfigOverride()
+                                { preset = configPresetRef };
                             EditorUtility.SetDirty(config);
                         }
                     }

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,10 +7,19 @@ using DoubTech.TPSCharacterController.Scripts.Animation;
 namespace DoubTech.TPSCharacterController.Animation
 {
     [CreateAssetMenu(menuName = "TPS Character Controller/Animation Config")]
-    public class AnimationConfig : ScriptableObject
+    public class AnimationConfigPreset : ScriptableObject
     {
+        [SerializeField] public AnimationConfig config;
+    }
+
+    [Serializable]
+    public class AnimationConfig
+    {
+        [SerializeField] public string name;
         [SerializeField] public string animationSlot;
         [SerializeField] public AnimationClip animation;
+        [SerializeField] public float enterTransition = .1f;
+        [SerializeField] public float exitTransition = 0f;
 
         [Header("Override Layers")]
         [SerializeField] public LayerConfig fullBody = new LayerConfig(2);

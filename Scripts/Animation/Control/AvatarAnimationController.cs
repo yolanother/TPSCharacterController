@@ -259,12 +259,13 @@ namespace DoubTech.TPSCharacterController.Animation.Control
         private bool isBlocking;
         private bool isUsing;
         private float cooldownStart;
+        private bool isPlayingAction;
 
         public bool IsAttacking => isAttacking;
         public bool IsBlocking => isBlocking;
         public bool IsUsing => isUsing;
 
-        public bool IsBusy => isAttacking || isBlocking || isUsing || IsDead;
+        public bool IsBusy => isPlayingAction || isUsing || IsDead;
 
         public int AttackVertical
         {
@@ -398,13 +399,9 @@ namespace DoubTech.TPSCharacterController.Animation.Control
 
         private void OnAnimationStopEvent(string tag)
         {
-            if (tag == "attack")
+            if (tag == "action")
             {
-                isAttacking = false;
-            }
-            else if (tag == "block")
-            {
-                isBlocking = false;
+                isPlayingAction = false;
             }
             else if (tag == AnimSlotDefinitions.USE.tag)
             {
@@ -450,39 +447,36 @@ namespace DoubTech.TPSCharacterController.Animation.Control
             }
         }
 
-        public void StrongAttack()
+        public bool PlayAction(AnimationConfig config)
         {
-            if (!IsBusy)
+            if (!IsBusy && null != config && config.animation)
             {
                 cooldownStart = Time.realtimeSinceStartup;
-                isAttacking = true;
+                isPlayingAction = true;
                 Debug.Log("Triggering strong attack...");
-                activeController["_Action"] = equippedWeaponAnimConfig.GetSecondaryAttack(AttackHorizontal, AttackVertical);
+                activeController["_Action"] = PrepareClip(config.animationSlot, config.animation, config);
+                
                 animator.CrossFade("Action", .1f);
+                return true;
             }
+
+            return false;
         }
 
-        public void WeakAttack()
+        public void SecondaryAttack()
+        {
+            PlayAction(equippedWeaponAnimConfig.GetSecondaryAttack(AttackHorizontal, AttackVertical));
+        }
+
+        public void PrimaryAttack()
         {
             Debug.Log("Attack: isBusy? " + IsBusy);
-            if (!IsBusy)
-            {
-            cooldownStart = Time.realtimeSinceStartup;
-            isAttacking = true;
-            Debug.Log("Triggering strong attack...");
-            activeController["_Action"] = equippedWeaponAnimConfig.GetPrimaryAttack(AttackHorizontal, AttackVertical);
-            animator.CrossFade("Action", .1f);
-            }
+            PlayAction(equippedWeaponAnimConfig.GetPrimaryAttack(AttackHorizontal, AttackVertical));
         }
 
         public void Block()
         {
-            /*if (!IsBusy)
-            {
-                cooldownStart = Time.realtimeSinceStartup;
-                isBlocking = true;
-                animator.CrossFade(AnimBlock, .1f);
-            }*/
+            PlayAction(equippedWeaponAnimConfig.GetBlock(AttackHorizontal, AttackVertical));
         }
 
         public void Jump(bool shouldMove = false)
@@ -535,17 +529,33 @@ namespace DoubTech.TPSCharacterController.Animation.Control
             animator.CrossFade(activeSet.UncontrolledFall, fallTransition);
         }
 
-        private void PlaySlot(AnimationSlotDefinition slot, int layer)
+        private void PlaySlot(AnimationSlotDefinition slot, int layer, AnimationConfig config = null)
         {
-            var clip = activeController[slot.slotName];
-            if (clip && clip.length > 0 && clip.name != slot.slotName)
+            if (null != config)
             {
-                animator.CrossFade(slot.animStateHash, .1f, layer);
+                if (config.animation)
+                {
+                    activeController[slot.slotName] = config.animation;
+                    animator.CrossFade(slot.animStateHash, config.enterTransition, layer);
+                }
+                else
+                {
+                    OnAnimationStartEvent(slot.tag);
+                    OnAnimationStopEvent(slot.tag);
+                }
             }
             else
             {
-                OnAnimationStartEvent(slot.tag);
-                OnAnimationStopEvent(slot.tag);
+                var clip = activeController[slot.slotName];
+                if (clip && clip.length > 0 && clip.name != slot.slotName)
+                {
+                    animator.CrossFade(slot.animStateHash, .1f, layer);
+                }
+                else
+                {
+                    OnAnimationStartEvent(slot.tag);
+                    OnAnimationStopEvent(slot.tag);
+                }
             }
         }
 
@@ -587,7 +597,7 @@ namespace DoubTech.TPSCharacterController.Animation.Control
                 activeLayer = AnimLayerCombat;
                 ApplyOverrides();
 
-                PlaySlot(AnimSlotDefinitions.EQUIP, 2);
+                PlaySlot(AnimSlotDefinitions.EQUIP, 2, equippedWeaponAnimConfig.equip.Config);
                 activeLayerWeight = animator.GetLayerWeight(AnimLayerCombat);
                 return true;
             }
@@ -600,7 +610,7 @@ namespace DoubTech.TPSCharacterController.Animation.Control
             if (activeLayer == AnimLayerCombat)
             {
                 activeLayer = AnimLayerDefault;
-                PlaySlot(AnimSlotDefinitions.UNEQUIP, 2);
+                PlaySlot(AnimSlotDefinitions.UNEQUIP, 2, equippedWeaponAnimConfig.unequip.Config);
                 activeLayerWeight = animator.GetLayerWeight(AnimLayerCombat);
                 return true;
             }
@@ -630,7 +640,7 @@ namespace DoubTech.TPSCharacterController.Animation.Control
                 for (int i = 0; i < values.Count; i++)
                 {
                     var slot = values[i];
-                    activeController[slot.slot] = PrepareClip(slot.slot, slot.config.animation, slot.config);
+                    activeController[slot.slot] = PrepareClip(slot.slot, slot.Config.animation, slot.Config);
                 }
             }
         }
@@ -638,7 +648,7 @@ namespace DoubTech.TPSCharacterController.Animation.Control
         private AnimationClip PrepareClip(string slotName, AnimationClip clip, AnimationConfig config = null)
         {
             string key = slotName + "::" + clip.name;
-            if (config) key += "::" + config.name;
+            if (null != config) key += "::" + config.name;
             AnimationClip preppedClip;
             if (processedClips.TryGetValue(key, out preppedClip))
             {
@@ -648,7 +658,7 @@ namespace DoubTech.TPSCharacterController.Animation.Control
             preppedClip = Instantiate(clip);
             processedClips[key] = preppedClip;
 
-            if (config)
+            if (null != config)
             {
                 foreach (var tag in config.animationTags)
                 {

@@ -4928,7 +4928,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 863d7e3ca0af7c246a878cc6b48fb35d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tag: attack
+  tag: action
   useStateExit: 1
 --- !u!114 &-921111102115588696
 MonoBehaviour:
