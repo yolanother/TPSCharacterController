@@ -535,7 +535,7 @@ namespace DoubTech.TPSCharacterController.Animation.Control
             {
                 if (config.animation)
                 {
-                    activeController[slot.slotName] = config.animation;
+                    activeController[slot.slotName] = PrepareClip(slot.slotName, config.animation, config);
                     animator.CrossFade(slot.animStateHash, config.enterTransition, layer);
                 }
                 else
