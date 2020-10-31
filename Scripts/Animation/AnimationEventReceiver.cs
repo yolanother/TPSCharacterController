@@ -79,11 +79,24 @@ namespace DoubTech.TPSCharacterController.Animation
 
         public static void AddNamedEvent(AnimationClip clip, string name,  float time)
         {
-            AnimationEvent evt = new AnimationEvent();
-            evt.time = time;
-            evt.functionName = "SendEvent";
-            evt.stringParameter = name;
-            clip.AddEvent(evt);
+            bool found = false;
+            foreach (var e in clip.events)
+            {
+                if (e.stringParameter == name)
+                {
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found)
+            {
+                AnimationEvent evt = new AnimationEvent();
+                evt.time = time;
+                evt.functionName = "SendEvent";
+                evt.stringParameter = name;
+                clip.AddEvent(evt);
+            }
         }
 
         public static void AddStartAnimationEvent(AnimationClip clip, string name)

@@ -45,6 +45,8 @@ namespace DoubTech.TPSCharacterController.Animation.Control
         [SerializeField] private UnityEvent onStartUse = new UnityEvent();
         [SerializeField] private UnityEvent onStopUse = new UnityEvent();
         [SerializeField] private UnityEvent onAvatarReady = new UnityEvent();
+        [SerializeField] private UnityEvent onDeathFinished = new UnityEvent();
+        
         public UnityEvent OnAvatarReady => onAvatarReady;
 
         private float maxCooldown = 2;
@@ -78,6 +80,8 @@ namespace DoubTech.TPSCharacterController.Animation.Control
         private readonly int StateWeakAttacks = Animator.StringToHash("Weak Attacks");
         private readonly int StateStrongAttacks = Animator.StringToHash("Strong Attacks");
         private readonly int StateBlocks = Animator.StringToHash("Blocks");
+
+        private const string DeathCompleteEvent = "OnDeathComplete";
 
         private AnimStateSet activeSet;
         
@@ -421,7 +425,10 @@ namespace DoubTech.TPSCharacterController.Animation.Control
 
         private void OnAnimationEvent(string eventName)
         {
-
+            if (eventName == DeathCompleteEvent)
+            {
+                onDeathFinished.Invoke();
+            }
         }
 
         public void Use(AnimationClip clip)
@@ -583,7 +590,9 @@ namespace DoubTech.TPSCharacterController.Animation.Control
             if (clip)
             {
                 var slot = AnimSlotDefinitions.DEATH.slotName;
-                activeController[slot] = PrepareClip(slot, clip);
+                var preppedClip = PrepareClip(slot, clip);
+                AnimationEventReceiver.AddNamedEvent(preppedClip, DeathCompleteEvent, Mathf.Max(0, preppedClip.length - .01f));
+                activeController[slot] = preppedClip;
             } 
             PlaySlot(AnimSlotDefinitions.DEATH, activeLayer);
         }
