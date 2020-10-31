@@ -47,6 +47,18 @@ namespace DoubTech.TPSCharacterController.Animation.Control
         [SerializeField] private UnityEvent onAvatarReady = new UnityEvent();
         [SerializeField] private UnityEvent onDeathFinished = new UnityEvent();
         
+        [Header("Attack Events")]
+        [SerializeField] private UnityEvent onAttackStarted = new UnityEvent();
+        [SerializeField] private UnityEvent onAttackStopped = new UnityEvent();
+        public UnityEvent OnAttackStarted => onAttackStarted;
+        public UnityEvent OnAttackStopped => onAttackStopped;
+        
+        [Header("Block Events")]
+        [SerializeField] private UnityEvent onBlockStarted = new UnityEvent();
+        [SerializeField] private UnityEvent onBlockStopped = new UnityEvent();
+        public UnityEvent OnBlockStarted => onBlockStarted;
+        public UnityEvent OnBlockStopped => onBlockStopped;
+        
         public UnityEvent OnAvatarReady => onAvatarReady;
 
         private float maxCooldown = 2;
@@ -301,16 +313,12 @@ namespace DoubTech.TPSCharacterController.Animation.Control
             activeController.ApplyOverrides(overrides);
         }
 
-        private void OnEnable()
-        {
-            CharacterReady();
-        }
-
         private void OnDisable()
         {
             eventReceiver.OnNamedAnimationEvent.RemoveListener(OnAnimationEvent);
             eventReceiver.OnTaggedAnimationEvent.RemoveListener(OnAnimationTagEvent);
             eventReceiver.OnPlaySound.RemoveListener(OnPlaySound);
+            eventReceiver.OnEnterState.RemoveListener(OnAnimationStartEvent);
             eventReceiver.OnExitState.RemoveListener(OnAnimationStopEvent);
             isReady = false;
         }
@@ -375,6 +383,7 @@ namespace DoubTech.TPSCharacterController.Animation.Control
                 eventReceiver.OnTaggedAnimationEvent.AddListener(OnAnimationTagEvent);
                 eventReceiver.OnPlaySound.AddListener(OnPlaySound);
                 eventReceiver.OnExitState.AddListener(OnAnimationStopEvent);
+                eventReceiver.OnEnterState.AddListener(OnAnimationStartEvent);
 
                 isReady = true;
                 onAvatarReady.Invoke();
@@ -399,6 +408,18 @@ namespace DoubTech.TPSCharacterController.Animation.Control
 
         private void OnAnimationStartEvent(string tag)
         {
+            if (tag == "action")
+            {
+                if (isAttacking)
+                {
+                    onAttackStarted.Invoke();
+                }
+
+                if (isBlocking)
+                {
+                    onBlockStarted.Invoke();
+                }
+            }
         }
 
         private void OnAnimationStopEvent(string tag)
@@ -406,6 +427,18 @@ namespace DoubTech.TPSCharacterController.Animation.Control
             if (tag == "action")
             {
                 isPlayingAction = false;
+
+                if (isAttacking)
+                {
+                    isAttacking = false;
+                    onAttackStopped.Invoke();
+                }
+
+                if (isBlocking)
+                {
+                    isBlocking = false;
+                    onBlockStopped.Invoke();
+                }
             }
             else if (tag == AnimSlotDefinitions.USE.tag)
             {
@@ -472,18 +505,27 @@ namespace DoubTech.TPSCharacterController.Animation.Control
 
         public void SecondaryAttack()
         {
-            PlayAction(equippedWeaponAnimConfig.GetSecondaryAttack(AttackHorizontal, AttackVertical));
+            if (PlayAction(equippedWeaponAnimConfig.GetSecondaryAttack(AttackHorizontal, AttackVertical)))
+            {
+                isAttacking = true;
+            }
         }
 
         public void PrimaryAttack()
         {
             Debug.Log("Attack: isBusy? " + IsBusy);
-            PlayAction(equippedWeaponAnimConfig.GetPrimaryAttack(AttackHorizontal, AttackVertical));
+            if (PlayAction(equippedWeaponAnimConfig.GetPrimaryAttack(AttackHorizontal, AttackVertical)))
+            {
+                isAttacking = true;
+            }
         }
 
         public void Block()
         {
-            PlayAction(equippedWeaponAnimConfig.GetBlock(AttackHorizontal, AttackVertical));
+            if (PlayAction(equippedWeaponAnimConfig.GetBlock(AttackHorizontal, AttackVertical)))
+            {
+                isBlocking = true;
+            }
         }
 
         public void Jump(bool shouldMove = false)
