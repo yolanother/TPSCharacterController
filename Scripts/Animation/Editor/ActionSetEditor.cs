@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using DoubTech.TPSCharacterController.Animation.Slots;
+using DoubTech.TPSCharacterController.Scripts.Animation;
 using UnityEditor;
 
 namespace DoubTech.TPSCharacterController.Animation
@@ -145,6 +146,29 @@ namespace DoubTech.TPSCharacterController.Animation
                             slot.preset = reference as AnimationConfigPreset;
                             EditorUtility.SetDirty(config);
                         }
+                        else if (reference is AudioClip)
+                        {
+                            var audio = reference as AudioClip;
+                            bool hasFile = false;
+                            var tags = slot.Config.soundTags;
+                            AnimationSoundTag[] newTags = new AnimationSoundTag[tags.Length + 1];
+                            for (int i = 0; i < tags.Length; i++)
+                            {
+                                if (tags[i].sound.name == audio.name) hasFile = true;
+                                newTags[i] = tags[i];
+                            }
+
+                            if (!hasFile)
+                            {
+                                newTags[tags.Length] = new AnimationSoundTag()
+                                {
+                                    sound = audio
+                                };
+                                slot.Config.soundTags = newTags;
+                                EditorUtility.SetDirty(config);
+                            }
+                        }
+                        
                     }
 
                     Event.current.Use();
