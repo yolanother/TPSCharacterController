@@ -30,6 +30,11 @@ namespace DoubTech.TPSCharacterController.Animation.Control
 
         [SerializeField] private float unequipTransition = .1f;
         [SerializeField] private float combatLayerTransitionSpeed = 10;
+
+        [Header("Animation Layers")] 
+        [SerializeField] private int upperBodyLayer = 2;
+        [SerializeField] private int lowerBodyLayer = 3;
+        [SerializeField] private int fullBodyLayer = 4;
         
         [Header("Animation Events")]
         [SerializeField] private UnityEvent onEquipGrab = new UnityEvent();
@@ -50,6 +55,7 @@ namespace DoubTech.TPSCharacterController.Animation.Control
         [Header("Attack Events")]
         [SerializeField] private UnityEvent onAttackStarted = new UnityEvent();
         [SerializeField] private UnityEvent onAttackStopped = new UnityEvent();
+        [SerializeField] private UnityEvent onAttackInterrupted = new UnityEvent();
         public UnityEvent OnAttackStarted => onAttackStarted;
         public UnityEvent OnAttackStopped => onAttackStopped;
         
@@ -92,6 +98,8 @@ namespace DoubTech.TPSCharacterController.Animation.Control
         private readonly int StateWeakAttacks = Animator.StringToHash("Weak Attacks");
         private readonly int StateStrongAttacks = Animator.StringToHash("Strong Attacks");
         private readonly int StateBlocks = Animator.StringToHash("Blocks");
+
+        private readonly int TriggerInterrupt = UnityEngine.Animator.StringToHash("InterruptAction");
 
         private const string DeathCompleteEvent = "OnDeathComplete";
 
@@ -276,6 +284,7 @@ namespace DoubTech.TPSCharacterController.Animation.Control
         private bool isUsing;
         private float cooldownStart;
         private bool isPlayingAction;
+        private bool isHit;
 
         public bool IsAttacking => isAttacking;
         public bool IsBlocking => isBlocking;
@@ -419,6 +428,14 @@ namespace DoubTech.TPSCharacterController.Animation.Control
                 {
                     onBlockStarted.Invoke();
                 }
+            } else if (tag == AnimSlotDefinitions.HIT.tag)
+            {
+                if(isAttacking)
+                {
+                    isAttacking = false;
+                    onAttackStopped.Invoke();
+                    onAttackInterrupted.Invoke();
+                }
             }
         }
 
@@ -440,7 +457,11 @@ namespace DoubTech.TPSCharacterController.Animation.Control
                     onBlockStopped.Invoke();
                 }
             }
-            else if (tag == AnimSlotDefinitions.USE.tag)
+            else if (tag == AnimSlotDefinitions.HIT.tag)
+            {
+                isPlayingAction = false;
+                isHit = false;
+            } else if (tag == AnimSlotDefinitions.USE.tag)
             {
                 isUsing = false;
                 onStopUse.Invoke();
@@ -487,20 +508,59 @@ namespace DoubTech.TPSCharacterController.Animation.Control
             }
         }
 
-        public bool PlayAction(AnimationConfig config)
+        private bool Play(AnimationConfig config, string slotName, int stateHash, int layer = -1, bool interrupt = false)
         {
-            if (!IsBusy && null != config && config.animation)
+            if ((interrupt || !IsBusy) && null != config && config.animation)
             {
                 cooldownStart = Time.realtimeSinceStartup;
                 isPlayingAction = true;
-                Debug.Log("Triggering strong attack...");
-                activeController["_Action"] = PrepareClip(config.animationSlot, config.animation, config);
-                
-                animator.CrossFade("Action", .1f);
+                var clip = PrepareClip(config.animationSlot, config.animation, config);
+                animator.SetBool("Mirror" + slotName, config.mirror);
+                animator.SetFloat("Speed" + slotName, config.speed);
+                activeController[slotName] = clip;
+
+                if (layer == -1)
+                {
+                    UpdateWeights(config);
+                    animator.CrossFade(stateHash, .1f);
+                    if (config.upperBody.layerWeight > 0)
+                    {
+                        animator.CrossFade(stateHash, .1f, upperBodyLayer);
+                    }
+                    if (config.lowerBody.layerWeight > 0)
+                    {
+                        animator.CrossFade(stateHash, .1f, lowerBodyLayer);
+                    }
+                    if (config.fullBody.layerWeight > 0)
+                    {
+                        animator.CrossFade(stateHash, .1f, fullBodyLayer);
+                    }
+                }
+                else
+                {
+                    animator.CrossFade(stateHash, .1f, layer);
+                }
                 return true;
             }
 
             return false;
+        }
+
+        public bool PlayAction(AnimationConfig config)
+        {
+            return Play(config, AnimSlotDefinitions.ACTION.slotName, AnimSlotDefinitions.ACTION.animStateHash);
+        }
+
+        private void UpdateWeights(AnimationConfig config)
+        {
+            animator.SetLayerWeight(upperBodyLayer, config.upperBody.layerWeight);
+            animator.SetLayerWeight(lowerBodyLayer, config.lowerBody.layerWeight);
+            animator.SetLayerWeight(fullBodyLayer, config.fullBody.layerWeight);
+
+            foreach (var layerOverride in config.layerOverrides)
+            {
+                animator.SetLayerWeight(layerOverride.layerId, layerOverride.layerWeight);
+            }
         }
 
         public void SecondaryAttack()
@@ -526,6 +586,56 @@ namespace DoubTech.TPSCharacterController.Animation.Control
             {
                 isBlocking = true;
             }
+        }
+
+        [Button]
+        public void Hit()
+        {
+            if (!isHit && !isBlocking && !IsDead)
+            {
+                if (IsBusy)
+                {
+                    animator.SetTrigger(TriggerInterrupt);
+                }
+                
+                isHit = true;
+                Play(equippedWeaponAnimConfig.GetHit(0, 0), AnimSlotDefinitions.HIT.slotName,
+                    AnimSlotDefinitions.HIT.animStateHash, activeLayer, true);
+            }
+        }
+        
+        public void Hit(Vector3 hitPoint)
+        {
+            if (!isHit && !isBlocking && !IsDead)
+            {
+                if (IsBusy)
+                {
+                    animator.SetTrigger(TriggerInterrupt);
+                }
+                
+                int horizontal = 0;
+                int vertical = 0;
+                Vector3 direction = Vector3.zero;
+                if (hitPoint != Vector3.zero)
+                {
+                    direction = transform.position - hitPoint;
+
+                    var normalized = direction.normalized;
+                    if (direction.magnitude > .25f)
+                    {
+                        horizontal = Nearest(normalized.x);
+                        vertical = Nearest(Nearest(normalized.z));
+                    }
+                }
+
+                Play(equippedWeaponAnimConfig.GetHit(horizontal, vertical), AnimSlotDefinitions.HIT.slotName,
+                    AnimSlotDefinitions.HIT.animStateHash, activeLayer, true);
+            }
+        }
+
+        private int Nearest(float value)
+        {
+            return (int) (Mathf.Sign(value) * Mathf.Ceil(Mathf.Abs(value)));
         }
 
         public void Jump(bool shouldMove = false)

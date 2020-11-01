@@ -20,11 +20,26 @@ namespace DoubTech.TPSCharacterController.Animation
         [SerializeField] public AnimationClip animation;
         [SerializeField] public float enterTransition = .1f;
         [SerializeField] public float exitTransition = 0f;
+        [Range(-0.1f, 2.0f)]
+        [SerializeField] public float speed = 1;
+        [SerializeField] public bool mirror = false;
 
         [Header("Override Layers")]
-        [SerializeField] public LayerConfig fullBody = new LayerConfig(2);
-        [SerializeField] public LayerConfig lowerBody = new LayerConfig(3);
-        [SerializeField] public LayerConfig upperBody = new LayerConfig(4);
+        [SerializeField] public LayerConfig lowerBody = new LayerConfig()
+        {
+            layerWeight = 0
+        };
+        [SerializeField] public LayerConfig upperBody = new LayerConfig()
+        {
+            layerWeight = 0
+        };
+        [SerializeField] public LayerConfig fullBody = new LayerConfig()
+        {
+            layerWeight = 1
+        };
+        
+        [Tooltip("These will replace any weights provided for lower, upper, or full body.")]
+        [SerializeField] public LayerConfigOverride[] layerOverrides;
 
         [Header("Animation Tags")]
         [SerializeField] public AnimationTag[] animationTags;

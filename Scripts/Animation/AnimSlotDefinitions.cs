@@ -219,6 +219,12 @@ namespace DoubTech.TPSCharacterController.Animation.Slots
         public static readonly AnimationSlotDefinition UNEQUIP = new AnimationSlotDefinition()
             {actionName = "Unequip", slotName = "Actions - Unequip", animStateHash = Animator.StringToHash("Unequip"), tag="unequip"};
 
+        public static readonly AnimationSlotDefinition ACTION = new AnimationSlotDefinition()
+            {actionName = "Action", slotName = "_Action", animStateHash = Animator.StringToHash("Action"), tag="action"};
+        
+        public static readonly AnimationSlotDefinition HIT = new AnimationSlotDefinition()
+            {actionName = "Hit", slotName = "_Hit", animStateHash = Animator.StringToHash("Hit"), tag="hit"};
+
         #endregion
     }
 

@@ -17,6 +17,7 @@ namespace DoubTech.TPSCharacterController.Animation
         [SerializeField] public AnimationConfigOverride[] primaryAttacks = new AnimationConfigOverride[9];
         [SerializeField] public AnimationConfigOverride[] secondaryAttacks = new AnimationConfigOverride[9];
         [SerializeField] public AnimationConfigOverride[] blocks = new AnimationConfigOverride[9];
+        [SerializeField] public AnimationConfigOverride[] hits = new AnimationConfigOverride[9];
 
         [SerializeField] public AnimationConfigOverride equip;
         [SerializeField] public AnimationConfigOverride unequip;
@@ -39,6 +40,20 @@ namespace DoubTech.TPSCharacterController.Animation
             var block = (1 + attackHorizontal) * 3 + (1 + attackVertical);
             if (block >= blocks.Length) block = UnityEngine.Random.Range(0, blocks.Length - 1);
             return null != blocks[block] && block < blocks.Length ? blocks[block].Config : null;
+        }
+
+        public AnimationConfig GetHit(int attackHorizontal, int attackVertical)
+        {
+            var hit = (1 + attackHorizontal) * 3 + (1 + attackVertical);
+            if (hit >= hits.Length) hit = UnityEngine.Random.Range(0, hits.Length - 1);
+            if (null == hits[hit])
+            {
+                for (int i = 0; i < hits.Length; i++)
+                {
+                    if (null != hits[i]) hit = i;
+                }
+            }
+            return null != hits[hit] ? hits[hit].Config : null;
         }
     }
 

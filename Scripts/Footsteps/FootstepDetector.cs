@@ -84,7 +84,7 @@ namespace DoubTech.TPSCharacterController.Footsteps
                         footDown = true;
 
                         var renderer = hit.collider.GetComponentInChildren<Renderer>();
-                        onFootDown.Invoke(transform, hit.collider.gameObject, renderer.material);
+                        onFootDown.Invoke(transform, hit.collider.gameObject, renderer ? renderer.material : null);
 
                         if (!footAudioSource.isPlaying)
                         {
@@ -95,7 +95,7 @@ namespace DoubTech.TPSCharacterController.Footsteps
                                 materialType = materialRegistry[terrain, transform.position];
                             }
 
-                            if (!materialType)
+                            if (!materialType && renderer && renderer.material)
                             {
                                 materialType = materialRegistry[renderer.material.name];
                             }

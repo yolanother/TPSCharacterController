@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ namespace DoubTech.TPSCharacterController.Animation
 {
     public class ActionSetEditor
     {
-        private string[] actionSetNames = new[] {"Primary Attacks", "Secondary Attacks", "Blocks"};
+        private string[] actionSetNames = new[] {"Primary Attacks", "Secondary Attacks", "Blocks", "Hits"};
         private int actionSetIndex;
         private WeaponClassAnimConfig config;
         private AnimationConfigOverride selectedSlot;
@@ -62,6 +63,9 @@ namespace DoubTech.TPSCharacterController.Animation
                 case 2:
                     slots = config.blocks;
                     break;
+                case 3:
+                    slots = config.hits;
+                    break;
             }
 
             if (null != slots)
@@ -78,13 +82,32 @@ namespace DoubTech.TPSCharacterController.Animation
             GUILayout.EndHorizontal();
             GUILayout.Space(8);
 
-            DrawAnimaitonConfigEditor(selectedSlot);
+            if (DrawAnimaitonConfigEditor(selectedSlot))
+            {
+                EditorUtility.SetDirty(config);
+            }
             GUILayout.Space(16);
         }
 
-        
-        public static void DrawAnimaitonConfigEditor(AnimationConfigOverride selectedSlot)
+        private static bool Slider(string label, ref float value, float leftValue, float rightValue)
         {
+            var changed = EditorGUILayout.Slider(
+                label,
+                value,
+                0f, 1f);
+
+            if (Math.Abs(changed - value) > .001f)
+            {
+                value = changed;
+                return true;
+            }
+
+            return false;
+        }
+        
+        public static bool DrawAnimaitonConfigEditor(AnimationConfigOverride selectedSlot)
+        {
+            bool isDirty = false;
             if (null != selectedSlot)
             {
                 if (selectedSlot.preset)
@@ -97,21 +120,38 @@ namespace DoubTech.TPSCharacterController.Animation
                     typeof(AnimationClip), true);
                 
                 GUILayout.Label("Weights");
-                selectedSlot.Config.fullBody.layerWeight = EditorGUILayout.Slider(
+                isDirty |= Slider(
                     "Full Body",
-                    selectedSlot.Config.fullBody.layerWeight,
+                    ref selectedSlot.Config.fullBody.layerWeight,
                     0f, 1f);
-                selectedSlot.Config.upperBody.layerWeight = EditorGUILayout.Slider(
+     
+                isDirty |= Slider(
                     "Upper Body",
-                    selectedSlot.Config.upperBody.layerWeight,
+                    ref selectedSlot.Config.upperBody.layerWeight,
                     0f, 1f);
-                selectedSlot.Config.lowerBody.layerWeight = EditorGUILayout.Slider(
+                
+                isDirty |= Slider(
                     "Lower Body",
-                    selectedSlot.Config.lowerBody.layerWeight,
+                    ref selectedSlot.Config.lowerBody.layerWeight,
                     0f, 1f);
                 
+                isDirty |= Slider(
+                    "Speed",
+                    ref selectedSlot.Config.speed,
+                    .1f, 2f);
                 
+                var value = EditorGUILayout.Toggle(
+                    "Mirror",
+                    selectedSlot.Config.mirror);
+                
+                if (value != selectedSlot.Config.mirror)
+                {
+                    selectedSlot.Config.mirror = value;
+                    isDirty = true;
+                }
             }
+
+            return isDirty;
         }
 
         bool DrawAnimationDropbox(AnimationConfigOverride slot)
