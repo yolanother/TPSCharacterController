@@ -512,38 +512,44 @@ namespace DoubTech.TPSCharacterController.Animation.Control
         {
             if ((interrupt || !IsBusy) && null != config && config.animation)
             {
-                cooldownStart = Time.realtimeSinceStartup;
                 isPlayingAction = true;
-                var clip = PrepareClip(config.animationSlot, config.animation, config);
-                animator.SetBool("Mirror" + slotName, config.mirror);
-                animator.SetFloat("Speed" + slotName, config.speed);
-                activeController[slotName] = clip;
-
-                if (layer == -1)
-                {
-                    UpdateWeights(config);
-                    animator.CrossFade(stateHash, .1f);
-                    if (config.upperBody.layerWeight > 0)
-                    {
-                        animator.CrossFade(stateHash, .1f, upperBodyLayer);
-                    }
-                    if (config.lowerBody.layerWeight > 0)
-                    {
-                        animator.CrossFade(stateHash, .1f, lowerBodyLayer);
-                    }
-                    if (config.fullBody.layerWeight > 0)
-                    {
-                        animator.CrossFade(stateHash, .1f, fullBodyLayer);
-                    }
-                }
-                else
-                {
-                    animator.CrossFade(stateHash, .1f, layer);
-                }
+                PlayConfig(config, slotName, stateHash, layer);
                 return true;
             }
 
             return false;
+        }
+
+        private void PlayConfig(AnimationConfig config, string slotName, int stateHash, int layer = -1)
+        {
+            var clip = PrepareClip(config.animationSlot, config.animation, config);
+            animator.SetBool("Mirror" + slotName, config.mirror);
+            animator.SetFloat("Speed" + slotName, config.speed);
+            activeController[slotName] = clip;
+
+            if (layer == -1)
+            {
+                UpdateWeights(config);
+                animator.CrossFade(stateHash, .1f);
+                if (config.upperBody.layerWeight > 0)
+                {
+                    animator.CrossFade(stateHash, .1f, upperBodyLayer);
+                }
+
+                if (config.lowerBody.layerWeight > 0)
+                {
+                    animator.CrossFade(stateHash, .1f, lowerBodyLayer);
+                }
+
+                if (config.fullBody.layerWeight > 0)
+                {
+                    animator.CrossFade(stateHash, .1f, fullBodyLayer);
+                }
+            }
+            else
+            {
+                animator.CrossFade(stateHash, .1f, layer);
+            }
         }
 
         public bool PlayAction(AnimationConfig config)
@@ -694,8 +700,7 @@ namespace DoubTech.TPSCharacterController.Animation.Control
             {
                 if (config.animation)
                 {
-                    activeController[slot.slotName] = PrepareClip(slot.slotName, config.animation, config);
-                    animator.CrossFade(slot.animStateHash, config.enterTransition, layer);
+                    PlayConfig(config, slot.slotName, slot.animStateHash);
                 }
                 else
                 {

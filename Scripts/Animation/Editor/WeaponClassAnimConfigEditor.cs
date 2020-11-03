@@ -13,10 +13,27 @@ namespace DoubTech.TPSCharacterController.Animation
         private WeaponClassAnimConfig config;
         private Vector2 scrollPosition;
 
+        public WeaponClassAnimConfig Config
+        {
+            get => config;
+            set
+            {
+                if (value != config)
+                {
+                    config = value;
+                    actionSetEditor = new ActionSetEditor(config);
+                }
+            }
+        }
+        
+        public bool DisableScroll { get; set; }
+
         private void OnEnable()
         {
-            config = target as WeaponClassAnimConfig;
-            actionSetEditor = new ActionSetEditor(config);
+            if (target)
+            {
+                Config = target as WeaponClassAnimConfig;
+            }
         }
 
         public override void OnInspectorGUI()
@@ -24,7 +41,7 @@ namespace DoubTech.TPSCharacterController.Animation
             base.OnInspectorGUI();
             if (null != config.weaponClassController)
             {
-                scrollPosition = GUILayout.BeginScrollView(scrollPosition);
+                if(!DisableScroll) scrollPosition = GUILayout.BeginScrollView(scrollPosition);
 
                 actionSetEditor.Draw();
                 
@@ -46,7 +63,7 @@ namespace DoubTech.TPSCharacterController.Animation
                     GUILayout.EndHorizontal();
                 }
 
-                GUILayout.EndScrollView();
+                if(!DisableScroll) GUILayout.EndScrollView();
             }
         }
         

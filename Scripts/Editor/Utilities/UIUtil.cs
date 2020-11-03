@@ -53,6 +53,35 @@ namespace DoubTech.TPSCharacterController
 
             return path;
         }
+        public static string DirectoryBrowser(string title, string defaultName, string defaultPath = null) {
+            string key = "TPSUTIL::DB::" + title;
+            string lastPath = EditorPrefs.GetString(key);
+            if (string.IsNullOrEmpty(lastPath)) lastPath = null != defaultPath ? defaultPath : Application.dataPath;
+            string path = EditorUtility.OpenFolderPanel(title, lastPath, defaultName);
+            
+            if (null != path) {
+                EditorPrefs.SetString(key, path);
+            }
+
+            return path;
+        }
+
+        public static string DirectoryBrowseField(string title, string currentPath)
+        {
+            EditorGUILayout.BeginHorizontal();
+            if (string.IsNullOrEmpty(currentPath))
+            {
+                string key = "TPSUTIL::DB::" + title;
+                currentPath = EditorPrefs.GetString(key);
+            }
+            currentPath = EditorGUILayout.TextField(title, currentPath);
+            if (GUILayout.Button("Browse", GUILayout.Width(75)))
+            {
+                currentPath = UIUtil.DirectoryBrowser(title, "Pickups", currentPath);
+            }
+            EditorGUILayout.EndHorizontal();
+            return currentPath;
+        }
 
         public static GUIContent GetGuiIcon(string iconName, string tooltip = null)
         {
@@ -95,6 +124,11 @@ namespace DoubTech.TPSCharacterController
             }
 
             return style;
+        }
+
+        public static void BoldLabel(string label)
+        {
+            GUILayout.Label(label, EditorStyles.boldLabel);
         }
     }
 }
