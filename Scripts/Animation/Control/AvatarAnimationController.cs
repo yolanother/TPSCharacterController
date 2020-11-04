@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using DoubTech.TPSCharacterController.Animation.Slots;
 using DoubTech.TPSCharacterController.Scripts.Animation;
 using Sirenix.OdinInspector;
@@ -285,6 +286,7 @@ namespace DoubTech.TPSCharacterController.Animation.Control
         private float cooldownStart;
         private bool isPlayingAction;
         private bool isHit;
+        private bool hasStartTag;
 
         public bool IsAttacking => isAttacking;
         public bool IsBlocking => isBlocking;
@@ -404,7 +406,18 @@ namespace DoubTech.TPSCharacterController.Animation.Control
             switch (tagType)
             {
                 case AnimationTagType.Recover:
+                    isAttacking = false;
+                    isPlayingAction = false;
                     Debug.Log("Stopped attacking - in recovery with " + slot);
+                    break;
+                case AnimationTagType.AttackEnd:
+                    if (isAttacking)
+                    {
+                        onAttackStopped.Invoke();
+                    }
+                    break;
+                case AnimationTagType.AttackStart:
+                    onAttackStarted.Invoke();
                     break;
                 case AnimationTagType.EquipGrab:
                     onEquipGrab.Invoke();
@@ -419,7 +432,7 @@ namespace DoubTech.TPSCharacterController.Animation.Control
         {
             if (tag == "action")
             {
-                if (isAttacking)
+                if (isAttacking && !hasStartTag)
                 {
                     onAttackStarted.Invoke();
                 }
@@ -508,19 +521,19 @@ namespace DoubTech.TPSCharacterController.Animation.Control
             }
         }
 
-        private bool Play(AnimationConfig config, string slotName, int stateHash, int layer = -1, bool interrupt = false)
+        private bool Play(AnimationConfig config, string slotName, int stateHash, int layer = -1, bool interrupt = false, float transitionDuration = .1f)
         {
             if ((interrupt || !IsBusy) && null != config && config.animation)
             {
                 isPlayingAction = true;
-                PlayConfig(config, slotName, stateHash, layer);
+                PlayConfig(config, slotName, stateHash, layer, transitionDuration: transitionDuration);
                 return true;
             }
 
             return false;
         }
 
-        private void PlayConfig(AnimationConfig config, string slotName, int stateHash, int layer = -1)
+        private void PlayConfig(AnimationConfig config, string slotName, int stateHash, int layer = -1, float transitionDuration = .1f)
         {
             var clip = PrepareClip(config.animationSlot, config.animation, config);
             animator.SetBool("Mirror" + slotName, config.mirror);
@@ -530,31 +543,31 @@ namespace DoubTech.TPSCharacterController.Animation.Control
             if (layer == -1)
             {
                 UpdateWeights(config);
-                animator.CrossFade(stateHash, .1f);
+                animator.CrossFade(stateHash, transitionDuration);
                 if (config.upperBody.layerWeight > 0)
                 {
-                    animator.CrossFade(stateHash, .1f, upperBodyLayer);
+                    animator.CrossFade(stateHash, transitionDuration, upperBodyLayer);
                 }
 
                 if (config.lowerBody.layerWeight > 0)
                 {
-                    animator.CrossFade(stateHash, .1f, lowerBodyLayer);
+                    animator.CrossFade(stateHash, transitionDuration, lowerBodyLayer);
                 }
 
                 if (config.fullBody.layerWeight > 0)
                 {
-                    animator.CrossFade(stateHash, .1f, fullBodyLayer);
+                    animator.CrossFade(stateHash, transitionDuration, fullBodyLayer);
                 }
             }
             else
             {
-                animator.CrossFade(stateHash, .1f, layer);
+                animator.CrossFade(stateHash, transitionDuration, layer);
             }
         }
 
-        public bool PlayAction(AnimationConfig config)
+        public bool PlayAction(AnimationConfig config, float transitionDuration = .1f)
         {
-            return Play(config, AnimSlotDefinitions.ACTION.slotName, AnimSlotDefinitions.ACTION.animStateHash);
+            return Play(config, AnimSlotDefinitions.ACTION.slotName, AnimSlotDefinitions.ACTION.animStateHash, transitionDuration: transitionDuration);
         }
 
         private void UpdateWeights(AnimationConfig config)
@@ -569,21 +582,32 @@ namespace DoubTech.TPSCharacterController.Animation.Control
             }
         }
 
+        private void Attack(AnimationConfig attack)
+        {
+            Debug.Log("Attack: isBusy? " + IsBusy);
+            var attackStart = attack.GetTags(AnimationTagType.AttackStart);
+
+            if (attackStart.Count > 0)
+            {
+                PlayAction(attack, transitionDuration: attackStart.First().time);
+            }
+            else
+            {
+                if (PlayAction(attack))
+                {
+                    isAttacking = true;
+                }
+            }
+        }
+
         public void SecondaryAttack()
         {
-            if (PlayAction(equippedWeaponAnimConfig.GetSecondaryAttack(AttackHorizontal, AttackVertical)))
-            {
-                isAttacking = true;
-            }
+            Attack(equippedWeaponAnimConfig.GetSecondaryAttack(AttackHorizontal, AttackVertical));
         }
 
         public void PrimaryAttack()
         {
-            Debug.Log("Attack: isBusy? " + IsBusy);
-            if (PlayAction(equippedWeaponAnimConfig.GetPrimaryAttack(AttackHorizontal, AttackVertical)))
-            {
-                isAttacking = true;
-            }
+            Attack(equippedWeaponAnimConfig.GetPrimaryAttack(AttackHorizontal, AttackVertical));
         }
 
         public void Block()

@@ -46,5 +46,40 @@ namespace DoubTech.TPSCharacterController.Animation
 
         [Header("Sound Tags")] 
         [SerializeField] public AnimationSoundTag[] soundTags;
+
+        private Dictionary<AnimationTagType, List<AnimationTag>> tags;
+
+        private Dictionary<AnimationTagType, List<AnimationTag>> Tags
+        {
+            get
+            {
+                if (null == tags)
+                {
+                    tags = new Dictionary<AnimationTagType, List<AnimationTag>>();
+                    foreach (var tag in animationTags)
+                    {
+                        List<AnimationTag> tagset;
+                        if (!tags.TryGetValue(tag.tagType, out tagset))
+                        {
+                            tagset = new List<AnimationTag>();
+                            tags[tag.tagType] = tagset;
+                        }
+                        tagset.Add(tag);
+                    }
+                }
+
+                return tags;
+            }
+        }
+
+        public List<AnimationTag> GetTags(AnimationTagType type)
+        {
+            return Tags.TryGetValue(type, out var tags) ? tags : new List<AnimationTag>();
+        }
+
+        public bool HasTagType(AnimationTagType type)
+        {
+            return Tags.ContainsKey(type);
+        }
     }
 }
