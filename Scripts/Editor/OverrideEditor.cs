@@ -42,6 +42,7 @@ namespace DoubTech.TPSCharacterController
         {
             string[] sep = {" - "};
             int idx = 0;
+            overrides = new FoldoutHierarchy<KeyValuePair<AnimationClip, AnimationClip>>(isFoldout: false);
             var list = new List<KeyValuePair<AnimationClip, AnimationClip>>();
             currentController.GetOverrides(list);
             foreach (var o in list)
@@ -50,7 +51,10 @@ namespace DoubTech.TPSCharacterController
                 var path = clip.name.Split(sep, StringSplitOptions.RemoveEmptyEntries);
                 var c = new FoldoutHierarchy<KeyValuePair<AnimationClip, AnimationClip>>.Item(path[path.Length - 1].Trim(), o);
                 c.onDraw = DrawOverride;
-                overrides.Add(c, path);
+                if (!clip.name.StartsWith("_"))
+                {
+                    overrides.Add(c, path);
+                }
             }
             overrideController.Refresh();
             Repaint();
@@ -81,7 +85,12 @@ namespace DoubTech.TPSCharacterController
         private void OnGUI()
         {
             overrideController.Draw();
-            currentController = overrideController.SelectedController;
+            var c = overrideController.SelectedController;
+            if (c != currentController)
+            {
+                currentController = c;
+                UpdateOverrides();
+            }
 
             if (currentController)
             {
@@ -126,11 +135,6 @@ namespace DoubTech.TPSCharacterController
             {
                 DropControllerGUI();
             }
-
-            if (EditorUtility.IsDirty(currentController))
-            {
-                UpdateOverrides();
-            }
         }
 
         private void CopyOverrides(AnimatorOverrideController source) {
@@ -162,6 +166,7 @@ namespace DoubTech.TPSCharacterController
             {
                 currentController[overrideClip.Key.name] = clip;
                 EditorUtility.SetDirty(currentController);
+                UpdateOverrides();
             }
         }
 
