@@ -10,60 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f67397f6fff865f45a72e5aa48b9e229, type: 3}
-  m_Name: Spear Animation Config 1
+  m_Name: Longsword Animation Config
   m_EditorClassIdentifier: 
-  weaponClassController: {fileID: 22100000, guid: 7f5539a3c547af945b1e9e5c0a7601ad,
+  weaponClassController: {fileID: 22100000, guid: 7eedc33edeb1e6244b3ca378a58511d7,
     type: 2}
   overrides:
-    keys:
-    - Actions - Equip
-    - Actions - Unequip
-    values:
-    - slot: Actions - Equip
-      preset: {fileID: 0}
-      config:
-        name: 
-        animationSlot: 
-        animation: {fileID: 0}
-        enterTransition: 0.1
-        exitTransition: 0
-        speed: 1
-        mirror: 0
-        lowerBody:
-          layerWeight: 0
-        upperBody:
-          layerWeight: 0
-        fullBody:
-          layerWeight: 1
-        layerOverrides: []
-        animationTags: []
-        soundTags: []
-    - slot: Actions - Unequip
-      preset: {fileID: 0}
-      config:
-        name: 
-        animationSlot: 
-        animation: {fileID: 0}
-        enterTransition: 0.1
-        exitTransition: 0
-        speed: 1
-        mirror: 0
-        lowerBody:
-          layerWeight: 0
-        upperBody:
-          layerWeight: 0
-        fullBody:
-          layerWeight: 1
-        layerOverrides: []
-        animationTags: []
-        soundTags: []
+    keys: []
+    values: []
   primaryAttacks:
   - slot: 
     preset: {fileID: 0}
     config:
       name: 
       animationSlot: 
-      animation: {fileID: 0}
+      animation: {fileID: 7400012, guid: fb07a934dbc1969468121112ca048964, type: 3}
       enterTransition: 0.1
       exitTransition: 0
       speed: 1
@@ -71,9 +31,66 @@ MonoBehaviour:
       lowerBody:
         layerWeight: 0
       upperBody:
-        layerWeight: 0
-      fullBody:
         layerWeight: 1
+      fullBody:
+        layerWeight: 0
+      layerOverrides: []
+      animationTags: []
+      soundTags: []
+  - slot: 
+    preset: {fileID: 0}
+    config:
+      name: 
+      animationSlot: 
+      animation: {fileID: 7400018, guid: fb07a934dbc1969468121112ca048964, type: 3}
+      enterTransition: 0.1
+      exitTransition: 0
+      speed: 1
+      mirror: 0
+      lowerBody:
+        layerWeight: 0
+      upperBody:
+        layerWeight: 1
+      fullBody:
+        layerWeight: 0
+      layerOverrides: []
+      animationTags: []
+      soundTags: []
+  - slot: 
+    preset: {fileID: 0}
+    config:
+      name: 
+      animationSlot: 
+      animation: {fileID: 7400010, guid: fb07a934dbc1969468121112ca048964, type: 3}
+      enterTransition: 0.1
+      exitTransition: 0
+      speed: 1
+      mirror: 0
+      lowerBody:
+        layerWeight: 0
+      upperBody:
+        layerWeight: 1
+      fullBody:
+        layerWeight: 0
+      layerOverrides: []
+      animationTags: []
+      soundTags: []
+  - slot: 
+    preset: {fileID: 0}
+    config:
+      name: 
+      animationSlot: 
+      animation: {fileID: 7400006, guid: fb07a934dbc1969468121112ca048964, type: 3}
+      enterTransition: 0.1
+      exitTransition: 0
+      speed: 1
+      mirror: 0
+      lowerBody:
+        layerWeight: 0
+      upperBody:
+        layerWeight: 1
+      fullBody:
+        layerWeight: 0
       layerOverrides: []
       animationTags: []
       soundTags: []
@@ -101,7 +118,7 @@ MonoBehaviour:
     config:
       name: 
       animationSlot: 
-      animation: {fileID: 0}
+      animation: {fileID: 7400000, guid: fb07a934dbc1969468121112ca048964, type: 3}
       enterTransition: 0.1
       exitTransition: 0
       speed: 1
@@ -109,9 +126,9 @@ MonoBehaviour:
       lowerBody:
         layerWeight: 0
       upperBody:
-        layerWeight: 0
-      fullBody:
         layerWeight: 1
+      fullBody:
+        layerWeight: 0
       layerOverrides: []
       animationTags: []
       soundTags: []
@@ -120,7 +137,7 @@ MonoBehaviour:
     config:
       name: 
       animationSlot: 
-      animation: {fileID: 0}
+      animation: {fileID: 7400004, guid: fb07a934dbc1969468121112ca048964, type: 3}
       enterTransition: 0.1
       exitTransition: 0
       speed: 1
@@ -128,9 +145,9 @@ MonoBehaviour:
       lowerBody:
         layerWeight: 0
       upperBody:
-        layerWeight: 0
-      fullBody:
         layerWeight: 1
+      fullBody:
+        layerWeight: 0
       layerOverrides: []
       animationTags: []
       soundTags: []
@@ -139,7 +156,7 @@ MonoBehaviour:
     config:
       name: 
       animationSlot: 
-      animation: {fileID: 0}
+      animation: {fileID: 7400016, guid: fb07a934dbc1969468121112ca048964, type: 3}
       enterTransition: 0.1
       exitTransition: 0
       speed: 1
@@ -147,9 +164,9 @@ MonoBehaviour:
       lowerBody:
         layerWeight: 0
       upperBody:
-        layerWeight: 0
-      fullBody:
         layerWeight: 1
+      fullBody:
+        layerWeight: 0
       layerOverrides: []
       animationTags: []
       soundTags: []
@@ -158,7 +175,7 @@ MonoBehaviour:
     config:
       name: 
       animationSlot: 
-      animation: {fileID: 0}
+      animation: {fileID: 7400002, guid: fb07a934dbc1969468121112ca048964, type: 3}
       enterTransition: 0.1
       exitTransition: 0
       speed: 1
@@ -166,66 +183,9 @@ MonoBehaviour:
       lowerBody:
         layerWeight: 0
       upperBody:
-        layerWeight: 0
-      fullBody:
         layerWeight: 1
-      layerOverrides: []
-      animationTags: []
-      soundTags: []
-  - slot: 
-    preset: {fileID: 0}
-    config:
-      name: 
-      animationSlot: 
-      animation: {fileID: 0}
-      enterTransition: 0.1
-      exitTransition: 0
-      speed: 1
-      mirror: 0
-      lowerBody:
-        layerWeight: 0
-      upperBody:
-        layerWeight: 0
       fullBody:
-        layerWeight: 1
-      layerOverrides: []
-      animationTags: []
-      soundTags: []
-  - slot: 
-    preset: {fileID: 0}
-    config:
-      name: 
-      animationSlot: 
-      animation: {fileID: 0}
-      enterTransition: 0.1
-      exitTransition: 0
-      speed: 1
-      mirror: 0
-      lowerBody:
         layerWeight: 0
-      upperBody:
-        layerWeight: 0
-      fullBody:
-        layerWeight: 1
-      layerOverrides: []
-      animationTags: []
-      soundTags: []
-  - slot: 
-    preset: {fileID: 0}
-    config:
-      name: 
-      animationSlot: 
-      animation: {fileID: 0}
-      enterTransition: 0.1
-      exitTransition: 0
-      speed: 1
-      mirror: 0
-      lowerBody:
-        layerWeight: 0
-      upperBody:
-        layerWeight: 0
-      fullBody:
-        layerWeight: 1
       layerOverrides: []
       animationTags: []
       soundTags: []
@@ -349,7 +309,64 @@ MonoBehaviour:
     config:
       name: 
       animationSlot: 
-      animation: {fileID: 0}
+      animation: {fileID: 7400032, guid: fb07a934dbc1969468121112ca048964, type: 3}
+      enterTransition: 0.1
+      exitTransition: 0
+      speed: 1
+      mirror: 0
+      lowerBody:
+        layerWeight: 0
+      upperBody:
+        layerWeight: 0
+      fullBody:
+        layerWeight: 1
+      layerOverrides: []
+      animationTags: []
+      soundTags: []
+  - slot: 
+    preset: {fileID: 0}
+    config:
+      name: 
+      animationSlot: 
+      animation: {fileID: 7400034, guid: fb07a934dbc1969468121112ca048964, type: 3}
+      enterTransition: 0.1
+      exitTransition: 0
+      speed: 1
+      mirror: 0
+      lowerBody:
+        layerWeight: 0
+      upperBody:
+        layerWeight: 0
+      fullBody:
+        layerWeight: 1
+      layerOverrides: []
+      animationTags: []
+      soundTags: []
+  - slot: 
+    preset: {fileID: 0}
+    config:
+      name: 
+      animationSlot: 
+      animation: {fileID: 7400038, guid: fb07a934dbc1969468121112ca048964, type: 3}
+      enterTransition: 0.1
+      exitTransition: 0
+      speed: 1
+      mirror: 0
+      lowerBody:
+        layerWeight: 0
+      upperBody:
+        layerWeight: 0
+      fullBody:
+        layerWeight: 1
+      layerOverrides: []
+      animationTags: []
+      soundTags: []
+  - slot: 
+    preset: {fileID: 0}
+    config:
+      name: 
+      animationSlot: 
+      animation: {fileID: 7400026, guid: fb07a934dbc1969468121112ca048964, type: 3}
       enterTransition: 0.1
       exitTransition: 0
       speed: 1
@@ -387,7 +404,7 @@ MonoBehaviour:
     config:
       name: 
       animationSlot: 
-      animation: {fileID: 0}
+      animation: {fileID: 7400024, guid: fb07a934dbc1969468121112ca048964, type: 3}
       enterTransition: 0.1
       exitTransition: 0
       speed: 1
@@ -406,7 +423,7 @@ MonoBehaviour:
     config:
       name: 
       animationSlot: 
-      animation: {fileID: 0}
+      animation: {fileID: 7400040, guid: fb07a934dbc1969468121112ca048964, type: 3}
       enterTransition: 0.1
       exitTransition: 0
       speed: 1
@@ -425,7 +442,7 @@ MonoBehaviour:
     config:
       name: 
       animationSlot: 
-      animation: {fileID: 0}
+      animation: {fileID: 7400042, guid: fb07a934dbc1969468121112ca048964, type: 3}
       enterTransition: 0.1
       exitTransition: 0
       speed: 1
@@ -444,64 +461,7 @@ MonoBehaviour:
     config:
       name: 
       animationSlot: 
-      animation: {fileID: 0}
-      enterTransition: 0.1
-      exitTransition: 0
-      speed: 1
-      mirror: 0
-      lowerBody:
-        layerWeight: 0
-      upperBody:
-        layerWeight: 0
-      fullBody:
-        layerWeight: 1
-      layerOverrides: []
-      animationTags: []
-      soundTags: []
-  - slot: 
-    preset: {fileID: 0}
-    config:
-      name: 
-      animationSlot: 
-      animation: {fileID: 0}
-      enterTransition: 0.1
-      exitTransition: 0
-      speed: 1
-      mirror: 0
-      lowerBody:
-        layerWeight: 0
-      upperBody:
-        layerWeight: 0
-      fullBody:
-        layerWeight: 1
-      layerOverrides: []
-      animationTags: []
-      soundTags: []
-  - slot: 
-    preset: {fileID: 0}
-    config:
-      name: 
-      animationSlot: 
-      animation: {fileID: 0}
-      enterTransition: 0.1
-      exitTransition: 0
-      speed: 1
-      mirror: 0
-      lowerBody:
-        layerWeight: 0
-      upperBody:
-        layerWeight: 0
-      fullBody:
-        layerWeight: 1
-      layerOverrides: []
-      animationTags: []
-      soundTags: []
-  - slot: 
-    preset: {fileID: 0}
-    config:
-      name: 
-      animationSlot: 
-      animation: {fileID: 0}
+      animation: {fileID: 7400022, guid: fb07a934dbc1969468121112ca048964, type: 3}
       enterTransition: 0.1
       exitTransition: 0
       speed: 1
@@ -635,7 +595,64 @@ MonoBehaviour:
     config:
       name: 
       animationSlot: 
-      animation: {fileID: 0}
+      animation: {fileID: 7400066, guid: fb07a934dbc1969468121112ca048964, type: 3}
+      enterTransition: 0.1
+      exitTransition: 0
+      speed: 1
+      mirror: 0
+      lowerBody:
+        layerWeight: 0
+      upperBody:
+        layerWeight: 0
+      fullBody:
+        layerWeight: 1
+      layerOverrides: []
+      animationTags: []
+      soundTags: []
+  - slot: 
+    preset: {fileID: 0}
+    config:
+      name: 
+      animationSlot: 
+      animation: {fileID: 7400056, guid: fb07a934dbc1969468121112ca048964, type: 3}
+      enterTransition: 0.1
+      exitTransition: 0
+      speed: 1
+      mirror: 0
+      lowerBody:
+        layerWeight: 0
+      upperBody:
+        layerWeight: 0
+      fullBody:
+        layerWeight: 1
+      layerOverrides: []
+      animationTags: []
+      soundTags: []
+  - slot: 
+    preset: {fileID: 0}
+    config:
+      name: 
+      animationSlot: 
+      animation: {fileID: 7400064, guid: fb07a934dbc1969468121112ca048964, type: 3}
+      enterTransition: 0.1
+      exitTransition: 0
+      speed: 1
+      mirror: 0
+      lowerBody:
+        layerWeight: 0
+      upperBody:
+        layerWeight: 0
+      fullBody:
+        layerWeight: 1
+      layerOverrides: []
+      animationTags: []
+      soundTags: []
+  - slot: 
+    preset: {fileID: 0}
+    config:
+      name: 
+      animationSlot: 
+      animation: {fileID: 7400060, guid: fb07a934dbc1969468121112ca048964, type: 3}
       enterTransition: 0.1
       exitTransition: 0
       speed: 1
@@ -673,7 +690,7 @@ MonoBehaviour:
     config:
       name: 
       animationSlot: 
-      animation: {fileID: 0}
+      animation: {fileID: 7400058, guid: fb07a934dbc1969468121112ca048964, type: 3}
       enterTransition: 0.1
       exitTransition: 0
       speed: 1
@@ -692,7 +709,7 @@ MonoBehaviour:
     config:
       name: 
       animationSlot: 
-      animation: {fileID: 0}
+      animation: {fileID: 7400052, guid: fb07a934dbc1969468121112ca048964, type: 3}
       enterTransition: 0.1
       exitTransition: 0
       speed: 1
@@ -711,7 +728,7 @@ MonoBehaviour:
     config:
       name: 
       animationSlot: 
-      animation: {fileID: 0}
+      animation: {fileID: 7400062, guid: fb07a934dbc1969468121112ca048964, type: 3}
       enterTransition: 0.1
       exitTransition: 0
       speed: 1
@@ -730,64 +747,7 @@ MonoBehaviour:
     config:
       name: 
       animationSlot: 
-      animation: {fileID: 0}
-      enterTransition: 0.1
-      exitTransition: 0
-      speed: 1
-      mirror: 0
-      lowerBody:
-        layerWeight: 0
-      upperBody:
-        layerWeight: 0
-      fullBody:
-        layerWeight: 1
-      layerOverrides: []
-      animationTags: []
-      soundTags: []
-  - slot: 
-    preset: {fileID: 0}
-    config:
-      name: 
-      animationSlot: 
-      animation: {fileID: 0}
-      enterTransition: 0.1
-      exitTransition: 0
-      speed: 1
-      mirror: 0
-      lowerBody:
-        layerWeight: 0
-      upperBody:
-        layerWeight: 0
-      fullBody:
-        layerWeight: 1
-      layerOverrides: []
-      animationTags: []
-      soundTags: []
-  - slot: 
-    preset: {fileID: 0}
-    config:
-      name: 
-      animationSlot: 
-      animation: {fileID: 0}
-      enterTransition: 0.1
-      exitTransition: 0
-      speed: 1
-      mirror: 0
-      lowerBody:
-        layerWeight: 0
-      upperBody:
-        layerWeight: 0
-      fullBody:
-        layerWeight: 1
-      layerOverrides: []
-      animationTags: []
-      soundTags: []
-  - slot: 
-    preset: {fileID: 0}
-    config:
-      name: 
-      animationSlot: 
-      animation: {fileID: 0}
+      animation: {fileID: 7400054, guid: fb07a934dbc1969468121112ca048964, type: 3}
       enterTransition: 0.1
       exitTransition: 0
       speed: 1
@@ -807,7 +767,64 @@ MonoBehaviour:
     config:
       name: 
       animationSlot: 
-      animation: {fileID: 0}
+      animation: {fileID: 7400018, guid: 1bdc2ef74b0fc8b459c915473007e656, type: 3}
+      enterTransition: 0.1
+      exitTransition: 0
+      speed: 1
+      mirror: 0
+      lowerBody:
+        layerWeight: 0
+      upperBody:
+        layerWeight: 0
+      fullBody:
+        layerWeight: 1
+      layerOverrides: []
+      animationTags: []
+      soundTags: []
+  - slot: 
+    preset: {fileID: 0}
+    config:
+      name: 
+      animationSlot: 
+      animation: {fileID: 7400026, guid: 1bdc2ef74b0fc8b459c915473007e656, type: 3}
+      enterTransition: 0.1
+      exitTransition: 0
+      speed: 1
+      mirror: 0
+      lowerBody:
+        layerWeight: 0
+      upperBody:
+        layerWeight: 0
+      fullBody:
+        layerWeight: 1
+      layerOverrides: []
+      animationTags: []
+      soundTags: []
+  - slot: 
+    preset: {fileID: 0}
+    config:
+      name: 
+      animationSlot: 
+      animation: {fileID: 7400020, guid: 1bdc2ef74b0fc8b459c915473007e656, type: 3}
+      enterTransition: 0.1
+      exitTransition: 0
+      speed: 1
+      mirror: 0
+      lowerBody:
+        layerWeight: 0
+      upperBody:
+        layerWeight: 0
+      fullBody:
+        layerWeight: 1
+      layerOverrides: []
+      animationTags: []
+      soundTags: []
+  - slot: 
+    preset: {fileID: 0}
+    config:
+      name: 
+      animationSlot: 
+      animation: {fileID: 7400012, guid: 1bdc2ef74b0fc8b459c915473007e656, type: 3}
       enterTransition: 0.1
       exitTransition: 0
       speed: 1
@@ -845,7 +862,7 @@ MonoBehaviour:
     config:
       name: 
       animationSlot: 
-      animation: {fileID: 0}
+      animation: {fileID: 7400010, guid: 1bdc2ef74b0fc8b459c915473007e656, type: 3}
       enterTransition: 0.1
       exitTransition: 0
       speed: 1
@@ -864,7 +881,7 @@ MonoBehaviour:
     config:
       name: 
       animationSlot: 
-      animation: {fileID: 0}
+      animation: {fileID: 7400018, guid: 1bdc2ef74b0fc8b459c915473007e656, type: 3}
       enterTransition: 0.1
       exitTransition: 0
       speed: 1
@@ -883,7 +900,7 @@ MonoBehaviour:
     config:
       name: 
       animationSlot: 
-      animation: {fileID: 0}
+      animation: {fileID: 7400022, guid: 1bdc2ef74b0fc8b459c915473007e656, type: 3}
       enterTransition: 0.1
       exitTransition: 0
       speed: 1
@@ -902,64 +919,7 @@ MonoBehaviour:
     config:
       name: 
       animationSlot: 
-      animation: {fileID: 0}
-      enterTransition: 0.1
-      exitTransition: 0
-      speed: 1
-      mirror: 0
-      lowerBody:
-        layerWeight: 0
-      upperBody:
-        layerWeight: 0
-      fullBody:
-        layerWeight: 1
-      layerOverrides: []
-      animationTags: []
-      soundTags: []
-  - slot: 
-    preset: {fileID: 0}
-    config:
-      name: 
-      animationSlot: 
-      animation: {fileID: 0}
-      enterTransition: 0.1
-      exitTransition: 0
-      speed: 1
-      mirror: 0
-      lowerBody:
-        layerWeight: 0
-      upperBody:
-        layerWeight: 0
-      fullBody:
-        layerWeight: 1
-      layerOverrides: []
-      animationTags: []
-      soundTags: []
-  - slot: 
-    preset: {fileID: 0}
-    config:
-      name: 
-      animationSlot: 
-      animation: {fileID: 0}
-      enterTransition: 0.1
-      exitTransition: 0
-      speed: 1
-      mirror: 0
-      lowerBody:
-        layerWeight: 0
-      upperBody:
-        layerWeight: 0
-      fullBody:
-        layerWeight: 1
-      layerOverrides: []
-      animationTags: []
-      soundTags: []
-  - slot: 
-    preset: {fileID: 0}
-    config:
-      name: 
-      animationSlot: 
-      animation: {fileID: 0}
+      animation: {fileID: 7400020, guid: 1bdc2ef74b0fc8b459c915473007e656, type: 3}
       enterTransition: 0.1
       exitTransition: 0
       speed: 1
@@ -979,7 +939,7 @@ MonoBehaviour:
     config:
       name: 
       animationSlot: 
-      animation: {fileID: 0}
+      animation: {fileID: 7400006, guid: 7c3c4d895ee89ce43b0e1138cc8994e0, type: 3}
       enterTransition: 0.1
       exitTransition: 0
       speed: 1
@@ -999,7 +959,7 @@ MonoBehaviour:
     config:
       name: 
       animationSlot: 
-      animation: {fileID: 0}
+      animation: {fileID: 7400008, guid: 7c3c4d895ee89ce43b0e1138cc8994e0, type: 3}
       enterTransition: 0.1
       exitTransition: 0
       speed: 1
