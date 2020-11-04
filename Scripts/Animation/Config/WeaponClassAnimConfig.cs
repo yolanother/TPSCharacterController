@@ -18,6 +18,7 @@ namespace DoubTech.TPSCharacterController.Animation
         [SerializeField] public AnimationConfigOverride[] secondaryAttacks = new AnimationConfigOverride[9];
         [SerializeField] public AnimationConfigOverride[] blocks = new AnimationConfigOverride[9];
         [SerializeField] public AnimationConfigOverride[] hits = new AnimationConfigOverride[9];
+        [SerializeField] public AnimationConfigOverride throwAnimation;
 
         [SerializeField] public AnimationConfigOverride equip;
         [SerializeField] public AnimationConfigOverride unequip;
