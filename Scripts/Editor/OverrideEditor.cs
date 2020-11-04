@@ -42,7 +42,6 @@ namespace DoubTech.TPSCharacterController
         {
             string[] sep = {" - "};
             int idx = 0;
-            overrides = new FoldoutHierarchy<KeyValuePair<AnimationClip, AnimationClip>>(isFoldout: false);
             var list = new List<KeyValuePair<AnimationClip, AnimationClip>>();
             currentController.GetOverrides(list);
             foreach (var o in list)
@@ -89,6 +88,7 @@ namespace DoubTech.TPSCharacterController
             if (c != currentController)
             {
                 currentController = c;
+                overrides = new FoldoutHierarchy<KeyValuePair<AnimationClip, AnimationClip>>(isFoldout: false);
                 UpdateOverrides();
             }
 
