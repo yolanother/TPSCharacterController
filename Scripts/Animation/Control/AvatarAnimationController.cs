@@ -63,6 +63,10 @@ namespace DoubTech.TPSCharacterController.Animation.Control
         [Header("Block Events")]
         [SerializeField] private UnityEvent onBlockStarted = new UnityEvent();
         [SerializeField] private UnityEvent onBlockStopped = new UnityEvent();
+
+        [Header("General Events")]
+        [SerializeField] private OnTagEvent onTaggedEvent = new OnTagEvent();
+        
         public UnityEvent OnBlockStarted => onBlockStarted;
         public UnityEvent OnBlockStopped => onBlockStopped;
         
@@ -424,6 +428,9 @@ namespace DoubTech.TPSCharacterController.Animation.Control
                     break;
                 case AnimationTagType.UnequipRelease:
                     onUnequipRelease.Invoke();
+                    break;
+                case AnimationTagType.Custom:
+                    onTaggedEvent.Invoke(slot, tag);
                     break;
             }
         }
@@ -873,4 +880,7 @@ namespace DoubTech.TPSCharacterController.Animation.Control
             activeController.ApplyOverrides(overrides);
         }
     }
+
+    [Serializable]
+    public class OnTagEvent : UnityEvent<string, string>{}
 }

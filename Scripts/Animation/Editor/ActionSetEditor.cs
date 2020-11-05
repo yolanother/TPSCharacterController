@@ -70,11 +70,11 @@ namespace DoubTech.TPSCharacterController.Animation
 
             if (null != slots)
             {
+                DrawRow(slots, 6, 3, size);
+                GUILayout.Space(8);
                 DrawRow(slots, 0, 3, size);
                 GUILayout.Space(8);
                 DrawRow(slots, 3, 3, size);
-                GUILayout.Space(8);
-                DrawRow(slots, 6, 3, size);
             }
 
             GUILayout.EndVertical();
