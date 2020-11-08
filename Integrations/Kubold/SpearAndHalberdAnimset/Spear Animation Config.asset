@@ -951,7 +951,10 @@ MonoBehaviour:
       fullBody:
         layerWeight: 1
       layerOverrides: []
-      animationTags: []
+      animationTags:
+      - tagType: 7
+        tag: Throw
+        time: 0.3
       soundTags: []
   equip:
     slot: 

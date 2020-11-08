@@ -933,6 +933,29 @@ MonoBehaviour:
       layerOverrides: []
       animationTags: []
       soundTags: []
+  throwAnimation:
+    slot: 
+    preset: {fileID: 0}
+    config:
+      name: 
+      animationSlot: 
+      animation: {fileID: 7400084, guid: 87e6bba8b3ae86e4da9c84f6d832e37d, type: 3}
+      enterTransition: 0.1
+      exitTransition: 0
+      speed: 1
+      mirror: 0
+      lowerBody:
+        layerWeight: 0
+      upperBody:
+        layerWeight: 0
+      fullBody:
+        layerWeight: 1
+      layerOverrides: []
+      animationTags:
+      - tagType: 7
+        tag: 
+        time: 0.88
+      soundTags: []
   equip:
     slot: 
     preset: {fileID: 0}

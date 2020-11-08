@@ -66,6 +66,7 @@ namespace DoubTech.TPSCharacterController.Animation.Control
 
         [Header("General Events")]
         [SerializeField] private OnTagEvent onTaggedEvent = new OnTagEvent();
+        [SerializeField] private OnKnownTagEvent onKnownTagEvent = new OnKnownTagEvent();
         
         public UnityEvent OnBlockStarted => onBlockStarted;
         public UnityEvent OnBlockStopped => onBlockStopped;
@@ -432,6 +433,11 @@ namespace DoubTech.TPSCharacterController.Animation.Control
                 case AnimationTagType.Custom:
                     onTaggedEvent.Invoke(slot, tag);
                     break;
+            }
+
+            if (tagType != AnimationTagType.Custom)
+            {
+                onKnownTagEvent.Invoke(slot, tagType);
             }
         }
 
@@ -802,12 +808,12 @@ namespace DoubTech.TPSCharacterController.Animation.Control
             return false;
         }
 
-        public bool Unequip()
+        public bool Unequip(bool instant = false)
         {
             if (activeLayer == AnimLayerCombat)
             {
                 activeLayer = AnimLayerDefault;
-                PlaySlot(AnimSlotDefinitions.UNEQUIP, 2, equippedWeaponAnimConfig.unequip.Config);
+                if(!instant) PlaySlot(AnimSlotDefinitions.UNEQUIP, 2, equippedWeaponAnimConfig.unequip.Config);
                 activeLayerWeight = animator.GetLayerWeight(AnimLayerCombat);
                 return true;
             }
@@ -879,8 +885,19 @@ namespace DoubTech.TPSCharacterController.Animation.Control
             baseLocomotionController.GetOverrides(overrides);
             activeController.ApplyOverrides(overrides);
         }
+
+        public void Throw()
+        {
+            if (equippedWeaponAnimConfig)
+            {
+                PlayAction(equippedWeaponAnimConfig.throwAnimation.Config);
+            }
+        }
     }
 
     [Serializable]
     public class OnTagEvent : UnityEvent<string, string>{}
+
+    [Serializable]
+    public class OnKnownTagEvent : UnityEvent<string, AnimationTagType>{}
 }

@@ -17,5 +17,7 @@ namespace DoubTech.TPSCharacterController.Configuration
         public KeyCode equip = KeyCode.Q;
         [SerializeField]
         public KeyCode use = KeyCode.E;
+        [SerializeField]
+        public KeyCode throwKey = KeyCode.T;
     }
 }

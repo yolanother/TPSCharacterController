@@ -19,6 +19,7 @@ namespace DoubTech.TPSCharacterController.Inputs.InputMethods
             SendEvent(Crouch, config.crouch);
             SendEvent(Run, config.run);
             SendEvent(Equip, config.equip);
+            SendEvent(Throw, config.throwKey);
 
             SendMouseEvent(AttackWeak, 0);
             SendMouseEvent(AttackStrong, 1);

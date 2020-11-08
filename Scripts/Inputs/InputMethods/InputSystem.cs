@@ -33,6 +33,7 @@ namespace DoubTech.TPSCharacterController.Inputs.InputMethods
             InitializeButton(inputActions.Player.Block, Block);
             InitializeButton(inputActions.Player.Equip, Equip);
             InitializeButton(inputActions.Player.Use, Use);
+            InitializeButton(inputActions.Player.Throw, Throw);
 
             InitializeValue(inputActions.Player.Movement, Horizontal, Vertical);
             InitializeValue(inputActions.Player.Look, Turn, Look);
