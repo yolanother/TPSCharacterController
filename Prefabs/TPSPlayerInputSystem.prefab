@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &-33985822593101995
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 9075936701206978040}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9071691053448300968}
+  m_Layer: 0
+  m_Name: Missing Prefab (Dummy)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9071691053448300968
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 4831962355160144, guid: 6cb256856615bb74aad074c87d7c427e,
+    type: 3}
+  m_PrefabInstance: {fileID: 9075936701206978040}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: -33985822593101995}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: -8701723161917832634}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &358226797
 GameObject:
   m_ObjectHideFlags: 0
@@ -27,6 +58,37 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
+  m_Father: {fileID: 9193913992830781112}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &593264823455835972
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 9193913994032292019}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: -2682200462741063310}
+  m_Layer: 0
+  m_Name: Chr_FantasyHero_Preset_5 (Missing Prefab)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &-2682200462741063310
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 9193913994032292019}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 593264823455835972}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 9189264805701202931}
   m_Father: {fileID: 9193913992830781112}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -101,6 +163,68 @@ MonoBehaviour:
     y: 0
     width: 1
     height: 1
+--- !u!1 &6546923916990955624
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 9193913994032292019}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9189264805701202931}
+  m_Layer: 0
+  m_Name: Missing Prefab (Dummy)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9189264805701202931
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 4938694965859136, guid: 68813e3f18422044094750f43ff6381b,
+    type: 3}
+  m_PrefabInstance: {fileID: 9193913994032292019}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6546923916990955624}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: -2682200462741063310}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &7885852616185503393
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 9075936701206978040}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: -8701723161917832634}
+  m_Layer: 0
+  m_Name: Warrior_02_01 (Missing Prefab)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &-8701723161917832634
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 9075936701206978040}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7885852616185503393}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 9071691053448300968}
+  m_Father: {fileID: 9193913992830781112}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8779790078999013616
 GameObject:
   m_ObjectHideFlags: 0
@@ -227,10 +351,10 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 9189264805701202931}
-  - {fileID: 9071691053448300968}
-  - {fileID: 9075936700868443265}
+  - {fileID: -8701723161917832634}
   - {fileID: 358226798}
+  - {fileID: 9075936700868443265}
+  - {fileID: -2682200462741063310}
   - {fileID: 6196411566631607290}
   m_Father: {fileID: 9193913992919517174}
   m_RootOrder: 0
@@ -402,6 +526,28 @@ MonoBehaviour:
   equipTransition: 0.1
   unequipTransition: 0.1
   combatLayerTransitionSpeed: 10
+  onEquipGrab:
+    m_PersistentCalls:
+      m_Calls: []
+  onUnequipRelease:
+    m_PersistentCalls:
+      m_Calls: []
+  onEquipEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  onUnequipEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  onStartUse:
+    m_PersistentCalls:
+      m_Calls: []
+  onStopUse:
+    m_PersistentCalls:
+      m_Calls: []
+  onAvatarReady:
+    m_PersistentCalls:
+      m_Calls: []
+  audioSource: {fileID: 0}
 --- !u!1 &9193913993297597657
 GameObject:
   m_ObjectHideFlags: 0
@@ -837,12 +983,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6cb256856615bb74aad074c87d7c427e, type: 3}
---- !u!4 &9071691053448300968 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4831962355160144, guid: 6cb256856615bb74aad074c87d7c427e,
-    type: 3}
-  m_PrefabInstance: {fileID: 9075936701206978040}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &9193913994032292019
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -910,9 +1050,3 @@ PrefabInstance:
         type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 68813e3f18422044094750f43ff6381b, type: 3}
---- !u!4 &9189264805701202931 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4938694965859136, guid: 68813e3f18422044094750f43ff6381b,
-    type: 3}
-  m_PrefabInstance: {fileID: 9193913994032292019}
-  m_PrefabAsset: {fileID: 0}
