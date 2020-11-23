@@ -115,6 +115,14 @@ namespace DoubTech.TPSCharacterController.Inputs
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Throw"",
+                    ""type"": ""Button"",
+                    ""id"": ""6906e8ca-1cb5-45c8-9376-1af0fa9b5ace"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -546,6 +554,28 @@ namespace DoubTech.TPSCharacterController.Inputs
                     ""action"": ""Axis Combat Direction"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""dc6f8c92-e295-4dac-ab38-97073c20a887"",
+                    ""path"": ""<Keyboard>/t"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Throw"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1eaa17fe-9257-4845-b2c4-9da9b285abf0"",
+                    ""path"": ""<Gamepad>/rightStick/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Throw"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -566,6 +596,7 @@ namespace DoubTech.TPSCharacterController.Inputs
             m_Player_Block = m_Player.FindAction("Block", throwIfNotFound: true);
             m_Player_Equip = m_Player.FindAction("Equip", throwIfNotFound: true);
             m_Player_Use = m_Player.FindAction("Use", throwIfNotFound: true);
+            m_Player_Throw = m_Player.FindAction("Throw", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -627,6 +658,7 @@ namespace DoubTech.TPSCharacterController.Inputs
         private readonly InputAction m_Player_Block;
         private readonly InputAction m_Player_Equip;
         private readonly InputAction m_Player_Use;
+        private readonly InputAction m_Player_Throw;
         public struct PlayerActions
         {
             private @InputActions m_Wrapper;
@@ -643,6 +675,7 @@ namespace DoubTech.TPSCharacterController.Inputs
             public InputAction @Block => m_Wrapper.m_Player_Block;
             public InputAction @Equip => m_Wrapper.m_Player_Equip;
             public InputAction @Use => m_Wrapper.m_Player_Use;
+            public InputAction @Throw => m_Wrapper.m_Player_Throw;
             public InputActionMap Get() { return m_Wrapper.m_Player; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -688,6 +721,9 @@ namespace DoubTech.TPSCharacterController.Inputs
                     @Use.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUse;
                     @Use.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUse;
                     @Use.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUse;
+                    @Throw.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnThrow;
+                    @Throw.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnThrow;
+                    @Throw.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnThrow;
                 }
                 m_Wrapper.m_PlayerActionsCallbackInterface = instance;
                 if (instance != null)
@@ -728,6 +764,9 @@ namespace DoubTech.TPSCharacterController.Inputs
                     @Use.started += instance.OnUse;
                     @Use.performed += instance.OnUse;
                     @Use.canceled += instance.OnUse;
+                    @Throw.started += instance.OnThrow;
+                    @Throw.performed += instance.OnThrow;
+                    @Throw.canceled += instance.OnThrow;
                 }
             }
         }
@@ -746,6 +785,7 @@ namespace DoubTech.TPSCharacterController.Inputs
             void OnBlock(InputAction.CallbackContext context);
             void OnEquip(InputAction.CallbackContext context);
             void OnUse(InputAction.CallbackContext context);
+            void OnThrow(InputAction.CallbackContext context);
         }
     }
 }

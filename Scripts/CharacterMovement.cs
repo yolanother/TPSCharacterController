@@ -92,12 +92,19 @@ namespace DoubTech.TPSCharacterController
             playerInput.Crouch.OnButtonEvent.AddListener(evt => AvatarController.IsCrouching = HandleStateChange(evt, !holdToCrouch, AvatarController.IsCrouching));
             playerInput.Run.OnButtonEvent.AddListener(evt => AvatarController.IsRunning = HandleStateChange(evt, !holdToRun, AvatarController.IsRunning));
             playerInput.Jump.OnPressed.AddListener(Jump);
+            playerInput.Throw.OnPressed.AddListener(Throw);
+        }
+
+        private void Throw()
+        {
+            AvatarController.Throw();
         }
 
         protected override void OnDisable()
         {
             base.OnDisable();
             playerInput.Jump.OnPressed.RemoveListener(Jump);
+            playerInput.Throw.OnPressed.AddListener(Throw);
         }
 
         private void OnDrawGizmosSelected() {

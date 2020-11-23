@@ -57,7 +57,7 @@ namespace DoubTech.TPSCharacterController.Animation
         public void OnTaggedEvent(string value)
         {
             string tag = "";
-            var split = value.Split(new char[] {';'}, 2);
+            var split = value.Split(new char[] {';'}, 3);
             var name = split[0];
             var type = (AnimationTagType) int.Parse(split[1].TrimEnd(new char[] {';'}));
             if (split.Length > 2)
@@ -72,6 +72,7 @@ namespace DoubTech.TPSCharacterController.Animation
             AnimationEvent evt = new AnimationEvent();
             evt.time = tag.time;
             evt.functionName = "OnTaggedEvent";
+            if (string.IsNullOrEmpty(name)) name = "(Unnamed)";
             evt.stringParameter = name + ";" + ((int) tag.tagType) + ";" + tag.tag;
 
             clip.AddEvent(evt);
@@ -79,11 +80,24 @@ namespace DoubTech.TPSCharacterController.Animation
 
         public static void AddNamedEvent(AnimationClip clip, string name,  float time)
         {
-            AnimationEvent evt = new AnimationEvent();
-            evt.time = time;
-            evt.functionName = "SendEvent";
-            evt.stringParameter = name;
-            clip.AddEvent(evt);
+            bool found = false;
+            foreach (var e in clip.events)
+            {
+                if (e.stringParameter == name)
+                {
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found)
+            {
+                AnimationEvent evt = new AnimationEvent();
+                evt.time = time;
+                evt.functionName = "SendEvent";
+                evt.stringParameter = name;
+                clip.AddEvent(evt);
+            }
         }
 
         public static void AddStartAnimationEvent(AnimationClip clip, string name)

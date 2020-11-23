@@ -1,0 +1,187 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1926592938638738443
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1926592938638738444}
+  - component: {fileID: 7290195305778774617}
+  - component: {fileID: 1926592938638738436}
+  - component: {fileID: 7290195304739148055}
+  - component: {fileID: 1926592938638738437}
+  m_Layer: 0
+  m_Name: TPS AI
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1926592938638738444
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1926592938638738443}
+  m_LocalRotation: {x: -0, y: -0.99144495, z: -0, w: 0.130526}
+  m_LocalPosition: {x: 69.92436, y: 10, z: -204.92537}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1926592938717775170}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: -165.00002, z: 0}
+--- !u!195 &7290195305778774617
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1926592938638738443}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 2
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
+--- !u!114 &1926592938638738436
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1926592938638738443}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5899489bf4683b409b29580a16dfc86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  runSpeed: 3
+  walkSpeed: 2
+  isRunning: 0
+--- !u!114 &7290195304739148055
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1926592938638738443}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1022d54de6a56ca42bac8a6e2b39892c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseLocomotionController: {fileID: 22100000, guid: 3e900af4c69988347ae9534f858411d6,
+    type: 2}
+  equippedWeaponAnimConfig: {fileID: 11400000, guid: 71dbb3cc33ed3014cbf509c43beb731d,
+    type: 2}
+  calculateSpeed: 1
+  equipTransition: 0.1
+  unequipTransition: 0.1
+  combatLayerTransitionSpeed: 10
+  upperBodyLayer: 2
+  lowerBodyLayer: 3
+  fullBodyLayer: 4
+  onEquipGrab:
+    m_PersistentCalls:
+      m_Calls: []
+  onUnequipRelease:
+    m_PersistentCalls:
+      m_Calls: []
+  onEquipEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  onUnequipEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  onStartUse:
+    m_PersistentCalls:
+      m_Calls: []
+  onStopUse:
+    m_PersistentCalls:
+      m_Calls: []
+  onAvatarReady:
+    m_PersistentCalls:
+      m_Calls: []
+  onDeathFinished:
+    m_PersistentCalls:
+      m_Calls: []
+  onAttackStarted:
+    m_PersistentCalls:
+      m_Calls: []
+  onAttackStopped:
+    m_PersistentCalls:
+      m_Calls: []
+  onAttackInterrupted:
+    m_PersistentCalls:
+      m_Calls: []
+  onBlockStarted:
+    m_PersistentCalls:
+      m_Calls: []
+  onBlockStopped:
+    m_PersistentCalls:
+      m_Calls: []
+  onTaggedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  onKnownTagEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  audioSource: {fileID: 0}
+--- !u!136 &1926592938638738437
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1926592938638738443}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.3
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 1, z: 0}
+--- !u!1 &1926592938717775171
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1926592938717775170}
+  m_Layer: 0
+  m_Name: Model
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1926592938717775170
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1926592938717775171}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1926592938638738444}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

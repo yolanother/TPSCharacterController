@@ -12,21 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70ffac71e1cf6b54c82ccefe6c9801ae, type: 3}
   m_Name: Equip
   m_EditorClassIdentifier: 
-  animationSlot: Actions - Equip
-  animation: {fileID: 7400054, guid: 63caa43b07a53a44e998f2ca18685177, type: 3}
-  fullBody:
-    layerId: 2
-    layerWeight: 1
-  lowerBody:
-    layerId: 3
-    layerWeight: 1
-  upperBody:
-    layerId: 4
-    layerWeight: 1
-  animationTags:
-  - tagType: 5
-    tag: 
-    time: 0.2
-  soundTags:
-  - sound: {fileID: 8300000, guid: 461cc8313c0234690898319549eec321, type: 3}
-    time: 0.2
+  config:
+    name: 
+    animationSlot: 
+    animation: {fileID: 7400054, guid: 63caa43b07a53a44e998f2ca18685177, type: 3}
+    enterTransition: 0.1
+    exitTransition: 0
+    speed: 1
+    mirror: 0
+    lowerBody:
+      layerWeight: 0
+    upperBody:
+      layerWeight: 0
+    fullBody:
+      layerWeight: 1
+    layerOverrides: []
+    animationTags: []
+    soundTags: []

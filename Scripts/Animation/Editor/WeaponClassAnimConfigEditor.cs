@@ -13,10 +13,27 @@ namespace DoubTech.TPSCharacterController.Animation
         private WeaponClassAnimConfig config;
         private Vector2 scrollPosition;
 
+        public WeaponClassAnimConfig Config
+        {
+            get => config;
+            set
+            {
+                if (value != config)
+                {
+                    config = value;
+                    actionSetEditor = new ActionSetEditor(config);
+                }
+            }
+        }
+        
+        public bool DisableScroll { get; set; }
+
         private void OnEnable()
         {
-            config = target as WeaponClassAnimConfig;
-            actionSetEditor = new ActionSetEditor(config);
+            if (target)
+            {
+                Config = target as WeaponClassAnimConfig;
+            }
         }
 
         public override void OnInspectorGUI()
@@ -24,7 +41,7 @@ namespace DoubTech.TPSCharacterController.Animation
             base.OnInspectorGUI();
             if (null != config.weaponClassController)
             {
-                scrollPosition = GUILayout.BeginScrollView(scrollPosition);
+                if(!DisableScroll) scrollPosition = GUILayout.BeginScrollView(scrollPosition);
 
                 actionSetEditor.Draw();
                 
@@ -46,7 +63,7 @@ namespace DoubTech.TPSCharacterController.Animation
                     GUILayout.EndHorizontal();
                 }
 
-                GUILayout.EndScrollView();
+                if(!DisableScroll) GUILayout.EndScrollView();
             }
         }
         
@@ -66,11 +83,11 @@ namespace DoubTech.TPSCharacterController.Animation
                     if (DragAndDrop.objectReferences.Length > 0)
                     {
                         object reference = DragAndDrop.objectReferences[0];
-                        if (reference is AnimationConfig)
+                        if (reference is AnimationConfigPreset)
                         {
-                            AnimationConfig configRef = reference as AnimationConfig;
-                            config.overrides[configRef.animationSlot] = new AnimationConfigOverride()
-                                {slot = configRef.animationSlot, config = configRef};
+                            AnimationConfigPreset configPresetRef = reference as AnimationConfigPreset;
+                            config.overrides[configPresetRef.config.animationSlot] = new AnimationConfigOverride()
+                                { preset = configPresetRef };
                             EditorUtility.SetDirty(config);
                         }
                     }

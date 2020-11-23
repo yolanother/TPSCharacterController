@@ -27,6 +27,7 @@ namespace DoubTech.TPSCharacterController.Inputs
         [Header("Interaction")]
         [SerializeField] public readonly ButtonHandler Equip = new ButtonHandler();
         [SerializeField] public readonly ButtonHandler Use = new ButtonHandler();
+        [SerializeField] public readonly ButtonHandler Throw = new ButtonHandler();
 
         public float MovementMagnitude => Mathf.Sqrt(Mathf.Pow(Horizontal.Value, 2) + Mathf.Pow(Vertical.Value, 2));
     }

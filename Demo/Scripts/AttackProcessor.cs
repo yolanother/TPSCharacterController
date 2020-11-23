@@ -19,16 +19,16 @@ namespace DoubTech.TPSCharacterController.Demo
             if (!playerInput) playerInput = GetComponent<PlayerInput>();
             animController = GetComponent<AvatarAnimationController>();
             
-            playerInput.AttackStrong.OnPressed.AddListener(AttackStrong);
-            playerInput.AttackWeak.OnPressed.AddListener(AttackWeak);
+            playerInput.AttackStrong.OnPressed.AddListener(SecondaryAttack);
+            playerInput.AttackWeak.OnPressed.AddListener(PrimaryAttack);
             playerInput.Block.OnPressed.AddListener(Block);
             playerInput.CombatDirection.OnValueChanged.AddListener(CombatDirectionChanged);
         }
 
         private void OnDisable()
         {
-            playerInput.AttackStrong.OnPressed.RemoveListener(AttackStrong);
-            playerInput.AttackWeak.OnPressed.RemoveListener(AttackWeak);
+            playerInput.AttackStrong.OnPressed.RemoveListener(SecondaryAttack);
+            playerInput.AttackWeak.OnPressed.RemoveListener(PrimaryAttack);
             playerInput.Block.OnPressed.RemoveListener(Block);
             playerInput.CombatDirection.OnValueChanged.RemoveListener(CombatDirectionChanged);
         }
@@ -53,14 +53,14 @@ namespace DoubTech.TPSCharacterController.Demo
             animController.Block();
         }
 
-        private void AttackWeak()
+        private void PrimaryAttack()
         {
-            animController.WeakAttack();
+            animController.PrimaryAttack();
         }
 
-        private void AttackStrong()
+        private void SecondaryAttack()
         {
-            animController.StrongAttack();
+            animController.SecondaryAttack();
         }
     }
 }

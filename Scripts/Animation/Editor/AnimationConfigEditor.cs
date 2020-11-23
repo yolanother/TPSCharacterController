@@ -6,16 +6,16 @@ using UnityEditor;
 
 namespace DoubTech.TPSCharacterController.Animation
 {
-    [CustomEditor(typeof(AnimationConfig))]
+    [CustomEditor(typeof(AnimationConfigPreset))]
     public class AnimationConfigEditor : Editor
     {
-        private AnimationConfig config;
+        private AnimationConfigPreset configPreset;
         private AnimationOverrideControllerSelector overrideController;
         private AnimationSlotSelector slotSelector;
 
         private void OnEnable()
         {
-            config = target as AnimationConfig;
+            configPreset = target as AnimationConfigPreset;
             overrideController = new AnimationOverrideControllerSelector();
             slotSelector = new AnimationSlotSelector();
         }
@@ -26,7 +26,7 @@ namespace DoubTech.TPSCharacterController.Animation
             slotSelector.SelectedController = overrideController.SelectedController;
             if (null != slotSelector.SelectedSlot)
             {
-                config.animationSlot = slotSelector.SelectedSlot;
+                configPreset.config.animationSlot = slotSelector.SelectedSlot;
             }
             slotSelector.Draw();
             base.OnInspectorGUI();
