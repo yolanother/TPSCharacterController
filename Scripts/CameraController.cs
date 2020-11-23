@@ -8,6 +8,13 @@ namespace DoubTech.TPSCharacterController
 {
     public class CameraController : MonoBehaviour
     {
+        [Header("Camera")]
+        [SerializeField] private Camera camera;
+
+        [SerializeField] private Vector3 cameraOffset;
+        [SerializeField] private Vector3 cameraRotation;
+        
+        [Header("Input")]
         [SerializeField]
         private bool invertMouse = false;
         [SerializeField]
@@ -28,8 +35,38 @@ namespace DoubTech.TPSCharacterController
         private Vector3 rotation;
         private Vector3 trackedPosition;
 
+        public Camera PlayerCamera
+        {
+            get => camera;
+            set
+            {
+                camera = value;
+                if (camera)
+                {
+                    var t = camera.transform;
+                    t.parent = cameraPivot;
+                    t.localEulerAngles = cameraRotation;
+                    t.localPosition = cameraOffset;
+                }
+            }
+        }
+
+        private void OnValidate()
+        {
+            PlayerCamera = camera;
+        }
+
         private void Awake()
         {
+            if (camera)
+            {
+                PlayerCamera = camera;
+            }
+            else
+            {
+                PlayerCamera = Camera.main;
+            }
+            
             if(!playerInput) playerInput = GetComponent<PlayerInput>();
             if (targetHead)
             {
@@ -59,6 +96,14 @@ namespace DoubTech.TPSCharacterController
                 trackedPosition = cameraPivot.position;
                 trackedPosition.y = lookTarget.position.y;
                 cameraPivot.position = trackedPosition;
+            }
+        }
+
+        private void OnDrawGizmosSelected()
+        {
+            if (!camera)
+            {
+                Gizmos.DrawWireSphere(cameraPivot.position - cameraOffset, .25f);
             }
         }
     }

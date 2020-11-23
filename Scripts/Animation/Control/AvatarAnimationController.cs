@@ -897,6 +897,15 @@ namespace DoubTech.TPSCharacterController.Animation.Control
                 PlayAction(equippedWeaponAnimConfig.throwAnimation.Config);
             }
         }
+
+        private void OnDrawGizmos()
+        {
+            if (transform.GetChild(0).name == "Model" && transform.GetChild(0).childCount == 0)
+            {
+                Gizmos.color = Color.red;
+                Gizmos.DrawCube(transform.position + transform.up / 2.0f, Vector3.one);
+            }
+        }
     }
 
     [Serializable]
