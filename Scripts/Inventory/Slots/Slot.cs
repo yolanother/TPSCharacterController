@@ -4,7 +4,10 @@ using System.Collections;
 using System.Collections.Generic;
 using DoubTech.TPSCharacterController.Animation.Control;
 using DoubTech.TPSCharacterController.Inventory.Items;
+#if ODIN_INSPECTOR
+using Sirenix.OdinInspector;
 using Sirenix.Utilities;
+#endif
 using UnityEngine.Events;
 
 namespace DoubTech.TPSCharacterController.Inventory.Slots
@@ -44,10 +47,10 @@ namespace DoubTech.TPSCharacterController.Inventory.Slots
             set
             {
                 if (item && item != value) {
-                    ItemRemovedFromSlot(value);
+                    ItemRemovedFromSlot(item);
                 }
 
-                if (value) {
+                if (value != item) {
                     ItemAddedToSlot(value);
                 }
             }
@@ -155,12 +158,31 @@ namespace DoubTech.TPSCharacterController.Inventory.Slots
 
         public virtual bool CanHoldItem(Item item)
         {
-            return !Item && (configuration.SupportedItemTypes.Count == 0 || configuration.SupportedItemTypes.Contains(item.Type));
+            return configuration.SupportedItemTypes.Count == 0 || configuration.SupportedItemTypes.Contains(item.Type);
+        }
+
+        public virtual bool IsSlotAvailable(Item item)
+        {
+            return !Item && CanHoldItem(item);
         }
         
         public override string ToString()
         {
             return name;
+        }
+
+        #if ODIN_INSPECTOR
+        [Button]
+        #endif
+        public void Drop()
+        {
+            if (Item)
+            {
+                var item = Item;
+                item.PickupDelay = Time.realtimeSinceStartup + 1;
+                Item = null;
+                item.transform.position = item.transform.position + transform.up * 2;
+            }
         }
     }
 

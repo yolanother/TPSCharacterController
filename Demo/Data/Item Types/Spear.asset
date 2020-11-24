@@ -10,7 +10,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ca1c14fce8164784f8c840ce3583a366, type: 3}
-  m_Name: Longsword
+  m_Name: Spear
   m_EditorClassIdentifier: 
-  id: 592033d8-476b-4ac0-aa50-9dcba9b55448
-  typeName: Longsword
+  typeName: Spear

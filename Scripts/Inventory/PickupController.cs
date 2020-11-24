@@ -19,7 +19,7 @@ namespace DoubTech.TPSCharacterController.Inventory
         private void OnTriggerEnter(Collider other)
         {
             var item = other.GetComponent<Item>();
-            if (item)
+            if (item && item.PickupDelay < Time.realtimeSinceStartup)
             {
                 if (autopickup) Pickup(item);
                 else OnEnteredPickup.Invoke(item);
@@ -31,7 +31,7 @@ namespace DoubTech.TPSCharacterController.Inventory
             for (int i = 0; i < managedSlots.Length; i++)
             {
                 var slot = managedSlots[i];
-                if (slot.CanHoldItem(item))
+                if (slot.IsSlotAvailable(item))
                 {
                     slot.Item = item;
                     break;
