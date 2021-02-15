@@ -16,7 +16,9 @@ namespace DoubTech.TPSCharacterController
         [SerializeField]
         private PlayerInput playerInput;
         
-        [Header("Movement")] 
+        [Header("Movement")]
+        [SerializeField]
+        private bool strafe = true;
         [SerializeField]
         private bool holdToRun = true;
         [SerializeField] 
@@ -192,13 +194,19 @@ namespace DoubTech.TPSCharacterController
 
         private void UpdateDirection()
         {
-            var horizontal = HandleInputLerp(previousHorizontal, playerInput.Horizontal.Value);
-            var vertical = HandleInputLerp(previousVertical, playerInput.Vertical.Value);
+            if (strafe)
+            {
+                var horizontal = HandleInputLerp(previousHorizontal, playerInput.Horizontal.Value);
+                AvatarController.Hoizontal = horizontal;
+                previousHorizontal = horizontal;
+            }
+            else
+            {
+                Debug.Log("AARON: Turn: " + playerInput.Horizontal.Value);
+            }
 
-            AvatarController.Hoizontal = horizontal;
+            var vertical = HandleInputLerp(previousVertical, playerInput.Vertical.Value);
             AvatarController.Vertical = vertical;
-            
-            previousHorizontal = horizontal;
             previousVertical = vertical;
         }
 
@@ -271,6 +279,10 @@ namespace DoubTech.TPSCharacterController
         private void UpdateRotation()
         {
             var turnDelta = playerInput.Turn.Value * rotationSpeed;
+            if (!strafe && turnDelta == 0)
+            {
+                turnDelta = playerInput.Horizontal.Value * rotationSpeed * 10;
+            }
             rotationY = transform.eulerAngles.y + turnDelta;
             if (turnDelta > 0) turnValue = Mathf.Lerp(turnValue, 1.0f, Time.deltaTime);
             else if (turnDelta < 0) turnValue = Mathf.Lerp(turnValue, -1.0f, Time.deltaTime);
