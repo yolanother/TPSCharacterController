@@ -200,10 +200,6 @@ namespace DoubTech.TPSCharacterController
                 AvatarController.Hoizontal = horizontal;
                 previousHorizontal = horizontal;
             }
-            else
-            {
-                Debug.Log("AARON: Turn: " + playerInput.Horizontal.Value);
-            }
 
             var vertical = HandleInputLerp(previousVertical, playerInput.Vertical.Value);
             AvatarController.Vertical = vertical;
