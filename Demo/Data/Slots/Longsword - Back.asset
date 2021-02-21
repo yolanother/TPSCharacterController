@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 40cf94c0301d49e4bb9c177b7fb06892, type: 3}
-  m_Name: Longsword - Right Hand
+  m_Name: Longsword - Back
   m_EditorClassIdentifier: 
   position:
     type: {fileID: 11400000, guid: 81e3ee7624fdf3c44ad0cd44ebf14d69, type: 2}
-    side: 0
-    bone: 18
+    side: 3
+    bone: 7
     offset: {x: 0, y: 0, z: 0}
     rotation: {x: 0, y: 0, z: 0}

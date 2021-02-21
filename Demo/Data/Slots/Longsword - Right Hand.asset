@@ -16,5 +16,5 @@ MonoBehaviour:
     type: {fileID: 11400000, guid: 81e3ee7624fdf3c44ad0cd44ebf14d69, type: 2}
     side: 0
     bone: 18
-    offset: {x: 0, y: 0, z: 0}
-    rotation: {x: 0, y: 0, z: 0}
+    offset: {x: 10.2, y: 0.4, z: 0.1}
+    rotation: {x: 4.36, y: 89.138, z: -102.349}
