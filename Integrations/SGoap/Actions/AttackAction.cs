@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using DoubTech.TPSCharacterController.Demo;
+using DoubTech.TPSCharacterController.Stats;
 using SGoap;
 
 namespace DoubTech.TPSCharacterController.SGoap.Actions
@@ -25,8 +26,23 @@ namespace DoubTech.TPSCharacterController.SGoap.Actions
             new Vector2(-1, -1)
         };
 
+        private Transform target;
+        private Health health;
+
         public override EActionStatus Perform()
         {
+            if (target != AgentData.Target)
+            {
+                target = AgentData.Target;
+                health = target.GetComponentInChildren<Health>();
+            }
+
+            if (health && !health.IsAlive)
+            {
+                AgentData.Target = null;
+                return EActionStatus.Failed;
+            }
+            
             // TODO: Make attack direction smarter.
             var direction = directions[Random.Range(0, directions.Length - 1)];
             

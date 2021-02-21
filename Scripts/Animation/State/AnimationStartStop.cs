@@ -25,7 +25,6 @@ namespace DoubTech.TPSCharacterController.Animation.State
         public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
         {
             base.OnStateExit(animator, stateInfo, layerIndex);
-            Debug.Log("State machine exit: " + tag);
             if (stateInfo.length < 0.01f || useStateExit)
             {
                 if(receiver) receiver.StateExitEvent(tag);
@@ -35,8 +34,6 @@ namespace DoubTech.TPSCharacterController.Animation.State
         public override void OnStateMachineExit(Animator animator, int stateMachinePathHash)
         {
             base.OnStateMachineExit(animator, stateMachinePathHash);
-            Debug.Log("State machine exit: " + tag);
-            
             if(receiver) receiver.StateExitEvent(tag);
         }
     }

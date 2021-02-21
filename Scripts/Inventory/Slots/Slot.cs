@@ -19,6 +19,7 @@ namespace DoubTech.TPSCharacterController.Inventory.Slots
 
         [Header("Slot Configuration")]
         [SerializeField] private bool isSlotVisible;
+        [SerializeField] private bool sendsEquippedEvent = false;
 
         [SerializeField] private SlotConfigurationPreset configurationPreset;
         [SerializeField] private SlotConfiguration configuration;
@@ -119,15 +120,10 @@ namespace DoubTech.TPSCharacterController.Inventory.Slots
                     }
                     else
                     {
-                        item.Model.SetActive(true);
-                        Debug.Log("Avatar: " + avatar);
-                        Debug.Log("Animator: " + avatar.Animator);
-                        Debug.Log("Pos: " + pos);
-                        Debug.Log("Item: " + item);
-                        Debug.Log("Model: " + item.Model);
                         item.Model.transform.parent = avatar.Animator.GetBoneTransform(pos.bone);
                         item.Model.transform.localPosition = pos.offset;
                         item.Model.transform.localEulerAngles = pos.rotation;
+                        item.Model.SetActive(true);
                     }
                 }
                 else
@@ -144,6 +140,15 @@ namespace DoubTech.TPSCharacterController.Inventory.Slots
                 {
                     initialItemConfig.enabledColliders.Add(c);
                     c.enabled = false;
+                }
+            }
+
+            if (sendsEquippedEvent)
+            {
+                var equippedLiseners = item.GetComponentsInChildren<SlotEquippedListener>();
+                foreach (var listener in equippedLiseners)
+                {
+                    listener.OnItemEquipped(avatar, this, item);
                 }
             }
         }
@@ -176,6 +181,16 @@ namespace DoubTech.TPSCharacterController.Inventory.Slots
             
             onItemRemovedFromSlot.Invoke(pickup);
             OnItemRemovedFromSlot(pickup);
+
+            if (sendsEquippedEvent)
+            {
+                var equippedLiseners = item.GetComponentsInChildren<SlotEquippedListener>();
+                foreach (var listener in equippedLiseners)
+                {
+                    listener.OnItemUnequipped(avatar, this, item);
+                }
+            }
+            
             item = null;
         }
 

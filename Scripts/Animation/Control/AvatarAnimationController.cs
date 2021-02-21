@@ -790,7 +790,12 @@ namespace DoubTech.TPSCharacterController.Animation.Control
             activeController[slot] = PrepareClip(slot, clip);
             animator.CrossFade(AnimSlotDefinitions.MULTIPURPOSE.animStateHash, .1f, activeLayer);
         }
-        
+
+        public void Die()
+        {
+            IsDead = true;
+            PlaySlot(AnimSlotDefinitions.DEATH, activeLayer);
+        }
 
         /// <summary>
         /// Plays the default death animation or a animation clip provided. When the animation finishes it will not
@@ -798,7 +803,7 @@ namespace DoubTech.TPSCharacterController.Animation.Control
         /// </summary>
         /// <param name="clip"></param>
         [Button]
-        public void Die(AnimationClip clip = null)
+        public void Die(AnimationClip clip)
         {
             IsDead = true;
             if (clip)

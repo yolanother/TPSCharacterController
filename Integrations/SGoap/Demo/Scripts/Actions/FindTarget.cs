@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using DoubTech.TPSCharacterController.Stats;
 using SGoap;
 using UnityEngine.AI;
 using Random = UnityEngine.Random;
@@ -75,7 +76,11 @@ namespace DoubTech.TPSCharacterController.SGoap.Actions
         {
             if ((layerMask & 1 << other.gameObject.layer) > 0)
             {
-                detected = other.transform;
+                Health health = other.transform.GetComponentInChildren<Health>();
+                if (!health || health.IsAlive)
+                {
+                    detected = other.transform;
+                }
             }
         }
 
