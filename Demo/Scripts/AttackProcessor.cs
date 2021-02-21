@@ -18,19 +18,25 @@ namespace DoubTech.TPSCharacterController.Demo
         {
             if (!playerInput) playerInput = GetComponent<PlayerInput>();
             animController = GetComponent<AvatarAnimationController>();
-            
-            playerInput.AttackStrong.OnPressed.AddListener(SecondaryAttack);
-            playerInput.AttackWeak.OnPressed.AddListener(PrimaryAttack);
-            playerInput.Block.OnPressed.AddListener(Block);
-            playerInput.CombatDirection.OnValueChanged.AddListener(CombatDirectionChanged);
+
+            if (playerInput)
+            {
+                playerInput.AttackStrong.OnPressed.AddListener(SecondaryAttack);
+                playerInput.AttackWeak.OnPressed.AddListener(PrimaryAttack);
+                playerInput.Block.OnPressed.AddListener(Block);
+                playerInput.CombatDirection.OnValueChanged.AddListener(CombatDirectionChanged);
+            }
         }
 
         private void OnDisable()
         {
-            playerInput.AttackStrong.OnPressed.RemoveListener(SecondaryAttack);
-            playerInput.AttackWeak.OnPressed.RemoveListener(PrimaryAttack);
-            playerInput.Block.OnPressed.RemoveListener(Block);
-            playerInput.CombatDirection.OnValueChanged.RemoveListener(CombatDirectionChanged);
+            if (playerInput)
+            {
+                playerInput.AttackStrong.OnPressed.RemoveListener(SecondaryAttack);
+                playerInput.AttackWeak.OnPressed.RemoveListener(PrimaryAttack);
+                playerInput.Block.OnPressed.RemoveListener(Block);
+                playerInput.CombatDirection.OnValueChanged.RemoveListener(CombatDirectionChanged);
+            }
         }
 
         private int Nearest(float value)
@@ -38,7 +44,7 @@ namespace DoubTech.TPSCharacterController.Demo
             return (int) (Mathf.Sign(value) * Mathf.Ceil(Mathf.Abs(value)));
         }
 
-        private void CombatDirectionChanged(Vector2 direction)
+        public void CombatDirectionChanged(Vector2 direction)
         {
             var normalized = direction.normalized;
             if (direction.magnitude > .25f)
@@ -48,17 +54,17 @@ namespace DoubTech.TPSCharacterController.Demo
             }
         }
 
-        private void Block()
+        public void Block()
         {
             animController.Block();
         }
 
-        private void PrimaryAttack()
+        public void PrimaryAttack()
         {
             animController.PrimaryAttack();
         }
 
-        private void SecondaryAttack()
+        public void SecondaryAttack()
         {
             animController.SecondaryAttack();
         }

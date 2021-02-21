@@ -153,7 +153,14 @@ namespace DoubTech.TPSCharacterController.Animation.Control
         private bool isReady;
         public bool IsReady => isReady;
 
-        public Animator Animator => animator;
+        public Animator Animator
+        {
+            get
+            {
+                if (!animator) animator = GetComponentInChildren<Animator>();
+                return animator;
+            }
+        }
 
         private float speed;
 
@@ -329,6 +336,18 @@ namespace DoubTech.TPSCharacterController.Animation.Control
             activeController.ApplyOverrides(overrides);
         }
 
+        public void ExecuteWhenReady(UnityAction action)
+        {
+            if (IsReady)
+            {
+                action.Invoke();
+            }
+            else
+            {
+                onAvatarReady.AddListener(action);
+            }
+        }
+
         private void OnDisable()
         {
             if (eventReceiver)
@@ -388,9 +407,7 @@ namespace DoubTech.TPSCharacterController.Animation.Control
 
         public void CharacterReady()
         {
-            if (!animator) animator = GetComponentInChildren<Animator>();
-
-            if (animator)
+            if (Animator)
             {
                 animator.runtimeAnimatorController = activeController;
                 eventReceiver = animator.GetComponent<AnimationEventReceiver>();
@@ -601,7 +618,6 @@ namespace DoubTech.TPSCharacterController.Animation.Control
 
         private void Attack(AnimationConfig attack)
         {
-            Debug.Log("Attack: isBusy? " + IsBusy);
             var attackStart = attack.GetTags(AnimationTagType.AttackStart);
 
             if (attackStart.Count > 0)

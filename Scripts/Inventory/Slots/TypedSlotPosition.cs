@@ -7,6 +7,7 @@ using Object = UnityEngine.Object;
 
 namespace DoubTech.TPSCharacterController.Inventory.Slots
 {
+    [CreateAssetMenu(menuName = "TPS Character Controller/Slots/Typed Slot Position")]
     public class TypedSlotPosition : ScriptableObject
     {
         [SerializeField] public ItemSlotPosition position;

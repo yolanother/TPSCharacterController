@@ -20,6 +20,18 @@ namespace DoubTech.TPSCharacterController
         private AvatarAnimationController anim;
         private NavMeshAgent agent;
 
+        public Vector3 Destination
+        {
+            get => agent.destination;
+            set => MoveTo(value);
+        }
+
+        public float StoppingDistance
+        {
+            get => agent.stoppingDistance;
+            set => agent.stoppingDistance = value;
+        }
+
         public bool IsRunning
         {
             get => isRunning;
@@ -47,6 +59,20 @@ namespace DoubTech.TPSCharacterController
                 anim.Vertical = isRunning ? forwardSpeed / runSpeed : forwardSpeed / walkSpeed;
                 anim.Hoizontal = isRunning ? horizontalSpeed / runSpeed : horizontalSpeed / walkSpeed;
             }
+        }
+
+        public void MoveTo(Vector3 position) => MoveTo(position, IsRunning);
+
+        public void MoveTo(Vector3 position, bool run)
+        {
+            IsRunning = run;
+            agent.speed = run ? runSpeed : walkSpeed;
+            agent.SetDestination(position);
+        }
+
+        public void Stop()
+        {
+            agent.SetDestination(transform.position);
         }
     }
 }

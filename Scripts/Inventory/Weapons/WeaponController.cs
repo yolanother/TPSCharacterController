@@ -1,8 +1,8 @@
 using System;
 using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using DoubTech.TPSCharacterController.Animation.Control;
 using DoubTech.TPSCharacterController.Inventory.Slots;
 #if ODIN_INSPECTOR
 using Sirenix.OdinInspector;
@@ -16,6 +16,28 @@ namespace DoubTech.TPSCharacterController.Inventory.Weapons
         [SerializeField] private Slot[] equippedWeaponSlots;
         
         private Dictionary<Slot, Slot> equippedSlots = new Dictionary<Slot, Slot>();
+
+        private void Awake()
+        {
+            bool equipped = false;
+            foreach (var slot in equippedWeaponSlots)
+            {
+                if (slot.Item)
+                {
+                    Equip(slot, slot);
+                    equipped = true;
+                }
+            }
+
+            if (equipped)
+            {
+                var avatar = GetComponent<AvatarAnimationController>();
+                if (avatar)
+                {
+                    avatar.ExecuteWhenReady(() => avatar.Equip());
+                }
+            }
+        }
 
         public void Equip(Slot unequippedSlot, Slot equippedSlot)
         {

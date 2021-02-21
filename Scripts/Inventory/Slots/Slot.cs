@@ -63,18 +63,33 @@ namespace DoubTech.TPSCharacterController.Inventory.Slots
                 configuration = configurationPreset.configuration;
             }
             
-            var parent = transform;
-            while (parent && !avatar)
-            {
-                avatar = parent.GetComponent<AvatarAnimationController>();
-                parent = parent.parent;
-            }
+            avatar = GetComponentInParent<AvatarAnimationController>();
 
             if (null == avatar)
             {
                 enabled = false;
                 throw new Exception("Slot disabled. No associated AvatarAnimationController could be found. Slots must be placed within the hierarchy under the AvatarAnimationController.");
-            } 
+            }
+
+            if (item)
+            {
+                // If slot's item is preassigned with a prefab go ahead and instantiate it and add it to the slot.
+                var i = Instantiate(item);
+                
+                if (!avatar.IsReady)
+                {
+                    avatar.OnAvatarReady.AddListener(() =>
+                    {
+                        item = null;
+                        Item = i;
+                    });
+                }
+                else
+                {
+                    item = null;
+                    Item = i;
+                }
+            }
         }
 
         private void ItemAddedToSlot(Item pickup)
@@ -97,11 +112,23 @@ namespace DoubTech.TPSCharacterController.Inventory.Slots
             {
                 if (isSlotVisible)
                 {
-                    item.Model.SetActive(true);
                     var pos = configuration.GetPosition(pickup);
-                    item.Model.transform.parent = avatar.Animator.GetBoneTransform(pos.bone);
-                    item.Model.transform.localPosition = pos.offset;
-                    item.Model.transform.localEulerAngles = pos.rotation;
+                    if (null == pos)
+                    {
+                        Debug.LogError("No position target could be found for " + pickup.Type + " " + pickup.name);
+                    }
+                    else
+                    {
+                        item.Model.SetActive(true);
+                        Debug.Log("Avatar: " + avatar);
+                        Debug.Log("Animator: " + avatar.Animator);
+                        Debug.Log("Pos: " + pos);
+                        Debug.Log("Item: " + item);
+                        Debug.Log("Model: " + item.Model);
+                        item.Model.transform.parent = avatar.Animator.GetBoneTransform(pos.bone);
+                        item.Model.transform.localPosition = pos.offset;
+                        item.Model.transform.localEulerAngles = pos.rotation;
+                    }
                 }
                 else
                 {
@@ -183,6 +210,19 @@ namespace DoubTech.TPSCharacterController.Inventory.Slots
                 Item = null;
                 item.transform.position = item.transform.position + transform.up * 2;
             }
+        }
+        
+        #if ODIN_INSPECTOR
+        // TODO: This needs a custom inspector, hacking with Odin for now.
+        [Button]
+        #endif
+        public void SavePosition()
+        {
+            var position = item.Model.transform.localPosition;
+            var rot = item.Model.transform.localEulerAngles;
+            var pos = configuration.GetPosition(item);
+            pos.offset = position;
+            pos.rotation = rot;
         }
     }
 
