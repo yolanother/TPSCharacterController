@@ -22,6 +22,7 @@ namespace DoubTech.TPSCharacterController.Damage
         private AvatarAnimationController anim;
         private float speed;
         private Vector3 lastPosition;
+        private TPSCharacterCoordinator owner;
 
         public Weapon Weapon { get; set; }
 
@@ -43,8 +44,9 @@ namespace DoubTech.TPSCharacterController.Damage
             }
         }
 
-        public void EnableHitbox()
+        public void EnableHitbox(TPSCharacterCoordinator owner)
         {
+            this.owner = owner;
             for (int i = 0; i < colliders.Length; i++)
             {
                 colliders[i].enabled = true;
@@ -68,6 +70,8 @@ namespace DoubTech.TPSCharacterController.Damage
             if (blocker)
             {
                 damageReduction = blocker.DamageReductionMultiplier;
+            
+                if(disableAfterImpact) DisableHitbox();
             }
             
             var receiver = other.gameObject.GetComponent<DamageReceiver>();
@@ -78,10 +82,10 @@ namespace DoubTech.TPSCharacterController.Damage
                 {
                     speedMult = Mathf.Min(minSpeedForMaxDamage, speed) / minSpeedForMaxDamage;
                 }
-                receiver.Damage(transform.position, damageMultiplier * damageReduction * Weapon.Stats.damage * speedMult);
-            }
+                receiver.Damage(owner, transform.position, damageMultiplier * damageReduction * Weapon.Stats.damage * speedMult);
             
-            if(disableAfterImpact) DisableHitbox();
+                if(disableAfterImpact) DisableHitbox();
+            }
         }
 
         private void Update()

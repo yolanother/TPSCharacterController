@@ -238,17 +238,6 @@ namespace DoubTech.TPSCharacterController.Inputs
                 },
                 {
                     ""name"": """",
-                    ""id"": ""995d2faf-d030-41ac-bf61-c4c9346a9126"",
-                    ""path"": ""<Gamepad>/rightStick"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Look"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""e5e2b203-c816-4dd1-94ab-09014c6399a1"",
                     ""path"": ""<Mouse>/delta"",
                     ""interactions"": """",
@@ -317,6 +306,17 @@ namespace DoubTech.TPSCharacterController.Inputs
                     ""name"": """",
                     ""id"": ""c291403b-e881-4d76-b4a2-3cb0cc364beb"",
                     ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Crouch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""62fa23f6-a325-43c5-8987-2403fc77eb51"",
+                    ""path"": """",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -503,7 +503,7 @@ namespace DoubTech.TPSCharacterController.Inputs
                 {
                     ""name"": ""up"",
                     ""id"": ""df61353b-cf55-48be-b62d-4a5f4afac135"",
-                    ""path"": ""<Gamepad>/dpad/up"",
+                    ""path"": ""<Gamepad>/rightStick/up"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -514,7 +514,7 @@ namespace DoubTech.TPSCharacterController.Inputs
                 {
                     ""name"": ""down"",
                     ""id"": ""cee1f894-91fb-4ede-8173-aa7934fdaac7"",
-                    ""path"": ""<Gamepad>/dpad/down"",
+                    ""path"": ""<Gamepad>/rightStick/down"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -525,7 +525,7 @@ namespace DoubTech.TPSCharacterController.Inputs
                 {
                     ""name"": ""left"",
                     ""id"": ""4d12f1c0-4684-4d21-b8b4-a9a1cab86287"",
-                    ""path"": ""<Gamepad>/dpad/left"",
+                    ""path"": ""<Gamepad>/rightStick/left"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -536,7 +536,7 @@ namespace DoubTech.TPSCharacterController.Inputs
                 {
                     ""name"": ""right"",
                     ""id"": ""dbae2dbd-6962-4454-96af-65e4d4f54d46"",
-                    ""path"": ""<Gamepad>/dpad/right"",
+                    ""path"": ""<Gamepad>/rightStick/right"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",

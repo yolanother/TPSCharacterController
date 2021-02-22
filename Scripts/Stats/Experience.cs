@@ -1,23 +1,35 @@
+using System;
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.Xml;
+using DoubTech.TPSCharacterController.Stats.BaseTypes;
+using UnityEngine.Events;
 
 namespace DoubTech.TPSCharacterController.Stats
 {
-    public class Experience : SerializableStat
+    public class Experience : FloatStat
     {
-        [SerializeField] private float experience;
+        [SerializeField] private OnExperienceChanged onExperienceChanged = new OnExperienceChanged();
 
-        public float XP => experience;
-        protected override void OnSave(XmlWriter writer)
-        {
-            WriteAttribute("experience", experience);
-        }
+        public OnExperienceChanged OnExperienceChanged => onExperienceChanged;
 
-        protected override void OnLoad(XmlReader reader)
+        public float XP
         {
-            experience = ReadFloatAttribute("experience", experience);
+            get => base.value;
+            set
+            {
+                if (base.value != value)
+                {
+                    base.value = value;
+                    onExperienceChanged.Invoke(base.value);
+                }
+            }
         }
+    }
+
+    [Serializable]
+    public class OnExperienceChanged : UnityEvent<float>
+    {
     }
 }

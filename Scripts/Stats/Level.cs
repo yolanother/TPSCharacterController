@@ -1,42 +1,54 @@
+using System;
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.Xml;
+using DoubTech.TPSCharacterController.Stats.BaseTypes;
+using UnityEngine.Events;
 
 namespace DoubTech.TPSCharacterController.Stats
 {
-    public class Level : SerializableStat
+    public class Level : IntStat
     {
         [SerializeField] private Experience experience;
-        [SerializeField] private int level;
+        [SerializeField] private OnLevelChanged onLevelChanged = new OnLevelChanged();
 
         public int CurrentLevel
         {
             get
             {
-                if (experience)
+                return base.value;
+            }
+            protected set
+            {
+                if (value != base.value)
                 {
-                    return (int) Mathf.Log10(Mathf.Max(1f, experience.XP));
+                    base.value = value;
+                    onLevelChanged.Invoke(base.value);
                 }
-
-                return level;
             }
         }
 
-        protected override void OnSave(XmlWriter writer)
+        private int CalculateLevel(float experience)
         {
-            if (!experience)
-            {
-                WriteAttribute("level", level);
-            }
+            return (int) Mathf.Ceil(Mathf.Log10(Mathf.Max(2f, experience)));
         }
 
-        protected override void OnLoad(XmlReader reader)
+        private void Awake()
         {
-            if (!experience)
+            if (experience)
             {
-                level = ReadIntAttribute("level", 1);
+                experience.OnExperienceChanged.AddListener((e) =>
+                {
+                    CurrentLevel = CalculateLevel(experience.XP);
+                });
+
+                CurrentLevel = CalculateLevel(experience);
             }
+            
+            onLevelChanged.Invoke(CurrentLevel);
         }
     }
+    
+    [Serializable] public class OnLevelChanged : UnityEvent<int> {}
 }

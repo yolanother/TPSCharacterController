@@ -13,8 +13,8 @@ namespace DoubTech.TPSCharacterController
 
         [SerializeField] private Vector3 cameraOffset;
         [SerializeField] private Vector3 cameraRotation;
-        
-        [Header("Input")]
+
+        [Header("Input")] [SerializeField] private bool enableLook = true;
         [SerializeField]
         private bool invertMouse = false;
         [SerializeField]
@@ -88,6 +88,8 @@ namespace DoubTech.TPSCharacterController
 
         public void LateUpdate()
         {
+            if (!enableLook) return;
+            
             rotation.x += playerInput.Look.Value * rotationSpeed * (invertMouse ? 1 : -1);
             rotation.x = Mathf.Clamp(rotation.x, -30, 70);
             cameraPivot.localEulerAngles = rotation;

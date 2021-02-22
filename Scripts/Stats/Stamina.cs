@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace DoubTech.TPSCharacterController.Stats
 {
-    public class Stamina : BaseStat
+    public class Stamina : MaxFloatStat
     {
     }
 }

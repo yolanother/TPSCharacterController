@@ -67,7 +67,10 @@ namespace DoubTech.TPSCharacterController
         {
             IsRunning = run;
             agent.speed = run ? runSpeed : walkSpeed;
-            agent.SetDestination(position);
+            if (agent.destination != position)
+            {
+                agent.SetDestination(position);
+            }
         }
 
         public void Stop()

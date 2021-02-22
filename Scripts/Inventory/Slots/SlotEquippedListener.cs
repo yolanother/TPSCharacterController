@@ -5,7 +5,7 @@ namespace DoubTech.TPSCharacterController.Inventory.Slots
 {
     public interface SlotEquippedListener
     {
-        void OnItemEquipped(AvatarAnimationController avatar, Slot slot, Item item);
-        void OnItemUnequipped(AvatarAnimationController avatar, Slot slot, Item item);
+        void OnItemEquipped(TPSCharacterCoordinator owner, Slot slot, Item item);
+        void OnItemUnequipped(TPSCharacterCoordinator owner, Slot slot, Item item);
     }
 }

@@ -43,11 +43,6 @@ namespace DoubTech.TPSCharacterController.SGoap.Actions
                 return EActionStatus.Failed;
             }
             
-            // TODO: Make attack direction smarter.
-            var direction = directions[Random.Range(0, directions.Length - 1)];
-            
-            attackProcessor.CombatDirectionChanged(direction);
-            
             // TODO: Make this smarter. Maybe stamina based
             if (Random.Range(0, 1) > .25f)
             {

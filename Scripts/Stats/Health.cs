@@ -1,13 +1,9 @@
-using System;
 using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
-using Com.Doubtech.PackageManager;
 using UnityEngine.Events;
 
 namespace DoubTech.TPSCharacterController.Stats
 {
-    public class Health : BaseStat
+    public class Health : MaxFloatStat
     {
         [SerializeField] private UnityEvent onDied = new UnityEvent();
         
@@ -23,7 +19,7 @@ namespace DoubTech.TPSCharacterController.Stats
             OnStatEmptyEvent.RemoveListener(OnDied);
         }
 
-        private void OnDied(BaseStat stat)
+        private void OnDied(MaxFloatStat stat)
         {
             onDied.Invoke();
         }

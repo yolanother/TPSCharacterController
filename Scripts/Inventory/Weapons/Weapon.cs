@@ -9,7 +9,7 @@ using DoubTech.TPSCharacterController.Inventory.Slots;
 
 namespace DoubTech.TPSCharacterController.Inventory.Weapons
 {
-    public class Weapon : MonoBehaviour, SlotEquippedListener
+    public class Weapon : CoordinatorReferenceMonoBehaviour, SlotEquippedListener
     {
         [SerializeField] private WeaponStats weaponStats;
         [SerializeField] private Hitbox[] hitboxes;
@@ -25,12 +25,12 @@ namespace DoubTech.TPSCharacterController.Inventory.Weapons
             }
         }
 
-        public void OnItemEquipped(AvatarAnimationController avatar, Slot slot, Item item)
+        public void OnItemEquipped(TPSCharacterCoordinator owner, Slot slot, Item item)
         {
-            if (avatar)
+            if (owner && owner.AvatarAnimator)
             {
-                avatar.OnAttackStarted.AddListener(EnableHitboxes);
-                avatar.OnAttackStopped.AddListener(DisableHitboxes);
+                owner.AvatarAnimator.OnAttackStarted.AddListener(EnableHitboxes);
+                owner.AvatarAnimator.OnAttackStopped.AddListener(DisableHitboxes);
             }
             else
             {
@@ -39,12 +39,12 @@ namespace DoubTech.TPSCharacterController.Inventory.Weapons
             }
         }
 
-        public void OnItemUnequipped(AvatarAnimationController avatar, Slot slot, Item item)
+        public void OnItemUnequipped(TPSCharacterCoordinator owner, Slot slot, Item item)
         {
-            if (avatar)
+            if (owner && owner.AvatarAnimator)
             {
-                avatar.OnAttackStarted.RemoveListener(EnableHitboxes);
-                avatar.OnAttackStopped.RemoveListener(DisableHitboxes);
+                owner.AvatarAnimator.OnAttackStarted.RemoveListener(EnableHitboxes);
+                owner.AvatarAnimator.OnAttackStopped.RemoveListener(DisableHitboxes);
             }
             DisableHitboxes();
         }
@@ -53,7 +53,7 @@ namespace DoubTech.TPSCharacterController.Inventory.Weapons
         {
             for (int i = 0; i < hitboxes.Length; i++)
             {
-                hitboxes[i].EnableHitbox();
+                hitboxes[i].EnableHitbox(Coordinator);
             }
         }
 

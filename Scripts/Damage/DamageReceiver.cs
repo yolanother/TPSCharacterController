@@ -7,7 +7,7 @@ using UnityEngine.Events;
 
 namespace DoubTech.TPSCharacterController.Damage
 {
-    public class DamageReceiver : MonoBehaviour
+    public class DamageReceiver : CoordinatorReferenceMonoBehaviour
     {
         [SerializeField] private float receiverDamageMultiplier = 1;
 
@@ -15,35 +15,44 @@ namespace DoubTech.TPSCharacterController.Damage
         [SerializeField] private HumanBodyBones bone;
         
         [SerializeField] private OnDamageReceived onDamageReceived = new OnDamageReceived();
-        
-        private AvatarAnimationController anim;
 
         public OnDamageReceived OnDamageReceived => onDamageReceived;
 
         private void OnEnable()
         {
-            if (!anim)
+            if (attachToBone)
             {
-                anim = GetComponentInParent<AvatarAnimationController>();
-
-                if (attachToBone)
+                Coordinator.AvatarAnimator.ExecuteWhenReady(() =>
                 {
-                    anim.ExecuteWhenReady(() =>
-                    {
-                        var target = anim.Animator.GetBoneTransform(bone);
-                        transform.parent = target;
-                    });
-                }
+                    var target = Coordinator.AvatarAnimator.Animator.GetBoneTransform(bone);
+                    transform.parent = target;
+                });
             }
         }
 
-        public void Damage(Vector3 position, float damageMultiplier)
+        public void Damage(TPSCharacterCoordinator owner, Vector3 position, float damageMultiplier)
         {
-            onDamageReceived.Invoke(damageMultiplier * receiverDamageMultiplier);
-            if (anim)
+            var finalDamage = damageMultiplier * receiverDamageMultiplier;
+            
+            if (Coordinator.AvatarAnimator)
             {
-                anim.Hit(position);
+                Coordinator.AvatarAnimator.Hit(position);
             }
+
+            
+            owner.OnDamaged(Coordinator, finalDamage);
+
+            var health = Coordinator.Health;
+            if (Coordinator.Health)
+            {
+                Coordinator.Health.OnDamaged(finalDamage);;
+                if (!Coordinator.Health.IsAlive)
+                {
+                    owner.OnKilled(Coordinator);
+                }
+            }
+            
+            onDamageReceived.Invoke(finalDamage);
         }
     }
     

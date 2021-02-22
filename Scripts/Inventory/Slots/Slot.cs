@@ -12,7 +12,7 @@ using UnityEngine.Events;
 
 namespace DoubTech.TPSCharacterController.Inventory.Slots
 {
-    public class Slot : MonoBehaviour
+    public class Slot : CoordinatorReferenceMonoBehaviour
     {
         [Header("Item")]
         [SerializeField] private Item item;
@@ -148,7 +148,7 @@ namespace DoubTech.TPSCharacterController.Inventory.Slots
                 var equippedLiseners = item.GetComponentsInChildren<SlotEquippedListener>();
                 foreach (var listener in equippedLiseners)
                 {
-                    listener.OnItemEquipped(avatar, this, item);
+                    listener.OnItemEquipped(Coordinator, this, item);
                 }
             }
         }
@@ -187,7 +187,7 @@ namespace DoubTech.TPSCharacterController.Inventory.Slots
                 var equippedLiseners = item.GetComponentsInChildren<SlotEquippedListener>();
                 foreach (var listener in equippedLiseners)
                 {
-                    listener.OnItemUnequipped(avatar, this, item);
+                    listener.OnItemUnequipped(Coordinator, this, item);
                 }
             }
             

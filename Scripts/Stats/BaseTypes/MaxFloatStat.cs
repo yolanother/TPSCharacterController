@@ -7,7 +7,7 @@ using UnityEngine.Events;
 
 namespace DoubTech.TPSCharacterController.Stats
 {
-    public class BaseStat : SerializableStat
+    public class MaxFloatStat : SerializableStat
     {
         [SerializeField] private float max = 100;
         [SerializeField] private float current;
@@ -27,7 +27,7 @@ namespace DoubTech.TPSCharacterController.Stats
             set
             {
                 var last = current;
-                current = Mathf.Max(0, Mathf.Min(current, value));
+                current = Mathf.Max(0, Mathf.Min(max, value));
                 if (Math.Abs(last - current) > .001f)
                 {
                     OnStatChanged.Invoke(this);
@@ -81,8 +81,11 @@ namespace DoubTech.TPSCharacterController.Stats
             current = ReadFloatAttribute("current", current);
             max = ReadFloatAttribute("max", max);
         }
+        
+        public static implicit operator float(MaxFloatStat stat) => stat.Current;
+
     }
     
-    [Serializable] public class StatChangedEvent : UnityEvent<BaseStat> {}
+    [Serializable] public class StatChangedEvent : UnityEvent<MaxFloatStat> {}
     [Serializable] public class StatPercentChangedEvent : UnityEvent<float> {}
 }

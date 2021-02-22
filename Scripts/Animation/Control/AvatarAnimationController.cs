@@ -57,6 +57,7 @@ namespace DoubTech.TPSCharacterController.Animation.Control
         [SerializeField] private UnityEvent onAttackStarted = new UnityEvent();
         [SerializeField] private UnityEvent onAttackStopped = new UnityEvent();
         [SerializeField] private UnityEvent onAttackInterrupted = new UnityEvent();
+        
         public UnityEvent OnAttackStarted => onAttackStarted;
         public UnityEvent OnAttackStopped => onAttackStopped;
         

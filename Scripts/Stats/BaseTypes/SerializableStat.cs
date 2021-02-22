@@ -48,6 +48,6 @@ namespace DoubTech.TPSCharacterController.Stats
         }
 
         protected abstract void OnSave(XmlWriter writer);
-        protected abstract void OnLoad(XmlReader reader);
+        protected abstract void OnLoad(XmlReader reader); 
     }
 }

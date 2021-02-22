@@ -18,6 +18,12 @@ namespace DoubTech.TPSCharacterController.SGoap.Actions
         [SerializeField] private bool wander = true;
         [SerializeField] private float wanderStopDistance;
         [SerializeField] private float wanderRadius = 20;
+
+        [SerializeField] private bool patrol = true;
+        [SerializeField] private bool loop = true;
+        [SerializeField] private Vector3[] waypoints;
+        [SerializeField] private string waypointCollectionName;
+        private int currentPatrolWapyoint = -1;
         
         private Transform detected;
 
@@ -30,6 +36,17 @@ namespace DoubTech.TPSCharacterController.SGoap.Actions
             var trigger = gameObject.AddComponent<SphereCollider>();
             trigger.isTrigger = true;
             trigger.radius = radius;
+
+            if (!string.IsNullOrEmpty(waypointCollectionName))
+            {
+                var collection = GameObject.Find(waypointCollectionName);
+                var transforms = collection.transform.GetComponentsInChildren<Transform>();
+                waypoints = new Vector3[transforms.Length];
+                for (int i = 0; i < transforms.Length; i++)
+                {
+                    waypoints[i] = transforms[i].position;
+                }
+            }
         }
 
         public override EActionStatus Perform()
@@ -46,10 +63,25 @@ namespace DoubTech.TPSCharacterController.SGoap.Actions
                 return EActionStatus.Success;
             }
 
-            if (wander)
+            var distance = Vector3.Distance(transform.position, agent.Destination);
+            if (distance == float.PositiveInfinity || distance < wanderStopDistance)
             {
-                var distance = Vector3.Distance(transform.position, agent.Destination);
-                if (distance == float.PositiveInfinity || distance < wanderStopDistance)
+                if (patrol)
+                {
+                    currentPatrolWapyoint++;
+                    if (loop && currentPatrolWapyoint >= waypoints.Length)
+                    {
+                        currentPatrolWapyoint = 0;
+                    }
+
+                    if (currentPatrolWapyoint < waypoints.Length)
+                    {
+                        agent.StoppingDistance = wanderStopDistance;
+                        agent.MoveTo(waypoints[currentPatrolWapyoint]);
+                    }
+                }
+
+                if (wander && (!patrol || !loop && currentPatrolWapyoint >= waypoints.Length))
                 {
                     var position = Random.insideUnitSphere * wanderRadius;
                     var height = position.y;
@@ -57,7 +89,7 @@ namespace DoubTech.TPSCharacterController.SGoap.Actions
                     {
                         height = Terrain.activeTerrain.SampleHeight(position);
                     }
-                    else if(Physics.Raycast(position + Vector3.up * 1000, Vector3.down, out var pos))
+                    else if (Physics.Raycast(position + Vector3.up * 1000, Vector3.down, out var pos))
                     {
                         position = pos.point;
                     }

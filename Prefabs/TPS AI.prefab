@@ -137,6 +137,7 @@ GameObject:
   - component: {fileID: 1926592938638738437}
   - component: {fileID: 6972614917112883217}
   - component: {fileID: 883943586513204810}
+  - component: {fileID: 4914835823053316999}
   m_Layer: 0
   m_Name: TPS AI
   m_TagString: Untagged
@@ -294,6 +295,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9f4844c3cb658145b1ea3fc4895b490, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useCombatDirection: 1
   playerInput: {fileID: 0}
 --- !u!114 &883943586513204810
 MonoBehaviour:
@@ -310,6 +312,18 @@ MonoBehaviour:
   unequippedWeaponSlots: []
   equippedWeaponSlots:
   - {fileID: 608098795170432804}
+--- !u!114 &4914835823053316999
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1926592938638738443}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64a4fd8d29ac2314f9484f517c20886d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1926592938717775171
 GameObject:
   m_ObjectHideFlags: 0
@@ -434,7 +448,7 @@ MonoBehaviour:
   onDamageReceived:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 3246009634451081660}
         m_MethodName: OnDamaged
         m_Mode: 0
         m_Arguments:
@@ -767,7 +781,7 @@ MonoBehaviour:
   onDamageReceived:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 3246009634451081660}
         m_MethodName: OnDamaged
         m_Mode: 0
         m_Arguments:

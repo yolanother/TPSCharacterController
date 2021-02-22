@@ -1,18 +1,28 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using DoubTech.TPSCharacterController.Animation.Control;
+﻿using DoubTech.TPSCharacterController.Animation.Control;
 using DoubTech.TPSCharacterController.Inputs;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace DoubTech.TPSCharacterController.Demo
 {
     public class AttackProcessor : MonoBehaviour
     {
+        [SerializeField] public bool useCombatDirection = true;
+        
         [SerializeField] private PlayerInput playerInput;
         private Animator animator;
         private AvatarAnimationController animController;
+
+        private Vector2[] directions = new[]
+        {
+            new Vector2(0, 1),
+            new Vector2(0, -1),
+            new Vector2(1, 0),
+            new Vector2(1, 1),
+            new Vector2(1, -1),
+            new Vector2(-1, 0),
+            new Vector2(-1, 1),
+            new Vector2(-1, -1)
+        };
 
         private void Awake()
         {
@@ -56,17 +66,30 @@ namespace DoubTech.TPSCharacterController.Demo
 
         public void Block()
         {
+            UpdateAttackDirection();
             animController.Block();
         }
 
         public void PrimaryAttack()
         {
+            UpdateAttackDirection();
             animController.PrimaryAttack();
         }
 
         public void SecondaryAttack()
         {
+            UpdateAttackDirection();
             animController.SecondaryAttack();
+        }
+
+        private void UpdateAttackDirection()
+        {
+            if (!useCombatDirection)
+            {
+                // TODO: Make attack direction smarter.
+                var direction = directions[Random.Range(0, directions.Length - 1)];
+                CombatDirectionChanged(direction);
+            }
         }
     }
 }
