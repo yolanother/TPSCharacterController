@@ -30,6 +30,13 @@ namespace DoubTech.TPSCharacterController.Inputs
         [SerializeField] public readonly ButtonHandler Throw = new ButtonHandler();
 
         public float MovementMagnitude => Mathf.Sqrt(Mathf.Pow(Horizontal.Value, 2) + Mathf.Pow(Vertical.Value, 2));
+
+        public void OnDirectionAxisChanged(Vector2 value)
+        {
+            Debug.Log("Manual axis value: " + value);
+            Horizontal.Value = value.x;
+            Vertical.Value = value.y;
+        }
     }
 
     public enum ButtonEventTypes

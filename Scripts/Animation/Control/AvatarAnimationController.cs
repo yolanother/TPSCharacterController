@@ -349,6 +349,16 @@ namespace DoubTech.TPSCharacterController.Animation.Control
             }
         }
 
+        public void ToggleRun()
+        {
+            IsRunning = !IsRunning;
+        }
+
+        public void ToggleCrouch()
+        {
+            IsCrouching = !IsCrouching;
+        }
+
         private void OnDisable()
         {
             if (eventReceiver)
