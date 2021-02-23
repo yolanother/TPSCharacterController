@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace DoubTech.TPSCharacterController.Demo
 {
-    public class AttackProcessor : MonoBehaviour
+    public class AttackProcessor : CoordinatorReferenceMonoBehaviour
     {
         [SerializeField] public bool useCombatDirection = true;
         
@@ -64,6 +64,30 @@ namespace DoubTech.TPSCharacterController.Demo
             }
         }
 
+        private bool EvaluateStamina()
+        {
+            if (Coordinator.WeaponController && Coordinator.Stamina)
+            {
+                float cost = 0;
+                foreach (var weapon in Coordinator.WeaponController.EquippedWeapons)
+                {
+                    cost += weapon.Stats.attackCost;
+                }
+
+                if (cost < Coordinator.Stamina)
+                {
+                    Coordinator.Stamina.Current -= cost;
+                    return true;
+                }
+            }
+            else
+            {
+                return true;
+            }
+
+            return false;
+        }
+
         public void Block()
         {
             UpdateAttackDirection();
@@ -72,12 +96,15 @@ namespace DoubTech.TPSCharacterController.Demo
 
         public void PrimaryAttack()
         {
+            if (!EvaluateStamina()) return;
+            
             UpdateAttackDirection();
             animController.PrimaryAttack();
         }
 
         public void SecondaryAttack()
         {
+            if (!EvaluateStamina()) return;
             UpdateAttackDirection();
             animController.SecondaryAttack();
         }

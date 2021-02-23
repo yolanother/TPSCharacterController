@@ -17,6 +17,24 @@ namespace DoubTech.TPSCharacterController.Inventory.Weapons
         
         private Dictionary<Slot, Slot> equippedSlots = new Dictionary<Slot, Slot>();
 
+        public Weapon[] EquippedWeapons
+        {
+            get
+            {
+                List<Weapon> weapons = new List<Weapon>();
+                foreach (var slot in equippedWeaponSlots)
+                {
+                    Weapon weapon = slot.Item?.GetComponent<Weapon>();
+                    if (weapon)
+                    {
+                        weapons.Add(weapon);
+                    }
+                }
+
+                return weapons.ToArray();
+            }
+        }
+        
         private void Awake()
         {
             bool equipped = false;

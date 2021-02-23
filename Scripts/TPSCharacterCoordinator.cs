@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using DoubTech.TPSCharacterController.Animation.Control;
+using DoubTech.TPSCharacterController.Inventory.Weapons;
 using DoubTech.TPSCharacterController.Stats;
 using UnityEngine.Events;
 
@@ -56,6 +57,16 @@ namespace DoubTech.TPSCharacterController
             {
                 if (!level) level = GetComponentInChildren<Level>();
                 return level;
+            }
+        }
+
+        private WeaponController weaponController;
+        public WeaponController WeaponController
+        {
+            get
+            {
+                if (!weaponController) weaponController = GetComponentInChildren<WeaponController>();
+                return weaponController;
             }
         }
 

@@ -10,7 +10,7 @@ namespace DoubTech.TPSCharacterController.SGoap.Actions
     public class AttackAction : BasicAction
     {
         [SerializeField] private AttackProcessor attackProcessor;
-        public override float CooldownTime => .25f;
+        public override float CooldownTime => Random.Range(0, 1.0f);
 
         public override bool AlwaysIncludeInPlan => true;
 
