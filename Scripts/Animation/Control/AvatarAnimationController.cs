@@ -15,6 +15,9 @@ namespace DoubTech.TPSCharacterController.Animation.Control
         [Header("Animations")] [SerializeField]
         private AnimatorOverrideController baseLocomotionController;
 
+        public AnimatorOverrideController UnarmedController => baseLocomotionController;
+        public AnimatorOverrideController ArmedController => WeaponAnimConfig?.weaponClassController;
+
         [SerializeField] private WeaponClassAnimConfig equippedWeaponAnimConfig;
 
         public WeaponClassAnimConfig WeaponAnimConfig
@@ -137,6 +140,24 @@ namespace DoubTech.TPSCharacterController.Animation.Control
                 LandFall = UnityEngine.Animator.StringToHash(prefix + " Land Fall");
                 LandFallDead = UnityEngine.Animator.StringToHash(prefix + " Land Fall Dead");
             }
+        }
+
+        public AnimationClip GetAnimClip(bool armed, params string[] states)
+        {
+            var controller = armed ? ArmedController : UnarmedController;
+            string clipName = "";
+            if (states[0] == "Walk" || states[0] == "Run" || states[0] == "Crouch")
+            {
+                clipName += armed ? "Combat" : "Unarmed";
+            }
+
+            for (int i = 0; i < states.Length; i++)
+            {
+                if (clipName.Length > 0) clipName += " - ";
+                clipName += states[i];
+            }
+
+            return controller[clipName];
         }
 
         private const int AnimLayerDefault = 0;

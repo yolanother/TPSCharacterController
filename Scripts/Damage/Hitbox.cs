@@ -75,7 +75,7 @@ namespace DoubTech.TPSCharacterController.Damage
             }
             
             var receiver = other.gameObject.GetComponent<DamageReceiver>();
-            if (receiver)
+            if (receiver.Coordinator != owner)
             {
                 var speedMult = 1f;
                 if (useSpeedMultiplier)
