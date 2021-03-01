@@ -57,6 +57,8 @@ namespace DoubTech.TPSCharacterController.Inventory.Slots
             }
         }
 
+        public SlotConfiguration Config => configurationPreset ? configurationPreset.configuration : configuration;
+
         private void Awake()
         {
             if (configurationPreset)

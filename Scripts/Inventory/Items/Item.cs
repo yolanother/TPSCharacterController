@@ -11,6 +11,9 @@ namespace DoubTech.TPSCharacterController.Inventory.Items
 
         public GameObject Model => model;
 
+        public string ModelName => name + "::" + model.name +
+                                   (model.transform.childCount > 0 ? "::" + model.transform.GetChild(0).name : "");
+
         public ItemType Type => type;
         public float PickupDelay { get; set; } = 0;
     }

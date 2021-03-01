@@ -62,6 +62,16 @@ namespace DoubTech.TPSCharacterController.Inventory.Slots
             }
         }
 
+        public ModelSlotPosition GetModelSlotPosition(Item item)
+        {
+            return ModelSlotPositionsSet.TryGetValue(ModelSlotPosition.CreateKey(item), out var result) ? result : null;
+        }
+
+        public TypedSlotPosition GetTypedSlotPosition(Item item)
+        {
+            return ItemTypePositions.TryGetValue(item.Type, out var result) ? result : null;
+        }
+
         private Dictionary<string, List<ModelSlotPosition>> configuredModels;
         public Dictionary<string, List<ModelSlotPosition>> ConfiguredModels
         {
@@ -102,7 +112,16 @@ namespace DoubTech.TPSCharacterController.Inventory.Slots
 
         public ItemSlotPosition GetPosition(Item item)
         {
-            return GetPosition(item.Type, item.Model ? item.Model.name : "");
+            return GetPosition(item.Type, item.Model ? item.ModelName : "");
+        }
+
+        public void AddPosition(TypedSlotPosition position)
+        {
+            if (!ItemTypePositions.ContainsKey(position.Type))
+            {
+                positions.Add(position);
+                OnValidate();
+            }
         }
 
         public ItemSlotPosition GetPosition(ItemType itemType, string modelName = "")
@@ -162,8 +181,11 @@ namespace DoubTech.TPSCharacterController.Inventory.Slots
 
         public void AddPosition(ModelSlotPosition position)
         {
-            modelSlotPositions.Add(position);
-            OnValidate();
+            if (!ModelSlotPositionsSet.ContainsKey(position.Key))
+            {
+                modelSlotPositions.Add(position);
+                OnValidate();
+            }
         }
     }
 }

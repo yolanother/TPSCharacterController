@@ -7,8 +7,8 @@ using Object = UnityEngine.Object;
 
 namespace DoubTech.TPSCharacterController.Inventory.Slots
 {
-    [CreateAssetMenu(menuName = "TPS Character Controller/Slots/Typed Slot Position")]
-    public class TypedSlotPosition : ScriptableObject
+    [Serializable]
+    public class TypedSlotPosition
     {
         [SerializeField] public ItemSlotPosition position;
 
@@ -18,8 +18,8 @@ namespace DoubTech.TPSCharacterController.Inventory.Slots
     [Serializable]
     public class ModelSlotPosition
     {
-        [SerializeField] public string modelName;
         [SerializeField] public ItemSlotPosition position;
+        [SerializeField] public string modelName;
 
         public string Key => CreateKey(position.type, modelName);
         public ItemType Type => position.type;
@@ -27,6 +27,11 @@ namespace DoubTech.TPSCharacterController.Inventory.Slots
         public static string CreateKey(ItemType itemType, string modelName)
         {
             return itemType.ID + "::" + modelName;
+        }
+
+        public static string CreateKey(Item item)
+        {
+            return CreateKey(item.Type, item.ModelName);
         }
     }
 
