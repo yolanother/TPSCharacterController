@@ -1,9 +1,5 @@
-using System;
 using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
 using DoubTech.TPSCharacterController.Animation.Control;
-using DoubTech.TPSCharacterController.Demo;
 using DoubTech.TPSCharacterController.Inventory.Weapons;
 
 namespace DoubTech.TPSCharacterController.Damage

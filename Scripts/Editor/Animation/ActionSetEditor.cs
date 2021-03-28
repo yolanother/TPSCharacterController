@@ -1,8 +1,5 @@
 using System;
 using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
-using DoubTech.TPSCharacterController.Animation.Slots;
 using DoubTech.TPSCharacterController.Scripts.Animation;
 using UnityEditor;
 
