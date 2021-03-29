@@ -35,7 +35,10 @@ namespace DoubTech.TPSCharacterController.Inventory.Slots
                     itemTypeToPositions = new Dictionary<ItemType, TypedSlotPosition>();
                     foreach (var position in positions)
                     {
-                        itemTypeToPositions[position.Type] = position;
+                        if (position.Type)
+                        {
+                            itemTypeToPositions[position.Type] = position;
+                        }
                     }
                 }
 

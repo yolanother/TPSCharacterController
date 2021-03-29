@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 113fb494c8223a244af764fbb7875114, type: 3}
+  m_Name: WoodAxeConfiguration
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 2857729702628668998, guid: 310f01627d69f6741a2cb51596c411b0, type: 3}
+  weaponController: {fileID: 22100000, guid: af8f358250ca7f2489b1af18703048bd, type: 2}
+  boneAttachedToWhileEquipped: 18
+  positionOnBone: {x: 0, y: 0, z: 0}
+  rotationOnBone: {x: 0, y: 0, z: 0}
+  visibleWhenUnequipped: 1
+  boneAttachedToWhileUnequipped: 0
+  positionOnBoneUnequipped: {x: 0, y: 0, z: 0}
+  rotationOnBoneUnequipped: {x: 0, y: 0, z: 0}
+  twoHanded: 0

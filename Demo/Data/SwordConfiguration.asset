@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 113fb494c8223a244af764fbb7875114, type: 3}
   m_Name: SwordConfiguration
   m_EditorClassIdentifier: 
-  prefab: {fileID: 1631607032641582, guid: 0c14f3ea30af4174ba288b3c2042f665, type: 3}
+  prefab: {fileID: 7450599347762029293, guid: d370351000bc0a04c944e66e33d23d0b, type: 3}
   weaponController: {fileID: 22100000, guid: 21bb06245b2189f4a84e0c8327ede664, type: 2}
   boneAttachedToWhileEquipped: 18
   positionOnBone: {x: 0, y: 0, z: 0}

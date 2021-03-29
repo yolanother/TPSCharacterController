@@ -650,18 +650,17 @@ namespace DoubTech.TPSCharacterController.Animation.Control
 
         private void Attack(AnimationConfig attack)
         {
+            Debug.Log("Attackng?");
             var attackStart = attack.GetTags(AnimationTagType.AttackStart);
 
             if (attackStart.Count > 0)
             {
+                Debug.Log("Attack start count: " + attackStart.Count);
                 PlayAction(attack, transitionDuration: attackStart.First().time);
             }
-            else
+            else if (PlayAction(attack))
             {
-                if (PlayAction(attack))
-                {
-                    isAttacking = true;
-                }
+                isAttacking = true;
             }
         }
 

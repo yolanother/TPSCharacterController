@@ -2,8 +2,10 @@ using System;
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using DoubTech.TPSCharacterController.Animation.Control;
 using UnityEngine.Events;
+using Debug = UnityEngine.Debug;
 
 namespace DoubTech.TPSCharacterController.Damage
 {
@@ -20,7 +22,7 @@ namespace DoubTech.TPSCharacterController.Damage
 
         private void OnEnable()
         {
-            if (attachToBone)
+            if (attachToBone && Coordinator && Coordinator.AvatarAnimator)
             {
                 Coordinator.AvatarAnimator.ExecuteWhenReady(() =>
                 {
@@ -32,6 +34,7 @@ namespace DoubTech.TPSCharacterController.Damage
 
         public void Damage(TPSCharacterCoordinator owner, Vector3 position, float damageMultiplier)
         {
+            Debug.Log("Damaged by " + owner.name);
             var finalDamage = damageMultiplier * receiverDamageMultiplier;
             
             if (Coordinator.AvatarAnimator)
@@ -52,10 +55,10 @@ namespace DoubTech.TPSCharacterController.Damage
                 }
             }
             
-            onDamageReceived.Invoke(finalDamage);
+            onDamageReceived.Invoke(owner, position, finalDamage);
         }
     }
     
     [Serializable]
-    public class OnDamageReceived : UnityEvent<float> {}
+    public class OnDamageReceived : UnityEvent<TPSCharacterCoordinator, Vector3, float> {}
 }

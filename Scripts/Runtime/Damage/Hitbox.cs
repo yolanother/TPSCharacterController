@@ -71,14 +71,14 @@ namespace DoubTech.TPSCharacterController.Damage
             }
             
             var receiver = other.gameObject.GetComponent<DamageReceiver>();
-            if (receiver.Coordinator != owner)
+            if (receiver?.Coordinator != owner)
             {
                 var speedMult = 1f;
                 if (useSpeedMultiplier)
                 {
                     speedMult = Mathf.Min(minSpeedForMaxDamage, speed) / minSpeedForMaxDamage;
                 }
-                receiver.Damage(owner, transform.position, damageMultiplier * damageReduction * Weapon.Stats.damage * speedMult);
+                receiver?.Damage(owner, transform.position, damageMultiplier * damageReduction * Weapon.Stats.damage * speedMult);
             
                 if(disableAfterImpact) DisableHitbox();
             }
