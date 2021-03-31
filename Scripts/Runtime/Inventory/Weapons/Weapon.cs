@@ -1,8 +1,4 @@
-using System;
 using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
-using DoubTech.TPSCharacterController.Animation.Control;
 using DoubTech.TPSCharacterController.Damage;
 using DoubTech.TPSCharacterController.Inventory.Items;
 using DoubTech.TPSCharacterController.Inventory.Slots;

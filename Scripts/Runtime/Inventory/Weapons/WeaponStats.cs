@@ -1,4 +1,5 @@
 using System;
+using DoubTech.TPSCharacterController.Utilities;
 using UnityEngine;
 using Sirenix.OdinInspector;
 
@@ -12,7 +13,7 @@ namespace DoubTech.TPSCharacterController.Inventory.Weapons
         [HideIf("preset")]
         [SerializeField] private WeaponStatsData data;
 
-        public WeaponStatsData Stats => preset ? preset.Stats : data;
+        public WeaponStatsData Stats => preset ? preset.Data : data;
     }
 
     [Serializable]
