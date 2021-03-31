@@ -6,13 +6,18 @@ using DoubTech.TPSCharacterController.Animation.Control;
 using DoubTech.TPSCharacterController.Damage;
 using DoubTech.TPSCharacterController.Inventory.Items;
 using DoubTech.TPSCharacterController.Inventory.Slots;
+using Sirenix.OdinInspector;
 
 namespace DoubTech.TPSCharacterController.Inventory.Weapons
 {
     public class Weapon : CoordinatorReferenceMonoBehaviour, SlotEquippedListener
     {
+        [BoxGroup("Stats")]
         [SerializeField] private WeaponStats weaponStats;
+        
+        [BoxGroup("Collision Boxes")]
         [SerializeField] private Hitbox[] hitboxes;
+        [BoxGroup("Collision Boxes")]
         [SerializeField] private Blockbox[] blockboxes;
         
         public WeaponStatsData Stats => weaponStats.Stats;

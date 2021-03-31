@@ -1,14 +1,15 @@
 using System;
 using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
+using Sirenix.OdinInspector;
 
 namespace DoubTech.TPSCharacterController.Inventory.Weapons
 {
     [Serializable]
     public class WeaponStats
     {
+        [InlineEditor]
         [SerializeField] private WeaponStatsPreset preset;
+        [HideIf("preset")]
         [SerializeField] private WeaponStatsData data;
 
         public WeaponStatsData Stats => preset ? preset.Stats : data;

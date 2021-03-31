@@ -24,6 +24,11 @@ namespace Sirenix.OdinInspector
     {
         public HideIf(string condition) {}
     }
+
+    public class BoxGroup : Attribute
+    {
+        public BoxGroup(string name) {}
+    }
 }
 
 namespace Sirenix.Utilities
