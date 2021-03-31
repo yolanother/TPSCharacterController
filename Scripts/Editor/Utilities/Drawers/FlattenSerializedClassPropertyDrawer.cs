@@ -1,11 +1,13 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using DoubTech.TPSCharacterController.Inventory.Weapons;
 using UnityEditor;
 
 namespace DoubTech.TPSCharacterController.Utilities
 {
-    public class SerializedClassPropertyDrawer : PropertyDrawer
+    [CustomPropertyDrawer(typeof(FlattenSerializedClass))]
+    public class FlattenSerializedClassPropertyDrawer : PropertyDrawer
     {   
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {

@@ -1,6 +1,4 @@
 using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
 using DoubTech.TPSCharacterController.Utilities;
 
 namespace DoubTech.TPSCharacterController.Inventory.Weapons

@@ -1,8 +1,10 @@
+using DoubTech.TPSCharacterController.Inventory.Weapons;
 using UnityEngine;
 using UnityEditor;
 
 namespace DoubTech.TPSCharacterController.Utilities
 {
+    [CustomPropertyDrawer(typeof(Preset))]
     public class PresetDrawer : PropertyDrawer
     {
         private SerializedProperty preset;
@@ -46,7 +48,6 @@ namespace DoubTech.TPSCharacterController.Utilities
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
-            Debug.Log("Drawing preset.");
             EditorGUI.BeginProperty(position, label, property);
             var presetRect = new Rect( position.x, position.y, position.width, EditorGUIUtility.singleLineHeight );
 
