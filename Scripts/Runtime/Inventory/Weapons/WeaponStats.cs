@@ -9,7 +9,7 @@ namespace DoubTech.TPSCharacterController.Inventory.Weapons
     public class WeaponStats
     {
         [SerializeField] private WeaponStatsPreset preset;
-        [FlattenSerializedClass]
+        [SerializedClassField]
         [SerializeField] private WeaponStatsData data;
 
         public WeaponStatsData Stats => preset ? preset.Data : data;

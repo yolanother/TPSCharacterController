@@ -6,8 +6,8 @@ using UnityEditor;
 
 namespace DoubTech.TPSCharacterController.Utilities
 {
-    [CustomPropertyDrawer(typeof(FlattenSerializedClass))]
-    public class FlattenSerializedClassPropertyDrawer : PropertyDrawer
+    [CustomPropertyDrawer(typeof(SerializedClassField))]
+    public class SerializedClassFieldDrawer : PropertyDrawer
     {   
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {

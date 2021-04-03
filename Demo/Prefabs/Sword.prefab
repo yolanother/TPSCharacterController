@@ -231,13 +231,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponStats:
-    preset: {fileID: 11400000, guid: eb7545caa22a6be47b764cd2a01aa9f4, type: 2}
+    preset: {fileID: 0}
     data:
       damage: 10
       attackCost: 10
   hitboxes:
   - {fileID: 3284122508374229102}
   blockboxes: []
+  weaponAnimationConfig: {fileID: 11400000, guid: 3751e72b26b7f7a40b0130bdeb66f575,
+    type: 2}
+  weaponItemConfiguration: {fileID: 11400000, guid: 8d9f0bdb10a6e964c85e56e38c2005b5,
+    type: 2}
 --- !u!1001 &7522026543785217738
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -1,7 +1,10 @@
+using DoubTech.TPSCharacterController.Animation;
 using UnityEngine;
 using DoubTech.TPSCharacterController.Damage;
 using DoubTech.TPSCharacterController.Inventory.Items;
 using DoubTech.TPSCharacterController.Inventory.Slots;
+using DoubTech.TPSCharacterController.Utilities;
+using DoubTech.TPSCharacterController.Weapons;
 using Sirenix.OdinInspector;
 
 namespace DoubTech.TPSCharacterController.Inventory.Weapons
@@ -15,6 +18,14 @@ namespace DoubTech.TPSCharacterController.Inventory.Weapons
         [SerializeField] private Hitbox[] hitboxes;
         [BoxGroup("Collision Boxes")]
         [SerializeField] private Blockbox[] blockboxes;
+
+        [BoxGroup("Animation Configuration")]
+        [ScriptableObjectField]
+        [SerializeField] private WeaponClassAnimConfig weaponAnimationConfig;
+
+        [BoxGroup("Weapon Item Configuration")]
+        [ScriptableObjectField]
+        [SerializeField] private WeaponRigConfiguration weaponItemConfiguration;
         
         public WeaponStatsData Stats => weaponStats.Stats;
 

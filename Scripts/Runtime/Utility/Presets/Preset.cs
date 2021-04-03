@@ -14,10 +14,14 @@ namespace DoubTech.TPSCharacterController.Utilities
         public TData Data => null != preset ? preset.Data : data;
     }
     
-    
-    
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = false, Inherited = true)]
-    public class FlattenSerializedClass : PropertyAttribute
+    public class ScriptableObjectField : PropertyAttribute
+    {
+        
+    }
+
+    [AttributeUsage(AttributeTargets.Field, AllowMultiple = false, Inherited = true)]
+    public class SerializedClassField : PropertyAttribute
     {
         
     }
