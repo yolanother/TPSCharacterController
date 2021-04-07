@@ -21,7 +21,7 @@ namespace DoubTech.TPSCharacterController.Inventory.Slots
         [SerializeField] private bool isSlotVisible;
         [SerializeField] private bool sendsEquippedEvent = false;
 
-        [SerializeField] private SlotConfigurationPreset configurationPreset;
+        [SerializeField] public SlotConfigurationPreset configurationPreset;
         [SerializeField] private SlotConfiguration configuration;
 
         private AvatarAnimationController avatar;

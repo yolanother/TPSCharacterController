@@ -10,7 +10,7 @@ namespace DoubTech.TPSCharacterController.Inventory.Slots
     [Serializable]
     public class TypedSlotPosition
     {
-        [SerializeField] public ItemSlotPosition position;
+        [SerializeField] public ItemSlotPosition position = new ItemSlotPosition();
 
         public ItemType Type => position.type;
     }
@@ -18,7 +18,7 @@ namespace DoubTech.TPSCharacterController.Inventory.Slots
     [Serializable]
     public class ModelSlotPosition
     {
-        [SerializeField] public ItemSlotPosition position;
+        [SerializeField] public ItemSlotPosition position = new ItemSlotPosition();
         [SerializeField] public string modelName;
 
         public string Key => CreateKey(position.type, modelName);
@@ -43,6 +43,7 @@ namespace DoubTech.TPSCharacterController.Inventory.Slots
         public HumanBodyBones bone;
         public Vector3 offset;
         public Vector3 rotation;
+        public Vector3 scale = Vector3.one;
     }
     
     public enum SlotSide

@@ -9,11 +9,13 @@ using Sirenix.OdinInspector;
 
 namespace DoubTech.TPSCharacterController.Inventory.Weapons
 {
-    public class Weapon : CoordinatorReferenceMonoBehaviour, SlotEquippedListener
+    public class Weapon : Item, SlotEquippedListener
     {
         [BoxGroup("Stats")]
+        [Header("Weapon Stats")]
         [SerializeField] private WeaponStats weaponStats;
         
+        [Header("Hitboxes")]
         [BoxGroup("Collision Boxes")]
         [SerializeField] private Hitbox[] hitboxes;
         [BoxGroup("Collision Boxes")]

@@ -4,10 +4,16 @@ using System.Collections.Generic;
 
 namespace DoubTech.TPSCharacterController.Inventory.Items
 {
-    public class Item : MonoBehaviour
+    public class Item : CoordinatorReferenceMonoBehaviour
     {
-        [SerializeField] private ItemType type;
-        [SerializeField] private GameObject model;
+        [Header("Item UI Details")]
+        [SerializeField] public string displayName;
+        [SerializeField] public string description;
+        [SerializeField] public Texture2D thumbnail;
+        
+        [Header("Item Configuration")]
+        [SerializeField] public ItemType type;
+        [SerializeField] public GameObject model;
 
         public GameObject Model => model;
 
