@@ -12,6 +12,9 @@ namespace DoubTech.TPSCharacterController.Animation
         private WeaponClassAnimConfig config;
         private AnimationConfigOverride selectedSlot;
 
+        public System.Action<AnimationConfigOverride> onSelectedSlot;
+        public System.Action<AnimationConfigOverride> onUnselectedSlot;
+
         public ActionSetEditor(WeaponClassAnimConfig config)
         {
             this.config = config;
@@ -39,12 +42,13 @@ namespace DoubTech.TPSCharacterController.Animation
             GUILayout.EndHorizontal();
         }
 
-        public void Draw()
+        public void Draw(float width = -1)
         {
+            if (width < 0) width = EditorGUIUtility.currentViewWidth;
             GUILayout.Space(8);
             int size = 84;
             GUILayout.BeginHorizontal();
-            GUILayout.Space((EditorGUIUtility.currentViewWidth - 3 * size) / 2.0f - 32);
+            GUILayout.Space((width - 3 * size) / 2.0f - 32);
             GUILayout.ExpandWidth(true);
             GUILayout.BeginVertical();
             actionSetIndex = EditorGUILayout.Popup(actionSetIndex, actionSetNames, GUILayout.Width(3 * size + 10));
@@ -107,6 +111,7 @@ namespace DoubTech.TPSCharacterController.Animation
             bool isDirty = false;
             if (null != selectedSlot)
             {
+                GUILayout.BeginVertical(EditorStyles.helpBox);
                 if (selectedSlot.preset)
                 {
                     GUILayout.Label("Using Preset: " + selectedSlot.preset.name);
@@ -146,8 +151,10 @@ namespace DoubTech.TPSCharacterController.Animation
                     selectedSlot.Config.mirror = value;
                     isDirty = true;
                 }
+                EditorGUILayout.EndVertical();
             }
 
+            
             return isDirty;
         }
 
@@ -215,7 +222,15 @@ namespace DoubTech.TPSCharacterController.Animation
                     Event.current.Use();
                     
                     if (slot == selectedSlot) selectedSlot = null;
-                    else selectedSlot = slot;
+                    else
+                    {
+                        if (null != selectedSlot)
+                        {
+                            onUnselectedSlot?.Invoke(slot);
+                        }
+                        selectedSlot = slot;
+                        onSelectedSlot?.Invoke(slot);
+                    }
                     
                     return true;
                 }

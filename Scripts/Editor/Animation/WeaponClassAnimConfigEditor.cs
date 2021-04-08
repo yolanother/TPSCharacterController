@@ -39,7 +39,7 @@ namespace DoubTech.TPSCharacterController.Animation
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();
-            if (null != config.weaponClassController)
+            if (config.weaponClassController)
             {
                 if(!DisableScroll) scrollPosition = GUILayout.BeginScrollView(scrollPosition);
 

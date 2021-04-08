@@ -23,11 +23,11 @@ namespace DoubTech.TPSCharacterController.Inventory.Weapons
 
         [BoxGroup("Animation Configuration")]
         [ScriptableObjectField]
-        [SerializeField] private WeaponClassAnimConfig weaponAnimationConfig;
+        [SerializeField] public WeaponClassAnimConfig weaponAnimationConfig;
 
         [BoxGroup("Weapon Item Configuration")]
         [ScriptableObjectField]
-        [SerializeField] private WeaponRigConfiguration weaponItemConfiguration;
+        [SerializeField] public WeaponRigConfiguration weaponItemConfiguration;
         
         public WeaponStatsData Stats => weaponStats.Stats;
 

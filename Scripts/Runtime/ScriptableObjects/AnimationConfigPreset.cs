@@ -3,12 +3,14 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using DoubTech.TPSCharacterController.Scripts.Animation;
+using DoubTech.TPSCharacterController.Utilities;
 
 namespace DoubTech.TPSCharacterController.Animation
 {
     [CreateAssetMenu(menuName = "TPS Character Controller/Animation Config")]
     public class AnimationConfigPreset : ScriptableObject
     {
+        [SerializedClassField]
         [SerializeField] public AnimationConfig config;
     }
 
@@ -23,6 +25,7 @@ namespace DoubTech.TPSCharacterController.Animation
         [Range(-0.1f, 2.0f)]
         [SerializeField] public float speed = 1;
         [SerializeField] public bool mirror = false;
+        [SerializeField] public AnimationClip[] combos;
 
         [Header("Override Layers")]
         [SerializeField] public LayerConfig lowerBody = new LayerConfig()

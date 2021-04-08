@@ -23,11 +23,70 @@ namespace DoubTech.TPSCharacterController.Animation
         [SerializeField] public AnimationConfigOverride equip;
         [SerializeField] public AnimationConfigOverride unequip;
 
+        private void OnEnable()
+        {
+            primaryAttacks[0].slot = "Primary Attack - 0";
+            primaryAttacks[0].Config.animationSlot = "Primary Attack - 0";
+            primaryAttacks[1].slot = "Primary Attack - 1";
+            primaryAttacks[1].Config.animationSlot = "Primary Attack - 0";
+            primaryAttacks[2].slot = "Primary Attack - 2";
+            primaryAttacks[2].Config.animationSlot = "Primary Attack - 0";
+            primaryAttacks[3].slot = "Primary Attack - 3";
+            primaryAttacks[3].Config.animationSlot = "Primary Attack - 0";
+            primaryAttacks[4].slot = "Primary Attack - 4";
+            primaryAttacks[4].Config.animationSlot = "Primary Attack - 0";
+            primaryAttacks[5].slot = "Primary Attack - 5";
+            primaryAttacks[5].Config.animationSlot = "Primary Attack - 0";
+            primaryAttacks[6].slot = "Primary Attack - 6";
+            primaryAttacks[6].Config.animationSlot = "Primary Attack - 0";
+            primaryAttacks[7].slot = "Primary Attack - 7";
+            primaryAttacks[7].Config.animationSlot = "Primary Attack - 0";
+            primaryAttacks[8].slot = "Primary Attack - 8";
+            primaryAttacks[8].Config.animationSlot = "Primary Attack - 0";
+        }
+
+        private string HorizontalName(int value)
+        {
+            switch (value)
+            {
+                case -1:
+                    return "Left";
+                case 0:
+                    return "Mid";
+                case 1:
+                    return "Right";
+            }
+
+            return "";
+        }
+
+        private string VerticalName(int value)
+        {
+            switch (value)
+            {
+                case -1:
+                    return "Down";
+                case 0:
+                    return "Mid";
+                case 1:
+                    return "Up";
+            }
+
+            return "";
+        }
+
         public AnimationConfig GetPrimaryAttack(int attackHorizontal, int attackVertical)
         {
             var attack = (1 + attackHorizontal) * 3 + (1 + attackVertical);
             if (attack >= primaryAttacks.Length) attack = UnityEngine.Random.Range(0, primaryAttacks.Length - 1);
-            return null != primaryAttacks[attack] && attack < primaryAttacks.Length ? primaryAttacks[attack].Config : null;
+            var config = null != primaryAttacks[attack] && attack < primaryAttacks.Length ? primaryAttacks[attack].Config : null;
+            if (null != config)
+            {
+                config.animationSlot = "Primary Attack - " + HorizontalName(attackHorizontal) + " " +
+                                       VerticalName(attackVertical);
+            }
+
+            return config;
         }
         public AnimationConfig GetSecondaryAttack(int attackHorizontal, int attackVertical)
         {

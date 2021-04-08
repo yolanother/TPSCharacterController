@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using DoubTech.TPSCharacterController.Utilities;
 using UnityEditor;
 
 namespace DoubTech.TPSCharacterController.Animation
