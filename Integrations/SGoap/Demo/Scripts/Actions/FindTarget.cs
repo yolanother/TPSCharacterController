@@ -1,3 +1,4 @@
+#if SGOAP
 using System;
 using UnityEngine;
 using System.Collections;
@@ -125,3 +126,4 @@ namespace DoubTech.TPSCharacterController.SGoap.Actions
         }
     }
 }
+#endif
